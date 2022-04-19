@@ -11,28 +11,14 @@ volumes:
     driver: local
 
 services:
-  #  web:
-  #    container_name: webDevWeb
-  #    image: bitnami/apache:latest
-  #    networks:
-  #      - mapmanager
-  #    ports:
-  #      - "25548:8788"
-  #    environment:
-  #      - APACHE_HTTP_PORT_NUMBER=8788
-  #    volumes:
-  #      - ./app:/app
-  #      - ./app/httpd.conf:/opt/bitnami/apache/conf/httpd.conf
-
   phpfpm:
     container_name: phpfpm
     image: bitnami/php-fpm
-  #  build:
-  #    dockerfile: ./dockerfiles/PHP.Dockerfile
     ports:
       - 9000:9000
     volumes:
-      - ./httpd:/app
+      - ./webRoot:/app
+      - ./containerConfigs/phpfpm/php.ini:/opt/bitnami/php/etc/php.ini
     networks:
       - app-tier
 
@@ -43,10 +29,11 @@ services:
     networks:
       - app-tier
     ports:
-      - '5555:80'
+      - '80:80'
       - '443:443'
     volumes:
-      - ./nginx/server_block.conf:/opt/bitnami/nginx/conf/server_blocks/yourapp.conf
+      - ./containerConfigs/nginx/server_block.conf:/opt/bitnami/nginx/conf/server_blocks/yourapp.conf
+      - ./webRoot:/app
 
   mapserver:
     container_name: MapServer
@@ -83,7 +70,6 @@ services:
     ports:
       - "5050:80"
     depends_on:
-      - mapserver
       - db
 
   openldap:
