@@ -1,0 +1,143 @@
+networks:
+  mapmanager:
+    driver: bridge
+  app-tier:
+    driver: bridge
+# Permanent Storage
+volumes:
+  db:
+    driver: local
+  openldap_data:
+    driver: local
+
+services:
+  #  web:
+  #    container_name: webDevWeb
+  #    image: bitnami/apache:latest
+  #    networks:
+  #      - mapmanager
+  #    ports:
+  #      - "25548:8788"
+  #    environment:
+  #      - APACHE_HTTP_PORT_NUMBER=8788
+  #    volumes:
+  #      - ./app:/app
+  #      - ./app/httpd.conf:/opt/bitnami/apache/conf/httpd.conf
+
+  phpfpm:
+    container_name: phpfpm
+    image: bitnami/php-fpm
+  #  build:
+  #    dockerfile: ./dockerfiles/PHP.Dockerfile
+    ports:
+      - 9000:9000
+    volumes:
+      - ./httpd:/app
+    networks:
+      - app-tier
+
+  nginx:
+    image: 'bitnami/nginx:latest'
+    depends_on:
+      - phpfpm
+    networks:
+      - app-tier
+    ports:
+      - '5555:80'
+      - '443:443'
+    volumes:
+      - ./nginx/server_block.conf:/opt/bitnami/nginx/conf/server_blocks/yourapp.conf
+
+  mapserver:
+    container_name: MapServer
+    image: camptocamp/mapserver:latest
+    networks:
+      - mapmanager
+    ports:
+      - "6778:80"
+
+  db:
+    container_name: Postgres
+    image: postgres:latest
+    networks:
+      - mapmanager
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=webDevDB
+    volumes:
+      - db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  pgadmin:
+    container_name: PGAdmin
+    image: dpage/pgadmin4
+    networks:
+      - mapmanager
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - mapserver
+      - db
+
+  openldap:
+    image: osixia/openldap:1.5.0
+    networks:
+      - mapmanager
+    container_name: LDAP
+    environment:
+      LDAP_LOG_LEVEL: "256"
+      LDAP_ORGANISATION: "webdevlocal"
+      LDAP_DOMAIN: "webdevlocal.com"
+      LDAP_BASE_DN: "dc=webdevlocal,dc=com"
+      LDAP_ADMIN_PASSWORD: "admin"
+      LDAP_CONFIG_PASSWORD: "admin"
+      LDAP_READONLY_USER: "false"
+      LDAP_RFC2307BIS_SCHEMA: "false"
+      LDAP_BACKEND: "mdb"
+      LDAP_TLS: "true"
+      LDAP_TLS_CRT_FILENAME: "ldap.crt"
+      LDAP_TLS_KEY_FILENAME: "ldap.key"
+      LDAP_TLS_DH_PARAM_FILENAME: "dhparam.pem"
+      LDAP_TLS_CA_CRT_FILENAME: "ca.crt"
+      LDAP_TLS_ENFORCE: "false"
+      LDAP_TLS_CIPHER_SUITE: "SECURE256:-VERS-SSL3.0"
+      LDAP_TLS_VERIFY_CLIENT: "demand"
+      LDAP_REPLICATION: "false"
+      KEEP_EXISTING_CONFIG: "false"
+      LDAP_REMOVE_CONFIG_AFTER_SETUP: "true"
+      LDAP_SSL_HELPER_PREFIX: "ldap"
+    tty: true
+    stdin_open: true
+    volumes:
+      - /var/lib/ldap
+      - /etc/ldap/slapd.d
+      - /container/service/slapd/assets/certs/
+    ports:
+      - "389:389"
+      - "636:636"
+    domainname: "example.org"
+    hostname: "ldap-server"
+
+  phpldapadmin:
+    image: osixia/phpldapadmin:latest
+    container_name: LDAPAdminPanel
+    networks:
+      - mapmanager
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "openldap"
+      PHPLDAPADMIN_HTTPS: "false"
+    ports:
+      - "6060:80"
+    depends_on:
+      - openldap
+      - mapserver
+
+    
+    
