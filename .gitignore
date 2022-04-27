@@ -76,3 +76,4 @@ fabric.properties
 #Custom Docker
 #OpenLDAP
 ca.crt
+/containerConfigs/openLDAP/ca.crt
