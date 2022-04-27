@@ -1,7 +1,7 @@
 <?php
 // get config
-$json_config = file_get_contents("ldap_config.json");
-$config = json_decode($json_config);
+$commands = new LDAP_Commands();
+$config = $commands->get_ldap_config();
 
 // host information
 $hostname = $config->host->hostname;
