@@ -14,5 +14,14 @@ class LDAP_Commands {
             return false;
         }
     }
+    public function get_user($connection, $searchDN, $username) {
+        $res_id = ldap_search($connection, $searchDN, "cn=$username");
+        $user_entries = ldap_get_entries($connection, $res_id);
+        @ldap_close($connection);
+        return $user_entries;
+    }
+    public function get_group($connection, $searchDN, $group) {
+
+    }
 }
 ?>
