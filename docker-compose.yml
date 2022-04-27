@@ -33,7 +33,7 @@ services:
 
   mapserver:
     container_name: MapServer
-    image: camptocamp/mapserver:latest
+    image: camptocamp/mapserver:7.6
     networks:
       - mapmanager
     ports:
