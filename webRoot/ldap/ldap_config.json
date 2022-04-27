@@ -1,0 +1,15 @@
+{
+  "host": {
+    "hostname": "172.22.0.4",
+    "port": "389"
+  },
+  "adminUser": {
+    "username": "admin",
+    "password": "admin"
+  },
+  "domain": {
+    "topLevel": "com",
+    "secondLevel": "webdevlocal",
+    "baseDN": "dc=webdevlocal,dc=com"
+  }
+}
