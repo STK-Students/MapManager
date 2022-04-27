@@ -1,6 +1,6 @@
 <?php
-$ldap_connection = require("ldap_connection.php");
 require("ldap_commands.php");
+$ldap_connection = require("ldap_connection.php");
 
 $commands = new LDAP_Commands();
 $config = $commands->get_ldap_config();
