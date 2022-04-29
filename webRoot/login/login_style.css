@@ -1,0 +1,50 @@
+html {
+    background-color: #e1141c;
+}
+body {
+    font-family: "Poppins", sans-serif;
+    height: 100%;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+h1 {
+    text-align: center;
+    font-size: 52px;
+    font-weight: bold;
+    color: #e1141c;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+input {
+    margin-top: 20px;
+}
+
+.login_form_text {
+    min-width: 300px;
+    min-height: 40px;
+}
+
+#form_content {
+    position: relative;
+    padding: 30px;
+    min-width: 400px;
+    min-height: 500px;
+    -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.4);
+    box-shadow: 0 30px 60px 0 rgba(0,0,0,0.4);
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border-radius: 10px 10px 10px 10px;
+    text-align: center;
+}
