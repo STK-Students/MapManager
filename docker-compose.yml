@@ -71,7 +71,7 @@ services:
       - pgadmin:/certs/server.cert
       - pgadmin:/certs/server.key
     ports:
-      - "5050:5050"
+      - "5055:5050"
     depends_on:
       - postgres
 
