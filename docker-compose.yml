@@ -106,6 +106,7 @@ services:
     stdin_open: true
     volumes:
       - ldap:/var/lib/ldap
+      - ldap:/etc/ldap/slapd.d
     ports:
       - "389:389"
       - "636:636"
