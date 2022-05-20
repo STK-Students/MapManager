@@ -1,7 +1,7 @@
 <?php
 class LDAP_Commands {
     public function get_ldap_config() {
-        $json_config = file_get_contents("ldap_config.json");
+        $json_config = file_get_contents("../ldap_config.json", true);
         return json_decode($json_config);
     }
 

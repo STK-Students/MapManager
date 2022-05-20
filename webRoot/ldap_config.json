@@ -1,6 +1,6 @@
 {
   "host": {
-    "hostname": "172.22.0.4",
+    "hostname": "172.18.0.3",
     "port": "389"
   },
   "adminUser": {
