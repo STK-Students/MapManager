@@ -1,8 +1,5 @@
 {
-  "host": {
-    "hostname": "172.18.0.3",
-    "port": "389"
-  },
+  "uri": "ldap://LDAP:389",
   "adminUser": {
     "username": "admin",
     "password": "admin"
