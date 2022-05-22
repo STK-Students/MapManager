@@ -6,7 +6,8 @@
     <body>
         <h1>Edit Page</h1>
 
-        <form name="Eingabe">
+        <form name="Eingabe" method="post" action="Eingaben_Map_File.php">
+
             <label for="name">Name:</label><br>
             <input type="text" id="name" name="name"><br><br>
 
@@ -59,7 +60,7 @@
             <label for="layerdata">Layerdata:</label><br>
             <input type="file" id="layerdata" name="layerdata"><br><br>
 
-            <button type="button">Map File erstellen</button>
+            <input type="submit" name="submit" value="Map File erstellen">
 
         </form>
         
