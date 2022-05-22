@@ -1,0 +1,12 @@
+{
+  "uri": "ldap://LDAP:389",
+  "adminUser": {
+    "username": "admin",
+    "password": "admin"
+  },
+  "domain": {
+    "topLevel": "com",
+    "secondLevel": "webdevlocal",
+    "baseDN": "dc=webdevlocal,dc=com"
+  }
+}

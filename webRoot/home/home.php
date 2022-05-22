@@ -8,6 +8,21 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-<p>Home</p>
+<ul class="nav">
+    <li class="nav-item">
+        <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                aria-expanded="false">
+            Dropdown button
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="#">Gruppe 1</a></li>
+            <li><a class="dropdown-item" href="#">Gruppe 2</a></li>
+            <li><a class="dropdown-item" href="#">Gruppe 3</a></li>
+        </ul>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+    </li>
+</ul>
 </body>
 </html>

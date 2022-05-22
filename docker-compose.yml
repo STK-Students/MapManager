@@ -2,6 +2,11 @@ networks:
   mapmanager:
     driver: bridge
 
+volumes:
+  postgres:
+  pgadmin:
+  ldap:
+
 services:
   phpfpm:
     container_name: phpfpm
@@ -46,7 +51,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=webDevDB
     volumes:
-      - ./containerConfigs/pg:/var/lib/postgresql/data:z
+      - postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
 
@@ -61,12 +66,12 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
       PGADMIN_LISTEN_PORT: 5050
     volumes:
-      - ./containerConfigs/pgadmin/lib:/var/lib/pgadmin:z
-      - ./containerConfigs/pgadmin:/pgadmin4/servers.json:z
-      - ./containerConfigs/pgadmin:/certs/server.cert:z
-      - ./containerConfigs/pgadmin:/certs/server.key:z
+      - pgadmin:/var/lib/pgadmin
+      - pgadmin:/pgadmin4/servers.json
+      - pgadmin:/certs/server.cert
+      - pgadmin:/certs/server.key
     ports:
-      - "5050:5050"
+      - "5055:5050"
     depends_on:
       - postgres
 
@@ -100,14 +105,13 @@ services:
     tty: true
     stdin_open: true
     volumes:
-      - ./containerConfigs/openLDAP:/var/lib/ldap
-      - ./containerConfigs/openLDAP:/etc/ldap/slapd.d
-      - ./containerConfigs/openLDAP:/container/service/slapd/assets/certs/
+      - ldap:/var/lib/ldap
+      - ldap:/etc/ldap/slapd.d
     ports:
       - "389:389"
       - "636:636"
     domainname: "example.org"
-    hostname: "ldap-server"
+    hostname: "LDAP"
 
   phpldapadmin:
     image: osixia/phpldapadmin:latest
@@ -115,7 +119,7 @@ services:
     networks:
       - mapmanager
     environment:
-      PHPLDAPADMIN_LDAP_HOSTS: "openldap"
+      PHPLDAPADMIN_LDAP_HOSTS: "LDAP"
       PHPLDAPADMIN_HTTPS: "false"
     ports:
       - "6060:80"
