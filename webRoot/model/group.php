@@ -1,6 +1,6 @@
 <?php
 
-class Gruppe
+class Group
 {
     private $uuid;
     private $name;

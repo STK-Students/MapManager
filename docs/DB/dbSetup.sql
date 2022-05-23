@@ -5,7 +5,7 @@ BEGIN;
 
 CREATE TABLE IF NOT EXISTS public."group"
 (
-    uuid uuid NOT NULL,
+    uuid uuid NOT NULL DEFAULT gen_random_uuid(),
     name character varying NOT NULL,
     PRIMARY KEY (uuid)
     );
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS public."group"
 CREATE TABLE IF NOT EXISTS public.map
 (
     name character varying NOT NULL,
-    uuid uuid NOT NULL,
+    uuid uuid NOT NULL DEFAULT gen_random_uuid(),
     description character varying NOT NULL,
     "creationDate" date NOT NULL,
     "groupUUID" uuid NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS public.map
 
 CREATE TABLE IF NOT EXISTS public."user"
 (
-    "LDAP-UUID" uuid NOT NULL,
+    "LDAP-UUID" uuid NOT NULL DEFAULT gen_random_uuid(),
     PRIMARY KEY ("LDAP-UUID")
     );
 

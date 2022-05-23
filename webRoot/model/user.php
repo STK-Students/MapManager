@@ -1,14 +1,17 @@
 <?php
 
-class Benutzer
+class User
 {
     private $uuid;
 
-    function __construct($uuid){
+    function __construct($uuid)
+    {
         $this->uuid = $uuid;
     }
 
     // getter
-    function getUUID(){
+    function getUUID()
+    {
         return $this->uuid;
     }
+}

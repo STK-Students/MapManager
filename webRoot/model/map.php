@@ -1,18 +1,20 @@
 <?php
 
-class Karte
+class Map
 {
     private $uuid;
     private $name;
     private $description;
     private $creationDate;
+    private $groupUUID;
 
 
-    function __construct($uuid, $name, $description, $creationDate) {
+    function __construct($uuid, $name, $description, $creationDate, $groupUUID) {
         $this->uuid = $uuid;
         $this->name = $name;
         $this->description = $description;
         $this->creationDate = $creationDate;
+        $this->groupUUID = $groupUUID;
     }
 
     // getter
@@ -30,6 +32,10 @@ class Karte
 
     function getCreationDate(){
         return $this->creationDate;
+    }
+
+    function getGroupUUID(){
+        return $this->groupUUID;
     }
 
     // setter
