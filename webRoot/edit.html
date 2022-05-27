@@ -2,6 +2,7 @@
     <head>
         <meta charset="UTF-8"> <!--Ermöglicht einfache Eingabe von Sonderzeichen-->
         <title>Edit Page</title>
+        <link rel="stylesheet" href="edit_style.css"><!--Einbindung der .css Datei-->
     </head>
     <body>
         <h1>Edit Page</h1>
@@ -17,8 +18,14 @@
             <label for="size">Size:</label><br>
             <input type="number" id="size" name="size"><br><br>
 
-            <label for="symbolset">Symbolset:</label><br>
-            <input type="file" id="symbolset" name="symbolset"><br><br>
+            <div class="symbolset">
+                <button class="symbolsetbtn">Symbolset</button>
+                <div class="symbolset-content">
+                  <a href="#">Link 1</a>
+                  <a href="#">Link 2</a>
+                  <a href="#">Link 3</a>
+                </div>
+            </div><br><br>
 
             <label for="extent">Extent:</label><br>
             <input type="number" id="extent" name="extent"><br><br>
