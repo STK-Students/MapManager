@@ -1,7 +1,7 @@
 <html lang="de">
 
 <?php
-$ldap = require("../_ldap/ldapUtils.php");
+$ldap = require("../ldap/ldapUtils.php");
 
 if(isset($_POST['submit-login-form'])){
     echo "hello";
