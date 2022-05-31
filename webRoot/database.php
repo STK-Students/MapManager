@@ -27,7 +27,6 @@ class Database
         $groups = array();
         $result = pg_query("Select * From public.group");
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-            var_dump($line);
             $item = new Group($line['uuid'], $line['name']);
             array_push($groups, $item);
         }

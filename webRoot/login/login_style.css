@@ -48,3 +48,7 @@ input {
     border-radius: 10px 10px 10px 10px;
     text-align: center;
 }
+
+#login_form input {
+    margin-top: 20px;
+}
