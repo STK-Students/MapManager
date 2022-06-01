@@ -11,10 +11,9 @@ class LDAPUtils
         $this->connect();
     }
 
-    public function connect()
+    private function connect(): void
     {
         $uri = $this->config->uri;
-
         $ldap = ldap_connect($uri) or die("[Error]: Failed to connect to OpenLDAP");
         ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
         ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
@@ -23,7 +22,6 @@ class LDAPUtils
 
     /**
      * Connects to an LDAP instance.
-     * @param $connection
      * @param $baseDN
      * @param $username
      * @param $password
