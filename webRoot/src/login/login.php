@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
-<img src="../.media/Stadt_Koeln_Logo.jpg" alt="Logo der Stadt Köln">
+<img src="../../.media/Stadt_Koeln_Logo.jpg" alt="Logo der Stadt Köln">
 
 <div class="wrapper">
     <div id="form_content">

@@ -1,5 +1,5 @@
 <?php
-require ("../../database.php");
+require("../../database.php");
 $db = new Database("Postgres", "webDevDB", "postgres", "postgres");
 $mode = $_GET["mode"];
 if($mode == "create") {
