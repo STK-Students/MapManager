@@ -37,7 +37,7 @@ if (isset($_POST['submit-login-form'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     if ($ldap->login("dc=webdevlocal,dc=com", $username, $password)) {
-        header('Location: /home/home.php');
+        header('Location: /templates/home/home.php');
     } else {
         echo "Ungültige Anmeldedaten";
     }

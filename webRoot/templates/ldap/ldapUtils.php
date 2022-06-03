@@ -7,7 +7,7 @@ class LDAPUtils
 
     function __construct()
     {
-        $this->config = json_decode(file_get_contents("../config.json"));
+        $this->config = json_decode(file_get_contents("../../config.json"));
         $this->connect();
     }
 
