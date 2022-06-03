@@ -4,7 +4,6 @@ require("model/user.php");
 require("model/group.php");
 require("model/map.php");
 
-
 class Database
 {
     private $db_connection;
