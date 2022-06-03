@@ -25,7 +25,7 @@ class Database
     function getGroups()
     {
         $groups = array();
-        $result = pg_query("Select * From public.group");
+        $result = pg_query($this->db_connection, "Select * From public.group");
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
             $item = new Group($line['uuid'], $line['name']);
             array_push($groups, $item);
@@ -33,10 +33,22 @@ class Database
         return $groups;
     }
 
+    function getGroup($groupUUID)
+    {
+        $result = pg_query($this->db_connection,"Select * From public.group");
+        while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+            $item = new Group($line['uuid'], $line['name']);
+            array_push($groups, $item);
+            if($line['uuid'] == $groupUUID){
+                return new Group($line['uuid'], $line['name']);
+            }
+        }
+    }
+
     function getUsers()
     {
         $users = array();
-        $result = pg_query("Select * From public.user");
+        $result = pg_query($this->db_connection,"Select * From public.user");
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
             $item = new User($line['uuid']);
             array_push($users, $item);
@@ -47,7 +59,7 @@ class Database
     function getMaps()
     {
         $maps = array();
-        $result = pg_query("Select * From public.map");
+        $result = pg_query($this->db_connection,"Select * From public.map");
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
             $item = new Map($line['uuid'], $line['name'], $line['description'], $line['creationDate'], $line['groupUUID']);
             array_push($maps, $item);

@@ -11,7 +11,17 @@ $groups = $db->getGroups();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="home_style.css">
-    <script src="../../resources/jquery-3.6.0.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            alert("hello");
+            $("#selectGroup").change(function () {
+                var uuid = document.getElementById("selectGroup").value;
+                alert(uuid);
+                document.getElementById("main-title").innerText = uuid;
+            });
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
             integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
@@ -28,18 +38,18 @@ $groups = $db->getGroups();
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <select class="dropdown">
+                    <select class="dropdown" id="selectGroup">
                         <option value="">Gruppe wählen</option>
                         <?php
                         for ($i = 0; $i < count($groups); $i = $i + 1) {
                             $item = (object)$groups[$i];
-                            echo '<option class="dropdown-item" value="'. $item->getName() .'">' . $item->getName() . '</option>';
+                            echo '<option class="dropdown-item" value="' . $item->getUUID() . '">' . $item->getName() . '</option>';
                         }
                         ?>
                     </select>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="groups/editGroup.php">Gruppe erstellen</a>
+                    <a class="nav-link" href="groups/editGroup.php?mode=create">Gruppe erstellen</a>
                 </li>
             </ul>
             <form class="d-flex">
@@ -50,7 +60,27 @@ $groups = $db->getGroups();
     </div>
 </nav>
 <div class="main">
-    <h1 class="title"></h1>
+    <div class="title"><h2 id="main-title"></h2></div>
+    <div class="content">
+        <div class="maps"></div>
+        <div class="sidebar">
+            <ul class="sidebar-content">
+                <li class="sidebar-item"><h4>Mitarbeiter</h4>
+                    <ul>
+                        <li class="sidebar-subitem"><a href="#">Mitarbeiter hinzufügen</a></li>
+                        <li class="sidebar-subitem"><a href="#">Mitarbeiter entfernen</a></li>
+                        <li class="sidebar-subitem"><a href="#">Mitarbeiter der Gruppe anzeigen</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-item"><h4>Gruppe</h4>
+                    <ul>
+                        <li class="sidebar-subitem"><a href="#">Gruppe bearbeiten</a></li>
+                        <li class="sidebar-subitem"><a href="#">Gruppe löschen</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 </body>
 </html>

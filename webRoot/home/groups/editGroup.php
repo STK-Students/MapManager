@@ -1,15 +1,24 @@
 <?php
 require ("../../database.php");
-if(isset($_POST['submit_create_group_form'])){
-    $db = new Database("Postgres", "webDevDB", "postgres", "postgres");
-    $name = $_POST['name'];
-    try{
-        $result = $db->addGroup($name);
-        header('Location: /home/home.php');
-    } catch(Exception $e){
-        print($e->getMessage());
+$db = new Database("Postgres", "webDevDB", "postgres", "postgres");
+$mode = $_GET["mode"];
+if($mode == "create") {
+    if(isset($_POST['submit_group_form'])){
+        $name = $_POST['name'];
+        try{
+            $result = $db->addGroup($name);
+            header('Location: /home/home.php');
+        } catch(Exception $e){
+            print($e->getMessage());
+        }
+    }
+}  else if($mode == "edit"){
+    $group = $db->getGroup($_GET["uuid"]);
+    if(isset($_POST['submit_group_form'])){
+
     }
 }
+
 ?>
 <html>
 <head>
@@ -53,9 +62,10 @@ if(isset($_POST['submit_create_group_form'])){
         <h3>Gruppe erstellen</h3>
         <form name="create_group_form" method="post">
             <div class="form-group">
-                <input type="text" class="form-control" name="name" id="inputGroupName" placeholder="Name eingeben">
+                <?php if($mode == "create") echo '<input type="text" class="form-control" name="name" id="inputGroupName" placeholder="Name eingeben">'; ?>
+                <?php if($mode == "edit") echo '<input type="text" class="form-control" value="'. $group->getName() .'" name="name" id="inputGroupName" placeholder="Name eingeben">'; ?>
             </div>
-            <button type="submit" name="submit_create_group_form" class="btn btn-danger">Submit</button>
+            <button type="submit" name="submit_group_form" class="btn btn-danger">Submit</button>
         </form>
     </div>
 </body>
