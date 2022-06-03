@@ -17,7 +17,11 @@ $groups = $db->getGroups();
             alert("hello");
             $("#selectGroup").change(function () {
                 var uuid = document.getElementById("selectGroup").value;
-                alert(uuid);
+                if(uuid == ""){
+                    document.getElementById("sidebar-content").style.visibility="hidden";
+                } else {
+                    document.getElementById("sidebar-content").style.visibility="visible";
+                }
                 document.getElementById("main-title").innerText = uuid;
             });
         });
@@ -64,7 +68,7 @@ $groups = $db->getGroups();
     <div class="content">
         <div class="maps"></div>
         <div class="sidebar">
-            <ul class="sidebar-content">
+            <ul class="sidebar-content" id="sidebar-content">
                 <li class="sidebar-item"><h4>Mitarbeiter</h4>
                     <ul>
                         <li class="sidebar-subitem"><a href="#">Mitarbeiter hinzufügen</a></li>
