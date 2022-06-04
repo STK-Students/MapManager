@@ -1,64 +1,95 @@
-<html>
-    <head>
-        <title>PHP Datenübergabe</title>
-    </head>
-    <body>
-        <h2>PHP Datenübergabe aus edit.html Test</h2>
-    </body>
+<html lang="de">
+<head>
+    <title>PHP Datenübergabe</title>
+</head>
+<body>
+<h2>PHP Datenübergabe aus edit.html Test</h2>
+</body>
 </html>
 
 <?php
 
-    if(isset($_POST['submit'])){
+use MapFile\Model\Layer;
+use MapFile\Model\Map;
 
-        $name = $_POST["name"];
-        echo ("$name <br>\n");
+$mapFileLoc = "dependencies/MapFileParser";
+$doctrineLoc = "dependencies/Doctrine";
+require("{$mapFileLoc}/Model/Map.php");
+require("{$mapFileLoc}/Model/Layer.php");
+require("{$mapFileLoc}/Writer/WriterInterface.php");
+require("{$mapFileLoc}/Writer/Writer.php");
+require("{$mapFileLoc}/Writer/Map.php");
+require("{$mapFileLoc}/Writer/Projection.php");
+require("{$mapFileLoc}/Writer/Layer.php");
+require "{$doctrineLoc}/Common/Collections/Selectable.php";
+require "{$doctrineLoc}/Common/Collections/Collection.php";
+require "{$doctrineLoc}/Common/Collections/ArrayCollection.php";
 
-        $status = $_POST["status"];
-        echo ("$status <br>\n");
 
-        $size = $_POST["size"];
-        echo ("$size <br>\n");
+if (isset($_POST['submit'])) {
 
-        #$symbolset = $_POST["symbolset"];
-        #echo ".$symbolset";
+    $map = new Map();
+    $map->name = $_POST["name"];
+    $map->size = $_POST["size"];
+    $map->maxsize = $_POST["maxsize"];
+    $map->units = $_POST["units"];
+    $map->scaledenom = $_POST["scaledenom"];
 
-        $extent = $_POST["extent"];
-        echo "$extent <br>\n";
+    $layer = new Layer();
+    $layer->name = 'my-layer';
+    $layer->type = 'POLYGON';
+    $layer->status = 'ON';
 
-        $units = $_POST["units"];
-        echo "$units <br>\n";
-        
-        #$shapepath = $_POST["shapepath"];
-        #echo ".$shapepath";<br>
+    $map->layer->add($layer);
 
-        $imagecolor_red = $_POST["red"];
-        echo "$red <br>\n";
 
-        $imagecolor_green = $_POST["green"];
-        echo "$green <br>\n";
+    $status = $_POST["status"];
 
-        $imagecolor_blue = $_POST["blue"];
-        echo "$blue <br>\n";
+    $size = $_POST["size"];
 
-        #$fontset = $_POST["fontset"];
-        #echo ".$fontset";
+    #$symbolset = $_POST["symbolset"];
 
-        #$imageurl = $_POST["Imageurl"];
-        #echo ".$Imageurl";
+    $extent = $_POST["extent"];
 
-        $layername = $_POST["layername"];
-        echo "$layername <br>\n";
+    $units = $_POST["units"];
 
-        $layertype = $_POST["layertype"];
-        echo "$layertype <br>\n";
+    #$shapepath = $_POST["shapepath"];
 
-        $layerstatus = $_POST["layerstatus"];
-        echo "$layerstatus <br>\n";
+    $imagecolor_red = $_POST["red"];
 
-        $layerdata = $_POST["layerdata"];
-        echo "$layerdata <br>\n";
+    $imagecolor_green = $_POST["green"];
 
+    $imagecolor_blue = $_POST["blue"];
+
+    #$fontset = $_POST["fontset"];
+
+    #$imageurl = $_POST["Imageurl"];
+
+    $layername = $_POST["layername"];
+
+    $layertype = $_POST["layertype"];
+
+    $layerstatus = $_POST["layerstatus"];
+
+    $layerdata = $_POST["layerdata"];
+
+}
+
+class MapFileParser
+{
+
+    public function __construct($map)
+    {
+        $mapFileLoc = "dependencies/MapFileParser";
+        $doctrineLoc = "dependencies/Doctrine";
+        require("{$mapFileLoc}/Writer/WriterInterface.php");
+        require("{$mapFileLoc}/Writer/Writer.php");
+        require("{$mapFileLoc}/Writer/Map.php");
+
+        $mapfile = (new MapFile\Writer\Map())->write($map);
+        $myfile = fopen("testfile.txt", "w");
+        fwrite($myfile, $mapfile);
     }
+}
 
 ?>
