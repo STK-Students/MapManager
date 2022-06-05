@@ -1,37 +1,47 @@
+<!doctype html>
 <html lang="de">
 <head>
     <meta charset="UTF-8"> <!--Ermöglicht einfache Eingabe von Sonderzeichen-->
-
-    <title>MapManager</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!--Bootstrap responsive design meta tag-->
+    <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
+    <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../dependencies/Bootstrap/js/formValidator.js" defer></script>
     <link rel="stylesheet" href="login_style.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+
+    <title>MapManager</title>
 </head>
 <body>
-<img src="../../.media/Stadt_Koeln_Logo.jpg" alt="Logo der Stadt Köln">
+<img src="../../.media/Stadt_Koeln_Logo.jpg" class="center" alt="Logo der Stadt Köln">
 
-<div class="wrapper">
-    <div id="form_content">
-        <h1>Login</h1>
-        <form name="login_form" id="login_form" method="post">
-            <input type="text" id="username" name="username" class="login_form_text form-control"
+
+<div id="form_content" class="container-sm wrapper">
+    <h1>Login</h1>
+    <form name="login_form" id="login_form" method="post">
+        <div class="row row-cols-1">
+        <div class="form-floating gx-1">
+            <input type="text" id="username" name="username" class="form-control"
                    placeholder="Benutzername">
-            <input type="password" id="password" name="password" class="login_form_text form-control"
+            <label for="username">Benutzername</label>
+        </div>
+        <div class="form-floating gx-1 gy-3">
+            <input type="password" id="password" name="password" class="form-control"
                    placeholder="Passwort">
-            <br>
-            <input type="submit" name="submit-login-form" class="btn btn-danger" value="Anmelden">
-        </form>
+            <label for="password">Passwort</label>
+        </div>
+        <br>
+        <input type="submit" name="submit-login-form" class="btn btn-danger gy-4" value="Anmelden">
     </div>
+    </form>
 </div>
+
 </body>
 <?php
- require("../ldap/ldapUtils.php");
+require("../ldap/ldapUtils.php");
 
- $ldap = new LDAPUtils();
+$ldap = new LDAPUtils();
 
 if (isset($_POST['submit-login-form'])) {
     $username = $_POST['username'];
