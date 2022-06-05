@@ -5,41 +5,34 @@ $db = new Database("Postgres", "webDevDB", "postgres", "postgres");
 $groups = $db->getGroups();
 ?>
 
-<html>
+<html lang="de">
 <head>
-    <title>Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta charset="UTF-8"> <!--Ermöglicht einfache Eingabe von Sonderzeichen-->
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!--Bootstrap responsive design meta tag-->
+    <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
+    <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="home_style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <title>Home</title>
     <script>
         $(document).ready(function () {
-            $("#selectGroup").change(function () {
-                var uuid = document.getElementById("selectGroup").value;
-                if (uuid == "") {
+            $("#selectGroup").change(async function () {
+                let uuid = document.getElementById("selectGroup").value;
+                if (uuid === "") {
                     document.getElementById("sidebar-content").style.visibility = "hidden";
                 } else {
-                    var groupData;
                     document.getElementById("sidebar-content").style.visibility = "visible";
-                    fetch('http://localhost/api.php?getGroup=' + uuid)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById("main-title").innerText = data.name;
-                            document.getElementById("add-employee").href = ""
-                        });
-
+                    let groupData = await fetch('http://localhost/api.php?getGroup=' + uuid)
+                        .then(response => response.json());
+                    document.getElementById("main-title").innerText = groupData.name;
+                    document.getElementById("add-employee").href = ""
                 }
-
             });
         });
-
-
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
-            integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
-            crossorigin="anonymous"></script>
 </head>
+
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
     <div class="container-fluid">
@@ -54,8 +47,8 @@ $groups = $db->getGroups();
                     <select class="dropdown" id="selectGroup">
                         <option value="">Gruppe wählen</option>
                         <?php
-                        for ($i = 0; $i < count($groups); $i = $i + 1) {
-                            $item = (object)$groups[$i];
+                        for ($i = 0; $i < count($groups); $i++) {
+                            $item = (object) $groups[$i];
                             echo '<option class="dropdown-item" value="' . $item->getUUID() . '">' . $item->getName() . '</option>';
                         }
                         ?>
@@ -65,10 +58,6 @@ $groups = $db->getGroups();
                     <a class="nav-link" href="groups/editGroup.php?mode=create">Gruppe erstellen</a>
                 </li>
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-light" type="submit">Search</button>
-            </form>
         </div>
     </div>
 </nav>
@@ -82,7 +71,8 @@ $groups = $db->getGroups();
                     <ul>
                         <li class="sidebar-subitem"><a href="#" id="add-employee">Mitarbeiter hinzufügen</a></li>
                         <li class="sidebar-subitem"><a href="#" id="remove-employee">Mitarbeiter entfernen</a></li>
-                        <li class="sidebar-subitem"><a href="#" id="show-employees">Mitarbeiter der Gruppe anzeigen</a></li>
+                        <li class="sidebar-subitem"><a href="#" id="show-employees">Mitarbeiter der Gruppe anzeigen</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="sidebar-item"><h4>Gruppe</h4>
