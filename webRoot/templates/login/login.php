@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="login_style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
     <title>MapManager</title>
 </head>
@@ -32,8 +34,11 @@
             <label for="password">Passwort</label>
         </div>
         <br>
-        <input type="submit" name="submit-login-form" class="btn btn-danger gy-4" value="Anmelden">
     </div>
+        <div class="row">
+            <input type="submit" name="submit-login-form" class="btn btn-danger gy-4 col-6 ms-md-auto" value="Anmelden">
+            <p class="col-3 col-auto"></p>
+        </div>
     </form>
 </div>
 
