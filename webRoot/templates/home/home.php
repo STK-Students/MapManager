@@ -19,25 +19,20 @@ $groups = $db->getGroups();
                 if (uuid == "") {
                     document.getElementById("sidebar-content").style.visibility = "hidden";
                 } else {
+                    var groupData;
                     document.getElementById("sidebar-content").style.visibility = "visible";
-                    getGroup(uuid);
+                    fetch('http://localhost/api.php?getGroup=' + uuid)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById("main-title").innerText = data.name;
+                            document.getElementById("add-employee").href = ""
+                        });
+
                 }
 
             });
         });
 
-        function getGroup(groupUUID){
-            var data = null;
-            let xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "../../api.php" + "?getGroup=" + groupUUID, true);
-            xhttp.send();
-            xhttp.onload = function() {
-                if(xhttp.status == 200){
-                    data = JSON.parse(this.response)
-                    document.getElementById("main-title").innerText = data.name;
-                }
-            }
-        }
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -85,15 +80,15 @@ $groups = $db->getGroups();
             <ul class="sidebar-content" id="sidebar-content">
                 <li class="sidebar-item"><h4>Mitarbeiter</h4>
                     <ul>
-                        <li class="sidebar-subitem"><a href="#">Mitarbeiter hinzufügen</a></li>
-                        <li class="sidebar-subitem"><a href="#">Mitarbeiter entfernen</a></li>
-                        <li class="sidebar-subitem"><a href="#">Mitarbeiter der Gruppe anzeigen</a></li>
+                        <li class="sidebar-subitem"><a href="#" id="add-employee">Mitarbeiter hinzufügen</a></li>
+                        <li class="sidebar-subitem"><a href="#" id="remove-employee">Mitarbeiter entfernen</a></li>
+                        <li class="sidebar-subitem"><a href="#" id="show-employees">Mitarbeiter der Gruppe anzeigen</a></li>
                     </ul>
                 </li>
                 <li class="sidebar-item"><h4>Gruppe</h4>
                     <ul>
-                        <li class="sidebar-subitem"><a href="#">Gruppe bearbeiten</a></li>
-                        <li class="sidebar-subitem"><a href="#">Gruppe löschen</a></li>
+                        <li class="sidebar-subitem"><a href="#" id="edit-group">Gruppe bearbeiten</a></li>
+                        <li class="sidebar-subitem"><a href="#" id="remove-group">Gruppe löschen</a></li>
                     </ul>
                 </li>
             </ul>
