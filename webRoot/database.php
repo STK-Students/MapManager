@@ -36,8 +36,6 @@ class Database
     {
         $result = pg_query($this->db_connection,"Select * From public.group");
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-            $item = new Group($line['uuid'], $line['name']);
-            array_push($groups, $item);
             if($line['uuid'] == $groupUUID){
                 return new Group($line['uuid'], $line['name']);
             }

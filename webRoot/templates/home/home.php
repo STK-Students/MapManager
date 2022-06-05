@@ -14,17 +14,31 @@ $groups = $db->getGroups();
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            alert("hello");
             $("#selectGroup").change(function () {
                 var uuid = document.getElementById("selectGroup").value;
-                if(uuid == ""){
-                    document.getElementById("sidebar-content").style.visibility="hidden";
+                if (uuid == "") {
+                    document.getElementById("sidebar-content").style.visibility = "hidden";
                 } else {
-                    document.getElementById("sidebar-content").style.visibility="visible";
+                    document.getElementById("sidebar-content").style.visibility = "visible";
+                    getGroup(uuid);
                 }
-                document.getElementById("main-title").innerText = uuid;
+
             });
         });
+
+        function getGroup(groupUUID){
+            var data = null;
+            let xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "../../api.php" + "?getGroup=" + groupUUID, true);
+            xhttp.send();
+            xhttp.onload = function() {
+                if(xhttp.status == 200){
+                    data = JSON.parse(this.response)
+                    document.getElementById("main-title").innerText = data.name;
+                }
+            }
+        }
+
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"

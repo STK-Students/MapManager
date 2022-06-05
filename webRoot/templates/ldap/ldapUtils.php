@@ -7,7 +7,7 @@ class LDAPUtils
 
     function __construct()
     {
-        $this->config = json_decode(file_get_contents("../config.json"));
+        $this->config = json_decode(file_get_contents("../../config.json"));
         $this->connect();
     }
 
@@ -53,9 +53,5 @@ class LDAPUtils
         return $user_entries;
     }
 
-    public function get_group($searchDN, $group)
-    {
-
-    }
 }
 
