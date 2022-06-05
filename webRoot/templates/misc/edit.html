@@ -1,76 +1,158 @@
-<html>
-    <head>
-        <meta charset="UTF-8"> <!--Ermöglicht einfache Eingabe von Sonderzeichen-->
-        <title>Edit Page</title>
-        <link rel="stylesheet" href="edit_style.css"><!--Einbindung der .css Datei-->
-    </head>
-    <body>
-        <h1>Edit Page</h1>
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8"> <!--Ermöglicht einfache Eingabe von Sonderzeichen-->
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!--Bootstrap responsive design meta tag-->
+    <link rel="stylesheet" href="edit_style.css">
+    <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
+    <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../dependencies/Bootstrap/js/formValidator.js" defer></script>
 
-        <form name="Eingabe" method="post" action="../../Eingaben_Map_File.php">
+    <title>Dienst erstellen</title>
 
-            <label for="name">Name:</label><br>
-            <input type="text" id="name" name="name"><br><br>
+</head>
+<body>
 
-            <label for="status">Status:</label><br>
-            <input type="checkbox" id="status" name="status"><br><br>
 
-            <label for="size">Size:</label><br>
-            <input type="number" id="size" name="size"><br><br>
+<h1>Dienst erstellen</h1>
+<div class="needs-validation"></div>
+<div class="container-lg">
+    <form name="Eingabe" method="post" action="../../Eingaben_Map_File.php" class="needs-validation" novalidate>
+        <h2>Allgemeine Einstellungen</h2>
 
-            <div class="symbolset">
-                <button class="symbolsetbtn">Symbolset</button>
-                <div class="symbolset-content">
-                  <a href="#">Link 1</a>
-                  <a href="#">Link 2</a>
-                  <a href="#">Link 3</a>
+        <div class="row"><!--Start Row 1-->
+
+            <div class="col-4">
+                <label for="name">Kartenname</label>
+                <input type="text" class="form-control" id="name" placeholder="Grundwasserqualität"
+                       aria-describedby="nameHelp" required>
+                <small id="nameHelp" class="form-text text-muted">
+                    Präfix für die Karte, Maßstabsleiste und Legende.
+                </small>
+                <div class="invalid-feedback">
+                    Diese Angabe ist Pflicht.
                 </div>
-            </div><br><br>
+            </div>
 
-            <label for="extent">Extent:</label><br>
-            <input type="number" id="extent" name="extent"><br><br>
+            <div class="col-2">
+                <label for="scaledenom">Maßstab</label>
+                <div class="input-group has-validation">
+                    <span class="input-group-text" id="basic-addon1">1:</span>
+                    <input type="number" min="1" class="form-control" id="scaledenom" placeholder="10000" required>
+                    <div class="invalid-feedback">
+                        Diese Angabe ist Pflicht.
+                    </div>
+                </div>
+            </div>
 
-            <label for="units">Units:</label><br>
-            <input type="text" id="units" name="units"><br><br>
+            <div class="col-2">
+                <label for="units">Koordinateneinheit</label>
+                <select class="form-select" id="units" required>
+                    <option>Meter</option>
+                    <option>Kilometer</option>
+                    <option>Dezimalgrad</option>
+                    <option>Feet</option>
+                    <option>Inches</option>
+                    <option>Miles</option>
+                    <option>Seemeile</option>
+                </select>
+            </div>
 
-            <label for="shapepath">Shapepath:</label><br>
-            <input type="file" id="shapepath" name="shapepath"><br><br>
+            <div class="col-2">
+                <label for="angle">Kartendrehung</label>
+                <div class="input-group mb-3 has-validation">
+                    <input type="text" class="form-control" id="angle" value="0" aria-describedby="angleHelpButton"
+                           required>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                            data-bs-target="#angleModal"><b>?</b></button>
+                    <div class="invalid-feedback">Diese Angabe ist Pflicht.</div>
+                </div>
+            </div>
 
-            <label for="imagecolor">Imagecolor:</label><br><br>
-            <label for="red">r:</label>
-            <input type="number" id="red" name="red"><br>
-            <label for="green">g:</label>
-            <input type="number" id="green" name="green"><br>
-            <label for="blue">b:</label>
-            <input type="number" id="blue" name="blue"><br><br>
+        </div><!--End Row 1-->
 
-            <label for="fontset">Fontset:</label><br>
-            <input type="file" id="fontset" name="fontset"><br><br>
+        <div class="row"><!--Start Row 2-->
 
-            <label for="imagepath">Imagepath:</label><br>
-            <input type="file" id="imagepath" name="imagepath"><br><br>
+            <div class="col-2 gy-1">
+                <label for="size">Auflösung</label>
+                <input type="text" class="form-control" id="size" placeholder="1920x1080" required>
+                <div class="invalid-feedback">
+                    Diese Angabe ist Pflicht.
+                </div>
+            </div>
 
-            <label for="imageurl">Imageurl:</label><br>
-            <input type="file" id="Imageurl" name="Imageurl"><br><br>
+            <div class="col-2 gy-1">
+                <label for="maxsize">Maximale Auflösung</label>
+                <input type="text" class="form-control" id="maxsize" placeholder="4096x4096" value="4096x4096">
+            </div>
 
-            <label for="layer">Layer:</label><br>
+        </div><!--End Row 2-->
 
-            <label for="layername">Layername:</label><br>
-            <input type="text" id="layername" name="layername"><br><br>
+        <br>
 
-            <label for="layertype">Layertype:</label><br>
-            <input type="text" id="layertype" name="layertype"><br><br>
+        <input type="submit" name="submit" class="btn btn-success" value="Dienst erstellen">
 
-            <label for="layerstatus">Layerstatus:</label><br>
-            <input type="text" id="layerstatus" name="layerstatus"><br><br>
+    </form>
 
-            <label for="layerdata">Layerdata:</label><br>
-            <input type="file" id="layerdata" name="layerdata"><br><br>
+    <!-- INFORMATION MODALS -->
 
-            <input type="submit" name="submit" value="Map File erstellen">
+    <div class="modal modal-lg" id="angleModal" tabindex="-1" aria-labelledby="angleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="angleModalTitle">Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+                </div>
+                <div class="modal-body">
+                    Winkel, der in Grad angegeben wird, um die Karte zu drehen. Standardwert ist 0. Die gerenderte Karte
+                    wird im Uhrzeigersinn gedreht. Im Folgenden finden Sie wichtige Hinweise:
+                    <br>
+                    <br>
 
-        </form>
-        
-    </body>
-    
+                    <ul>
+                        <li>
+                            Erfordert ein PROJECTION-Objekt, das auf der MAP-Ebene und für jedes LAYER-Objekt
+                            spezifiziert
+                            wird (auch wenn alle Layer in der gleichen Projektion sind).
+                        </li>
+                        <li>
+                            Wenn Sie auch die Parameter ANGLE des LABEL-Objekts oder LABELANGLEITEM des LAYER-Objekts
+                            verwenden,
+                            sind diese Parameter relativ zur Ausrichtung der Karte (d.h. sie werden nach dem ANGLE des
+                            MAP-Objekts
+                            berechnet). Wenn Sie z. B. für die Karte einen ANGLE von 45 und für die Ebene LABELANGLEITEM
+                            einen Wert
+                            von 45 angegeben haben, erscheint die resultierende Beschriftung nicht gedreht (da die
+                            resultierende
+                            Karte um 45 Grad im Uhrzeigersinn und die Beschriftung um 45 Grad gegen den Uhrzeigersinn
+                            gedreht ist).
+                            Beachten Sie, dass ein fehlender ANGLE oder ein auf 0 gesetzter Wert bedeutet, dass die
+                            Drehung der
+                            Karte ignoriert wird. (Wenn Sie also einen relativen Winkel von Null zur Kartendrehung haben
+                            wollen,
+                            verwenden Sie einen Wert von fast Null, z. B. 0,0001)
+                        </li>
+                        <li>
+                            Bei Verwendung des STYLE.ANGLE-Parameter eines persönlichen Symbols relativ zur
+                            Ausrichtung der Karte (d.h. er wird nach dem ANGLE des MAP-Objekts berechnet). Wenn Sie z.B.
+                            für die
+                            Karte einen ANGLE-Wert von 45 angegeben haben und dann ein Symbol mit einem ANGLE-Wert von
+                            45 verwenden,
+                            erscheint die resultierende Beschriftung nicht gedreht (weil die resultierende Karte um 45
+                            Grad im
+                            Uhrzeigersinn und die Beschriftung um 45 Grad gegen den Uhrzeigersinn gedreht ist). Beachten
+                            Sie, dass
+                            ein fehlender ANGLE oder ein auf 0 gesetzter Wert bedeutet, dass die Drehung der Karte
+                            ignoriert wird.
+                            (Wenn Sie also einen relativen Winkel von Null gegenüber der Kartendrehung haben möchten,
+                            verwenden Sie
+                            einen Wert von fast Null, z. B. 0,0001)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
 </html>
