@@ -1,30 +1,23 @@
 <?php
 require("../../../database.php");
+
 $db = new Database("Postgres", "webDevDB", "postgres", "postgres");
-$mode = $_GET["mode"];
-if($mode == "create") {
-    if(isset($_POST['submit_group_form'])){
-        $name = $_POST['input-name'];
-        try{
-            $result = $db->addGroup($name);
-            header('Location: /templates/home/home.php');
-        } catch(Exception $e){
-            print($e->getMessage());
-        }
-    }
-}  else if($mode == "edit"){
-    $group = $db->getGroup($_GET["uuid"]);
-    if(isset($_POST['submit_group_form'])){
-        $db->editGroup($group->getUUID(), $_POST["input-name"]);
+$groupUUID = $_GET['uuid'];
+$group = $db->getGroup($groupUUID);
+
+if(isset($_POST['submit_group_form'])){
+    try{
+        $db->removeGroup($group->getUUID());
         header('Location: /templates/home/home.php');
+    } catch (Exception $e){
+        echo $e->getMessage();
     }
 }
 
 ?>
 <html>
 <head>
-    <title>Gruppe erstellen</title>
-    <title>Home</title>
+    <title>Gruppe löschen</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -49,25 +42,26 @@ if($mode == "create") {
             top: 10px;
             text-align: center;
         }
-        .form-group{
-            width: 80%;
-            margin: 30px auto 0px auto;
-        }
         .main button{
-            margin-top: 40px;
+            margin-top: 20px;
+        }
+        .main p {
+            margin-top: 25px;
+        }
+        .main b {
+            color: #DC3545;
         }
     </style>
 </head>
 <body>
     <div class="main">
-        <h3>Gruppe erstellen</h3>
-        <form name="create_group_form" method="post">
-            <div class="form-group">
-                <?php if($mode == "create") echo '<input type="text" class="form-control" name="input-name" id="inputGroupName" placeholder="Name eingeben">'; ?>
-                <?php if($mode == "edit") echo '<input type="text" class="form-control" value="'. $group->getName() .'" name="input-name" id="inputGroupName" placeholder="Name eingeben">'; ?>
-            </div>
-            <button type="submit" name="submit_group_form" class="btn btn-danger">Submit</button>
+        <h3>Gruppe löschen</h3>
+        <p>Möchten Sie die Gruppe <b><?php echo $group->getName(); ?></b> wirklich löschen?</p>
+        <form name="remove_group_form" method="post">
+            <button type="submit" name="submit_group_form" class="btn btn-danger">Löschen</button>
         </form>
     </div>
 </body>
 </html>
+
+?>

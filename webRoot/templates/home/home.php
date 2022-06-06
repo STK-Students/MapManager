@@ -25,7 +25,8 @@ $groups = $db->getGroups();
                         .then(response => response.json())
                         .then(data => {
                             document.getElementById("main-title").innerText = data.name;
-                            document.getElementById("add-employee").href = ""
+                            document.getElementById("edit-group").href = "groups/editGroup.php?mode=edit&uuid=" + data.uuid;
+                            document.getElementById("remove-group").href = "groups/removeGroup.php?uuid=" + data.uuid;
                         });
 
                 }
@@ -82,12 +83,13 @@ $groups = $db->getGroups();
                     <ul>
                         <li class="sidebar-subitem"><a href="#" id="add-employee">Mitarbeiter hinzufügen</a></li>
                         <li class="sidebar-subitem"><a href="#" id="remove-employee">Mitarbeiter entfernen</a></li>
-                        <li class="sidebar-subitem"><a href="#" id="show-employees">Mitarbeiter der Gruppe anzeigen</a></li>
+                        <li class="sidebar-subitem"><a href="#" id="show-employees">Mitarbeiter der Gruppe anzeigen</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="sidebar-item"><h4>Gruppe</h4>
                     <ul>
-                        <li class="sidebar-subitem"><a href="#" id="edit-group">Gruppe bearbeiten</a></li>
+                        <li class="sidebar-subitem"><a href="" id="edit-group">Gruppe bearbeiten</a></li>
                         <li class="sidebar-subitem"><a href="#" id="remove-group">Gruppe löschen</a></li>
                     </ul>
                 </li>

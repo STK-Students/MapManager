@@ -70,6 +70,11 @@ class Database
         return $result;
     }
 
+    function removeGroup($groupUUID) {
+        $result = pg_query_params($this->db_connection, 'DELETE From public.group WHERE uuid=$1', Array($groupUUID));
+        return $result;
+    }
+
     function addMap($name, $description, $creationDate, $groupUUID)
     {
         $result = pg_query_params($this->db_connection, 'INSERT INTO public.group (name, description, creationDate, groupUUID) VALUES ($1, $2, $3, $4)', Array($name, $description, $creationDate, $groupUUID));
