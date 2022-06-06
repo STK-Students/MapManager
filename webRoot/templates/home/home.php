@@ -21,14 +21,10 @@ $groups = $db->getGroups();
                 } else {
                     var groupData;
                     document.getElementById("sidebar-content").style.visibility = "visible";
-                    fetch('http://localhost/api.php?getGroup=' + uuid)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById("main-title").innerText = data.name;
-                            document.getElementById("edit-group").href = "groups/editGroup.php?mode=edit&uuid=" + data.uuid;
-                            document.getElementById("remove-group").href = "groups/removeGroup.php?uuid=" + data.uuid;
-                        });
-
+                    let groupData = await fetch('http://localhost/api.php?getGroup=' + uuid)
+                        .then(response => response.json());
+                    document.getElementById("main-title").innerText = groupData.name;
+                    document.getElementById("add-employee").href = ""
                 }
 
             });
@@ -41,6 +37,7 @@ $groups = $db->getGroups();
             integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
             crossorigin="anonymous"></script>
 </head>
+
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
     <div class="container-fluid">
@@ -55,8 +52,8 @@ $groups = $db->getGroups();
                     <select class="dropdown" id="selectGroup">
                         <option value="">Gruppe wählen</option>
                         <?php
-                        for ($i = 0; $i < count($groups); $i = $i + 1) {
-                            $item = (object)$groups[$i];
+                        for ($i = 0; $i < count($groups); $i++) {
+                            $item = (object) $groups[$i];
                             echo '<option class="dropdown-item" value="' . $item->getUUID() . '">' . $item->getName() . '</option>';
                         }
                         ?>
@@ -83,13 +80,12 @@ $groups = $db->getGroups();
                     <ul>
                         <li class="sidebar-subitem"><a href="#" id="add-employee">Mitarbeiter hinzufügen</a></li>
                         <li class="sidebar-subitem"><a href="#" id="remove-employee">Mitarbeiter entfernen</a></li>
-                        <li class="sidebar-subitem"><a href="#" id="show-employees">Mitarbeiter der Gruppe anzeigen</a>
-                        </li>
+                        <li class="sidebar-subitem"><a href="#" id="show-employees">Mitarbeiter der Gruppe anzeigen</a></li>
                     </ul>
                 </li>
                 <li class="sidebar-item"><h4>Gruppe</h4>
                     <ul>
-                        <li class="sidebar-subitem"><a href="" id="edit-group">Gruppe bearbeiten</a></li>
+                        <li class="sidebar-subitem"><a href="#" id="edit-group">Gruppe bearbeiten</a></li>
                         <li class="sidebar-subitem"><a href="#" id="remove-group">Gruppe löschen</a></li>
                     </ul>
                 </li>
