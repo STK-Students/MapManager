@@ -20,7 +20,7 @@ $groups = $db->getGroups();
                     document.getElementById("sidebar-content").style.visibility = "hidden";
                 } else {
                     document.getElementById("sidebar-content").style.visibility = "visible";
-                    let groupData = await fetch('http://localhost/api.php?getGroup=' + uuid)
+                    let groupData = fetch('http://localhost/api.php?getGroup=' + uuid)
                         .then(response => response.json());
                     document.getElementById("main-title").innerText = groupData.name;
                     document.getElementById("add-employee").href = ""
