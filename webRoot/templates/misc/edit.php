@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!isset($_SESSION['authenticated'])) {
+    die("Sie müssen sich einloggen.");
+}
+?>
 <!doctype html>
 <html lang="de">
 <head>
@@ -10,6 +16,13 @@
 
     <title>Dienst erstellen</title>
 
+    <style>
+
+        input:invalid:required {
+            border: 2px dashed red;
+        }
+
+    </style>
 </head>
 <body>
 
@@ -17,7 +30,7 @@
 <h1>Dienst erstellen</h1>
 <div class="needs-validation"></div>
 <div class="container-lg">
-    <form name="Eingabe" method="post" action="../../Eingaben_Map_File.php" class="needs-validation" novalidate>
+    <form name="Eingabe" class="needs-validation">
         <h2>Allgemeine Einstellungen</h2>
 
         <div class="row"><!--Start Row 1-->
@@ -89,8 +102,21 @@
         </div><!--End Row 2-->
 
         <br>
+        <button type="submit" id="submitAPIButton" class="btn btn-success">Dienst erstellen</button>
+        <script>
+            document.getElementById("submitAPIButton").addEventListener('click', async function () {
+                if (formIsValid) {
+                    await fetch(encodeURI('/api/formHandler/mapHandler.php?'));
+                }
+            });
 
-        <input type="submit" name="submit" class="btn btn-success" value="Dienst erstellen">
+            function formIsValid() {
+                let name = document.getElementById('name').getAttribute('value');
+                if (name == null || name === '') {
+                    document.getElementById('name').
+                }
+            }
+        </script>
 
     </form>
 
@@ -156,3 +182,39 @@
 </div>
 </body>
 </html>
+
+<?php
+
+use MapFile\Model\Layer;
+use MapFile\Model\Map;
+
+$mapFileLoc = "../../dependencies/MapFileParser";
+$doctrineLoc = "../../dependencies/Doctrine";
+require_once "{$mapFileLoc}/Model/Map.php";
+require_once "{$mapFileLoc}/Model/Layer.php";
+require_once "{$mapFileLoc}/Writer/WriterInterface.php";
+require_once "{$mapFileLoc}/Writer/Writer.php";
+require_once "{$mapFileLoc}/Writer/Map.php";
+require_once "{$mapFileLoc}/Writer/Projection.php";
+require_once "{$mapFileLoc}/Writer/Layer.php";
+require_once "{$doctrineLoc}/Common/Collections/Selectable.php";
+require_once "{$doctrineLoc}/Common/Collections/Collection.php";
+require_once "{$doctrineLoc}/Common/Collections/ArrayCollection.php";
+
+require_once "../../MapFileWriter.php";
+
+//
+//$map = new Map();
+//
+//$map->name = $_POST["name"];
+//$map->size = $_POST["size"];
+//$map->maxsize = $_POST["maxsize"];
+//$map->units = $_POST["units"];
+//$map->scaledenom = $_POST["scaledenom"];
+//
+//
+//$controller = new MapFileHandler($map);
+//$controller->saveMapFile("../../output.map");
+//echo $controller->serializedMapFile;
+
+?>
