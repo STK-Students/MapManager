@@ -19,7 +19,6 @@ $groups = $db->getGroups();
                 if (uuid == "") {
                     document.getElementById("sidebar-content").style.visibility = "hidden";
                 } else {
-                    var groupData;
                     document.getElementById("sidebar-content").style.visibility = "visible";
                     let groupData = await fetch('http://localhost/api.php?getGroup=' + uuid)
                         .then(response => response.json());
