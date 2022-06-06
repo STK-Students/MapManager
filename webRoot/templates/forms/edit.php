@@ -13,16 +13,9 @@ if (!isset($_SESSION['authenticated'])) {
     <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
     <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../dependencies/Bootstrap/js/formValidator.js" defer></script>
+    <script src="../../dependencies/jQuery/jQuery.js"></script>
 
     <title>Dienst erstellen</title>
-
-    <style>
-
-        input:invalid:required {
-            border: 2px dashed red;
-        }
-
-    </style>
 </head>
 <body>
 
@@ -61,13 +54,13 @@ if (!isset($_SESSION['authenticated'])) {
             <div class="col-2">
                 <label for="units">Koordinateneinheit</label>
                 <select class="form-select" id="units" required>
-                    <option>Meter</option>
-                    <option>Kilometer</option>
-                    <option>Dezimalgrad</option>
-                    <option>Feet</option>
-                    <option>Inches</option>
-                    <option>Miles</option>
-                    <option>Seemeile</option>
+                    <option value="meters">Meter</option>
+                    <option value="kilometers">Kilometer</option>
+                    <option value="dd">Dezimalgrad</option>
+                    <option value="feet">Feet</option>
+                    <option value="inches">Inches</option>
+                    <option value="miles">Miles</option>
+                    <option value="nauticalmiles">Seemeile</option>
                 </select>
             </div>
 
@@ -87,37 +80,58 @@ if (!isset($_SESSION['authenticated'])) {
         <div class="row"><!--Start Row 2-->
 
             <div class="col-2 gy-1">
-                <label for="size">Auflösung</label>
-                <input type="text" class="form-control" id="size" placeholder="1920x1080" required>
-                <div class="invalid-feedback">
-                    Diese Angabe ist Pflicht.
+                <label for="size-x">Auflösung</label>
+                <div class="input-group has-validation">
+                    <input type="text" class="form-control" id="size-x" placeholder="1920" required>
+                    <span class="input-group-text" id="basic-addon2">x</span>
+                    <input type="text" class="form-control" id="size-y" placeholder="1080" required>
+                    <div class="invalid-feedback">
+                        Diese Angabe ist Pflicht.
+                    </div>
                 </div>
             </div>
 
             <div class="col-2 gy-1">
                 <label for="maxsize">Maximale Auflösung</label>
-                <input type="text" class="form-control" id="maxsize" placeholder="4096x4096" value="4096x4096">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="maxsize" placeholder="4096" value="4096">
+                    <span class="input-group-text" id="basic-addon2">Pixel</span>
+                </div>
             </div>
 
         </div><!--End Row 2-->
 
         <br>
-        <button type="submit" id="submitAPIButton" class="btn btn-success">Dienst erstellen</button>
+        <button type="button" id="submitAPIButton" class="btn btn-success">Speichern</button>
         <script>
-            document.getElementById("submitAPIButton").addEventListener('click', async function () {
+            $('#submitAPIButton').on('click', async function () {
                 if (formIsValid) {
-                    await fetch(encodeURI('/api/formHandler/mapHandler.php?'));
+                    let name = $('#name').val();
+                    let scaledenom = $('#scaledenom').val();
+                    let units = $('#units').val();
+                    let angle = $('#angle').val();
+                    let sizeX = $('#size-x').val();
+                    let sizeY = $('#size-y').val();
+                    let maxsize = $('#maxsize').val();
+                    let url = encodeURI(`http://localhost/api/formHandler/mapHandler.php?name=${name}&scaledenom=${scaledenom}&units=${units}&angle=${angle}&sizeX=${sizeX}&sizeY=${sizeY}&maxsize=${maxsize}`;
+                    await fetch(url).then(response => response.json()).then(json => console.log(json));
                 }
             });
 
             function formIsValid() {
+                return true;
                 let name = document.getElementById('name').getAttribute('value');
                 if (name == null || name === '') {
-                    document.getElementById('name').
+                    document.getElementById('name');
                 }
             }
         </script>
-
+        <button type="button" id="generateMap" class="btn btn-success">Dienst erstellen</button>
+        <script>
+            $('#generateMap').on('click', async function () {
+                await fetch('/api/MapFileWriter.php');
+            })
+        </script>
     </form>
 
     <!-- INFORMATION MODALS -->
@@ -182,39 +196,3 @@ if (!isset($_SESSION['authenticated'])) {
 </div>
 </body>
 </html>
-
-<?php
-
-use MapFile\Model\Layer;
-use MapFile\Model\Map;
-
-$mapFileLoc = "../../dependencies/MapFileParser";
-$doctrineLoc = "../../dependencies/Doctrine";
-require_once "{$mapFileLoc}/Model/Map.php";
-require_once "{$mapFileLoc}/Model/Layer.php";
-require_once "{$mapFileLoc}/Writer/WriterInterface.php";
-require_once "{$mapFileLoc}/Writer/Writer.php";
-require_once "{$mapFileLoc}/Writer/Map.php";
-require_once "{$mapFileLoc}/Writer/Projection.php";
-require_once "{$mapFileLoc}/Writer/Layer.php";
-require_once "{$doctrineLoc}/Common/Collections/Selectable.php";
-require_once "{$doctrineLoc}/Common/Collections/Collection.php";
-require_once "{$doctrineLoc}/Common/Collections/ArrayCollection.php";
-
-require_once "../../MapFileWriter.php";
-
-//
-//$map = new Map();
-//
-//$map->name = $_POST["name"];
-//$map->size = $_POST["size"];
-//$map->maxsize = $_POST["maxsize"];
-//$map->units = $_POST["units"];
-//$map->scaledenom = $_POST["scaledenom"];
-//
-//
-//$controller = new MapFileHandler($map);
-//$controller->saveMapFile("../../output.map");
-//echo $controller->serializedMapFile;
-
-?>

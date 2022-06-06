@@ -32,7 +32,7 @@ Dies dient der Kontrolle, ob alle Features des MapFile abgebildet sind.
 - [X] SCALEDENOM / Maßstab
 - [ ] SCALEBAR
 - [ ] SHAPEPATH
-- [X] SIZE / Auflösung
+- [X] SIZE / Auflösung -> Split into two inputs (x & y)
 - [ ] STATUS -> Eventuell nicht im normalen Layout enthalten?
 - [ ] SYMBOLSET -> Immer gleich?
 - [ ] [SYMBOL](nested)
