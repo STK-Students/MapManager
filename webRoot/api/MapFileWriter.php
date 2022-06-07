@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (!isset($_SESSION['authenticated'])) {
+    header("Location: http://localhost/templates/login/login.php");
+    die("Sie müssen sich einloggen.");
+}
+
 $mapFileLoc = "../dependencies/MapFileParser";
 $doctrineLoc = "../dependencies/Doctrine";
 require_once("{$mapFileLoc}/Writer/WriterInterface.php");
@@ -13,7 +19,6 @@ require_once("{$doctrineLoc}/Common/Collections/Selectable.php");
 require_once("{$doctrineLoc}/Common/Collections/Collection.php");
 require_once("{$doctrineLoc}/Common/Collections/ArrayCollection.php");
 
-session_start();
 if (isset($_SESSION['map'])) {
     $map = unserialize($_SESSION['map']);
     echo $_SESSION['map'];

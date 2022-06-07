@@ -1,6 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['authenticated'])) {
+    header("Location: http://localhost/templates/login/login.php");
     die("Sie müssen sich einloggen.");
 }
 ?>
