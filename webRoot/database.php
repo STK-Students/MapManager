@@ -41,6 +41,15 @@ class Database
             }
         }
     }
+    function getMap($mapUUID)
+    {
+        $result = pg_query($this->db_connection,"Select * From public.map");
+        while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+            if($line['uuid'] == $mapUUID){
+                return new Map($line['uuid'], $line['name'], $line['description'], $line['creationDate'], $line['groupUUID']);
+            }
+        }
+    }
 
     function getUsers()
     {
@@ -53,13 +62,13 @@ class Database
         return $users;
     }
 
-    function getMaps()
+    function getMaps($groupUUID)
     {
         $maps = array();
-        $result = pg_query($this->db_connection,"Select * From public.map");
+        $result = pg_query_params($this->db_connection, 'SELECT * FROM public.map WHERE "groupUUID"=$1', Array($groupUUID));
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
             $item = new Map($line['uuid'], $line['name'], $line['description'], $line['creationDate'], $line['groupUUID']);
-            array_push($maps, $item);
+            $maps[] = $item;
         }
         return $maps;
     }
@@ -74,17 +83,22 @@ class Database
         return $result;
     }
 
+    function removeMap($mapUUID) {
+        $result = pg_query_params($this->db_connection, 'DELETE From public.map WHERE uuid=$1', Array($mapUUID));
+        return $result;
+    }
+
     function addMap($name, $description, $creationDate, $groupUUID)
     {
-        return pg_query_params($this->db_connection, 'INSERT INTO public.map (name, description, creationDate, groupUUID) VALUES ($1, $2, $3, $4)', Array($name, $description, $creationDate, $groupUUID));
+        return pg_query_params($this->db_connection, 'INSERT INTO public.map (name, description, "creationDate", "groupUUID") VALUES ($1, $2, $3, $4)', Array($name, $description, $creationDate, $groupUUID));
     }
 
     function editGroup($groupUUID, $name){
         return pg_query_params($this->db_connection, 'UPDATE public.group SET name=$2 WHERE uuid=$1', Array($groupUUID, $name));
     }
 
-    function editMap($mapUUID, $name, $description, $creationDate){
-        return pg_query_params($this->db_connection, 'UPDATE public.map SET name=$2, description=$3, creationDate=$4 WHERE uuid=$1', Array($mapUUID, $name, $description, $creationDate));
+    function editMap($mapUUID, $name, $description){
+        return pg_query_params($this->db_connection, 'UPDATE public.map SET name=$2, description=$3 WHERE uuid=$1', Array($mapUUID, $name, $description));
     }
 
     function changeGroupOfMap($mapUUID, $groupUUID){

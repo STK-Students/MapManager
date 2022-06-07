@@ -5,24 +5,18 @@ if (!isset($_SESSION['authenticated'])) {
     die("Sie müssen sich einloggen.");
 }
 require("../../../database.php");
-
 $db = new Database("Postgres", "webDevDB", "postgres", "postgres");
-$groupUUID = $_GET['uuid'];
-$maps = $db->getMaps($groupUUID);
-if(isset($_POST['submit_map_form'])){
-    try{
-        $mapUUID = $_POST['input-map'];
-        $db->removeMap($mapUUID);
-        header('Location: /templates/home/home.php');
-    } catch (Exception $e){
-        echo $e->getMessage();
-    }
+$map = (object) $db->getMap($_GET["uuid"]);
+if (isset($_POST['submit_map_form'])) {
+    $db->editMap($map->getUUID(), $_POST["input-name"], $_POST['input-description']);
+    header('Location: /templates/home/home.php');
 }
 
 ?>
 <html>
 <head>
-    <title>Gruppe löschen</title>
+    <title>Gruppe erstellen</title>
+    <title>Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -30,10 +24,14 @@ if(isset($_POST['submit_map_form'])){
             integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
             crossorigin="anonymous"></script>
     <style>
-        body{
+        body {
             background-color: #DC3545;
         }
-        .main{
+        input {
+            width: 400px;
+            margin-bottom: 15px;
+        }
+        .main {
             position: relative;
             background-color: white;
             width: 500px;
@@ -41,47 +39,37 @@ if(isset($_POST['submit_map_form'])){
             margin: 250px auto 0px auto;
             border-radius: 4px;
             text-align: center;
-            display: block;
         }
-        .main h3{
+
+        .main h3 {
             position: relative;
             top: 10px;
             text-align: center;
         }
-        .main button{
-            margin-top: 20px;
+
+        .form-group {
+            width: 80%;
+            margin: 30px auto 0px auto;
         }
-        .main p {
-            margin-top: 25px;
-        }
-        .main b {
-            color: #DC3545;
-        }
-        .dropdown {
-            height: 30px;
-            border: 1px solid black;
-            border-radius: 5px;
-            margin-top: 20px;
+
+        .main button {
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
 <div class="main">
-    <h3>Gruppe löschen</h3>
-    <form name="remove_map_form" method="post">
-        <select name="input-map" class="dropdown">
+    <h3>Gruppe erstellen</h3>
+    <form name="create_map_form" method="post">
+        <div class="form-group">
             <?php
-                for($i = 0; $i < count($maps); $i++){
-                    $map = (object) $maps[$i];
-                    echo "<option value='" .$map->getUUID(). "'>" .$map->getName(). "</option>";
-                }
+                echo '<input type="text" value="'. $map->getName() .'" name="input-name"/>';
+                echo '<br/>';
+                echo '<input type="text" value="'. $map->getDescription() .'" name="input-description"/>';
             ?>
-        </select>
-        <br/>
-        <button type="submit" name="submit_map_form" class="btn btn-danger">Löschen</button>
+        </div>
+        <button type="submit" name="submit_map_form" class="btn btn-danger">Submit</button>
     </form>
 </div>
 </body>
 </html>
-
-?>

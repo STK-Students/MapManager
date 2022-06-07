@@ -19,21 +19,57 @@ $groups = $db->getGroups();
     <link rel="stylesheet" href="home_style.css">
     <script>
         $(document).ready(function () {
-            $("#selectGroup").change(function () {
+            $("#selectGroup").change(async function () {
                 var uuid = document.getElementById("selectGroup").value;
                 if (uuid == "") {
                     document.getElementById("sidebar-content").style.visibility = "hidden";
+                    document.getElementById("table-maps").style.visibility = "hidden";
                 } else {
                     document.getElementById("sidebar-content").style.visibility = "visible";
-                    fetch('http://localhost/api.php?getGroup=' + uuid)
+                    await fetch('http://localhost/api.php?getGroup=' + uuid)
                         .then(response => response.json())
                         .then(data => {
                             document.getElementById("main-title").innerText = data.name;
                             document.getElementById("edit-group").href = "/templates/home/groups/editGroup.php?mode=edit&uuid=" + data.uuid;
                             document.getElementById("remove-group").href = "/templates/home/groups/removeGroup.php?uuid=" + data.uuid;
                             document.getElementById("add-map").href = "/templates/home/map/createMap.php?uuid=" + data.uuid;
+                            document.getElementById("remove-map").href = "/templates/home/map/removeMap.php?uuid=" + data.uuid;
                         });
+                    await fetch('http://localhost/api.php?getMaps=' + uuid)
+                        .then(response => response.json())
+                        .then(data => {
+                            const table = document.getElementById("table-maps");
+                            table.style.visibility = "visible";
+                            for (const item in data) {
+                                const newTR = document.createElement("tr");
 
+                                const nameTD = document.createElement("td");
+                                const descriptionTD = document.createElement("td");
+                                const creationDateTD = document.createElement("td");
+                                const openTD = document.createElement("td");
+                                const editTD = document.createElement("td");
+                                const openLink = document.createElement("a");
+                                openLink.href = "/templates/forms/edit.php";
+                                const editLink = document.createElement("a");
+                                editLink.href = "/templates/home/map/editMap.php?uuid=" + data[item].uuid;
+
+                                nameTD.innerText = data[item].name;
+                                descriptionTD.innerText = data[item].description;
+                                creationDateTD.innerText = data[item].creationDate;
+                                openLink.innerText = "Öffnen";
+                                editLink.innerText = "Bearbeiten";
+                                openTD.appendChild(openLink);
+                                editTD.appendChild(editLink);
+
+                                newTR.appendChild(nameTD);
+                                newTR.appendChild(descriptionTD);
+                                newTR.appendChild(creationDateTD);
+                                newTR.appendChild(openTD);
+                                newTR.appendChild(editTD);
+
+                                table.appendChild(newTR);
+                            }
+                        });
                 }
 
             });
@@ -78,7 +114,19 @@ $groups = $db->getGroups();
 <div class="main">
     <div class="title"><h2 id="main-title"></h2></div>
     <div class="content">
-        <div class="maps"></div>
+        <div class="maps" id="maps">
+            <table id="table-maps">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Beschreibung</th>
+                    <th>Erstellungsdatum</th>
+                    <th>Öffnen</th>
+                    <th>Bearbeiten</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
         <div class="sidebar">
             <ul class="sidebar-content" id="sidebar-content">
                 <li class="sidebar-item"><h4>Dienste</h4>

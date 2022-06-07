@@ -18,14 +18,14 @@
     display: -webkit-flex;
 }
 .maps {
-    height: 800px;
+    height: 500px;
     width: 70%;
     left: 0%;
     margin: 0px 0px 0px 0px;
     display: -webkit-flex;
 }
 .sidebar {
-    height: 800px;
+    height: 500px;
     width: 30%;
     display: -webkit-flex;
     margin-top: 50px;
@@ -44,4 +44,31 @@
 }
 .sidebar-content a {
     color: black;
+}
+#table-maps{
+    visibility: hidden;
+    height: 300px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 20px;
+}
+#table-maps th {
+    height: 30px;
+}
+
+@media screen and (max-width: 830px) {
+    .content {
+        display: block;
+    }
+    .sidebar {
+        text-align: center;
+        width: 100%;
+    }
+    .sidebar-content {
+        width: 100%;
+    }
+    .maps {
+        text-align: center;
+        width: 100%;
+    }
 }

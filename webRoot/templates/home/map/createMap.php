@@ -8,8 +8,13 @@ if(isset($_POST['submit_group_form'])){
     $name = $_POST['input-name'];
     $description = $_POST['input-description'];
     $creationDate = date('Y-m-d');
-    echo $name . $description . $creationDate . $group;
-    $db->addMap($name, $description, $creationDate, $group);
+    try {
+        $db->addMap($name, $description, $creationDate, $group);
+        header('Location: /templates/home/home.php');
+    } catch(Exception $e){
+        print($e->getMessage());
+    }
+
 }
 
 ?>
