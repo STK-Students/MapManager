@@ -31,6 +31,7 @@ $groups = $db->getGroups();
                             document.getElementById("main-title").innerText = data.name;
                             document.getElementById("edit-group").href = "/templates/home/groups/editGroup.php?mode=edit&uuid=" + data.uuid;
                             document.getElementById("remove-group").href = "/templates/home/groups/removeGroup.php?uuid=" + data.uuid;
+                            document.getElementById("add-map").href = "/templates/home/map/createMap.php?uuid=" + data.uuid;
                         });
 
                 }
@@ -80,6 +81,13 @@ $groups = $db->getGroups();
         <div class="maps"></div>
         <div class="sidebar">
             <ul class="sidebar-content" id="sidebar-content">
+                <li class="sidebar-item"><h4>Dienste</h4>
+                    <ul>
+                        <li class="sidebar-subitem"><a href="" id="add-map">Dienst hinzufügen</a></li>
+                        <li class="sidebar-subitem"><a href="#" id="remove-map">Dienst entfernen</a></li>
+                        </li>
+                    </ul>
+                </li>
                 <li class="sidebar-item"><h4>Mitarbeiter</h4>
                     <ul>
                         <li class="sidebar-subitem"><a href="#" id="add-employee">Mitarbeiter hinzufügen</a></li>

@@ -76,7 +76,7 @@ class Database
 
     function addMap($name, $description, $creationDate, $groupUUID)
     {
-        return pg_query_params($this->db_connection, 'INSERT INTO public.group (name, description, creationDate, groupUUID) VALUES ($1, $2, $3, $4)', Array($name, $description, $creationDate, $groupUUID));
+        return pg_query_params($this->db_connection, 'INSERT INTO public.map (name, description, creationDate, groupUUID) VALUES ($1, $2, $3, $4)', Array($name, $description, $creationDate, $groupUUID));
     }
 
     function editGroup($groupUUID, $name){
