@@ -34,12 +34,14 @@ services:
 
   mapserver:
     container_name: MapServer
-    image: camptocamp/mapserver:7.6
+    image: camptocamp/mapserver
     networks:
       - mapmanager
     ports:
       - "6778:80"
-
+    volumes:
+      - ./webRoot:/etc/mapserver/
+      - ./webRoot/mapserver.map:/etc/mapserver/mapserver.map
   postgres:
     container_name: Postgres
     image: postgres:latest
