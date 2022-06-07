@@ -20,10 +20,14 @@ $groups = $db->getGroups();
                     document.getElementById("sidebar-content").style.visibility = "hidden";
                 } else {
                     document.getElementById("sidebar-content").style.visibility = "visible";
-                    let groupData = fetch('http://localhost/api.php?getGroup=' + uuid)
-                        .then(response => response.json());
-                    document.getElementById("main-title").innerText = groupData.name;
-                    document.getElementById("add-employee").href = ""
+                    fetch('http://localhost/api.php?getGroup=' + uuid)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById("main-title").innerText = data.name;
+                            document.getElementById("edit-group").href = "/templates/home/groups/editGroup.php?mode=edit&uuid=" + data.uuid;
+                            document.getElementById("remove-group").href = "/templates/home/groups/removeGroup.php?uuid=" + data.uuid;
+                        });
+
                 }
 
             });
@@ -52,7 +56,7 @@ $groups = $db->getGroups();
                         <option value="">Gruppe wählen</option>
                         <?php
                         for ($i = 0; $i < count($groups); $i++) {
-                            $item = (object) $groups[$i];
+                            $item = (object)$groups[$i];
                             echo '<option class="dropdown-item" value="' . $item->getUUID() . '">' . $item->getName() . '</option>';
                         }
                         ?>
@@ -79,7 +83,8 @@ $groups = $db->getGroups();
                     <ul>
                         <li class="sidebar-subitem"><a href="#" id="add-employee">Mitarbeiter hinzufügen</a></li>
                         <li class="sidebar-subitem"><a href="#" id="remove-employee">Mitarbeiter entfernen</a></li>
-                        <li class="sidebar-subitem"><a href="#" id="show-employees">Mitarbeiter der Gruppe anzeigen</a></li>
+                        <li class="sidebar-subitem"><a href="#" id="show-employees">Mitarbeiter der Gruppe anzeigen</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="sidebar-item"><h4>Gruppe</h4>
