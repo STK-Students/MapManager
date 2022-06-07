@@ -114,7 +114,7 @@ if (!isset($_SESSION['authenticated'])) {
                     let sizeX = $('#size-x').val();
                     let sizeY = $('#size-y').val();
                     let maxsize = $('#maxsize').val();
-                    let url = encodeURI(`http://localhost/api/formHandler/mapHandler.php?name=${name}&scaledenom=${scaledenom}&units=${units}&angle=${angle}&sizeX=${sizeX}&sizeY=${sizeY}&maxsize=${maxsize}`;
+                    let url = encodeURI(`http://localhost/api/formHandler/mapHandler.php?name=${name}&scaledenom=${scaledenom}&units=${units}&angle=${angle}&sizeX=${sizeX}&sizeY=${sizeY}&maxsize=${maxsize}`);
                     await fetch(url).then(response => response.json()).then(json => console.log(json));
                 }
             });

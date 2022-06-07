@@ -16,9 +16,23 @@ require "{$doctrineLoc}/Common/Collections/ArrayCollection.php";
 
 $map = isset($_SESSION['map']) ? unserialize($_SESSION['map']) : new Map();
 
-$validArguments = array('name', 'scaledenom', 'angle', 'size', 'maxsize');
+$validArguments = array('name', 'scaledenom', 'angle', 'size', 'maxsize', 'sizeX', 'sizeY');
 foreach ($validArguments as $argument) {
-    if (isset($_GET[$argument])) {
+    $value = $_GET[$argument];
+    if (isset($value)) {
+
+        // Handle edge cases first
+        if ($argument == 'sizeX') {
+            $max = array($value);
+            echo $max[0];
+        }
+        if ($argument == 'sizeY') {
+            $max[] = $value;
+            echo $max[1];
+            $map->size = $max;
+        }
+
+        // Handle all other cases
         $map->$argument = $_GET[$argument];
     }
 }
