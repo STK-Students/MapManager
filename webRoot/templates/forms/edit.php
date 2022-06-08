@@ -1,3 +1,15 @@
+<!--
+ Custom Forms Format:
+
+ All forms on this page use a custom system for validation and submission to the backend.
+ This system uses the ID's of all <input> elements to determine if a single input belongs to a group of inputs.
+ Such groups are serialized to nested objects inside a parent payload that also contains any inputs without groups.
+ This structure makes the parsing in the backend easier.
+
+ Use the format "<groupID>-<elementID>" to signal which inputs belong together.
+ Make sure you NEVER assign a group name as the name of an unrelated input.
+ -->
+
 <?php
 session_start();
 if (!isset($_SESSION['authenticated'])) {
@@ -15,6 +27,7 @@ if (!isset($_SESSION['authenticated'])) {
     <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../dependencies/Bootstrap/js/formValidator.js" defer></script>
     <script src="../../dependencies/jQuery/jQuery.js"></script>
+    <script src="dataSubmitter.js"></script>
 
     <title>Dienst erstellen</title>
 </head>
@@ -24,7 +37,7 @@ if (!isset($_SESSION['authenticated'])) {
 <h1>Dienst erstellen</h1>
 <div class="needs-validation"></div>
 <div class="container-lg">
-    <form name="Eingabe" class="needs-validation">
+    <form name="Eingabe" id='mapForm' class="needs-validation">
         <h2>Allgemeine Einstellungen</h2>
 
         <div class="row"><!--Start Row 1-->
@@ -100,22 +113,30 @@ if (!isset($_SESSION['authenticated'])) {
                 </div>
             </div>
 
+
+            <div class="col-4 gy-1">
+                <label for="extent-minx">Räumliche Ausdehnung</label>
+                <div class="input-group has-validation">
+                    <input type="text" class="form-control" id="extent-minx" aria-describedby="extentHelpminX" placeholder="min. X " required>
+                    <input type="text" class="form-control" id="extent-miny" aria-describedby="extentHelpminY" placeholder="min. Y" required>
+                    <input type="text" class="form-control" id="extent-maxx" aria-describedby="extentHelpmaxX" placeholder="max. X" required>
+                    <input type="text" class="form-control" id="extent-maxy" aria-describedby="extentHelpmaxY" placeholder="max. Y" required>
+                    <div class="invalid-feedback">
+                        Diese Angabe ist Pflicht.
+                    </div>
+                </div>
+            </div>
+
         </div><!--End Row 2-->
 
+
+        <!-- Submit Button Code -->
         <br>
         <button type="button" id="submitAPIButton" class="btn btn-success">Speichern</button>
         <script>
             $('#submitAPIButton').on('click', async function () {
                 if (formIsValid) {
-                    let name = $('#name').val();
-                    let scaledenom = $('#scaledenom').val();
-                    let units = $('#units').val();
-                    let angle = $('#angle').val();
-                    let sizeX = $('#size-x').val();
-                    let sizeY = $('#size-y').val();
-                    let maxsize = $('#maxsize').val();
-                    let url = encodeURI(`http://localhost/api/formHandler/mapHandler.php?name=${name}&scaledenom=${scaledenom}&units=${units}&angle=${angle}&sizeX=${sizeX}&sizeY=${sizeY}&maxsize=${maxsize}`);
-                    await fetch(url).then(response => response.json()).then(json => console.log(json));
+                    submitFormData('mapForm', "mapHandler.php");
                 }
             });
 
