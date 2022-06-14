@@ -10,7 +10,7 @@ if(isset($_POST['submit_group_form'])){
     $creationDate = date('Y-m-d');
     try {
         $db->addMap($name, $description, $creationDate, $group);
-        header('Location: /templates/home/home.php');
+        header('Location: /templates/edit/edit.php');
     } catch(Exception $e){
         print($e->getMessage());
     }
