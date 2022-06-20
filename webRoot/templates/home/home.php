@@ -38,10 +38,13 @@ $groups = $db->getGroups();
                     await fetch('http://localhost/api.php?getMaps=' + uuid)
                         .then(response => response.json())
                         .then(data => {
+                            $('.dynamicTableElement').remove();
+
                             const table = document.getElementById("table-maps");
                             table.style.visibility = "visible";
                             for (const item in data) {
-                                const newTR = document.createElement("tr");
+                                const row = document.createElement("tr");
+                                row.classList.add("dynamicTableElement")
 
                                 const nameTD = document.createElement("td");
                                 const descriptionTD = document.createElement("td");
@@ -59,23 +62,15 @@ $groups = $db->getGroups();
                                 openLink.innerText = "Öffnen";
                                 editLink.innerText = "Bearbeiten";
                                 openTD.appendChild(openLink);
+
                                 editTD.appendChild(editLink);
-
-                                newTR.appendChild(nameTD);
-                                newTR.appendChild(descriptionTD);
-                                newTR.appendChild(creationDateTD);
-                                newTR.appendChild(openTD);
-                                newTR.appendChild(editTD);
-
-                                table.appendChild(newTR);
+                                row.append(nameTD, descriptionTD, creationDateTD, openTD, editTD);
+                                table.appendChild(row);
                             }
                         });
                 }
-
             });
         });
-
-
     </script>
 </head>
 
