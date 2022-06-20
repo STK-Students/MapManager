@@ -14,26 +14,33 @@ require "{$doctrineLoc}/Common/Collections/Selectable.php";
 require "{$doctrineLoc}/Common/Collections/Collection.php";
 require "{$doctrineLoc}/Common/Collections/ArrayCollection.php";
 
-$map = isset($_SESSION['map']) ? unserialize($_SESSION['map']) : new Map();
+/**
+ * An array of all valid arguments. Required so the value of the
+ * $_SESSION variable cannot be set freely by the user.
+ */
+$validArguments = array('name', 'scaledenom', 'angle', 'size', 'maxsize', 'extent');
 
-$validArguments = array('name', 'scaledenom', 'angle', 'size', 'maxsize', 'sizeX', 'sizeY');
+$map = isset($_SESSION['map']) ? unserialize($_SESSION['map']) : new Map();
+// This is the content of the POST request submitted to this page
+$data = json_decode(trim(file_get_contents('php://input')), true);
+
 foreach ($validArguments as $argument) {
-    $value = $_GET[$argument];
+    $value = $data[$argument];
     if (isset($value)) {
 
         // Handle edge cases first
-        if ($argument == 'sizeX') {
-            $max = array($value);
-            echo $max[0];
-        }
-        if ($argument == 'sizeY') {
-            $max[] = $value;
-            echo $max[1];
-            $map->size = $max;
+        switch ($argument) {
+            case 'size':
+                $map->size = array($value['x'], $value['y']);
+                break;
+            case 'extent':
+                $extent = array($value['minx'], $value['miny'], $value['maxx'], $value['maxy']);
+                $map->extent = array_map("floatval", $extent);
+                break;
         }
 
         // Handle all other cases
-        $map->$argument = $_GET[$argument];
+        $map->$argument = $data[$argument];
     }
 }
 
