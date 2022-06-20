@@ -25,7 +25,6 @@ if (!isset($_SESSION['authenticated'])) {
     <link rel="stylesheet" href="edit_style.css">
     <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
     <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../../dependencies/Bootstrap/js/formValidator.js" defer></script>
     <script src="../../dependencies/jQuery/jQuery.js"></script>
     <script src="dataSubmitter.js"></script>
 
@@ -35,7 +34,6 @@ if (!isset($_SESSION['authenticated'])) {
 
 
 <h1>Dienst erstellen</h1>
-<div class="needs-validation"></div>
 <div class="container-lg">
     <form name="Eingabe" id='mapForm' class="needs-validation">
         <h2>Allgemeine Einstellungen</h2>
@@ -81,7 +79,7 @@ if (!isset($_SESSION['authenticated'])) {
             <div class="col-2">
                 <label for="angle">Kartendrehung</label>
                 <div class="input-group mb-3 has-validation">
-                    <input type="text" class="form-control" id="angle" value="0" aria-describedby="angleHelpButton"
+                    <input type="number" class="form-control" id="angle" value="0" aria-describedby="angleHelpButton"
                            required>
                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
                             data-bs-target="#angleModal"><b>?</b></button>
@@ -96,9 +94,9 @@ if (!isset($_SESSION['authenticated'])) {
             <div class="col-2 gy-1">
                 <label for="size-x">Auflösung</label>
                 <div class="input-group has-validation">
-                    <input type="text" class="form-control" id="size-x" placeholder="1920" required>
+                    <input type="number" class="form-control" id="size-x" placeholder="1920" required>
                     <span class="input-group-text" id="basic-addon2">x</span>
-                    <input type="text" class="form-control" id="size-y" placeholder="1080" required>
+                    <input type="number" class="form-control" id="size-y" placeholder="1080" required>
                     <div class="invalid-feedback">
                         Diese Angabe ist Pflicht.
                     </div>
@@ -108,7 +106,7 @@ if (!isset($_SESSION['authenticated'])) {
             <div class="col-2 gy-1">
                 <label for="maxsize">Maximale Auflösung</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="maxsize" placeholder="4096" value="4096">
+                    <input type="number" class="form-control" id="maxsize" placeholder="4096" value="4096">
                     <span class="input-group-text" id="basic-addon2">Pixel</span>
                 </div>
             </div>
@@ -117,10 +115,14 @@ if (!isset($_SESSION['authenticated'])) {
             <div class="col-4 gy-1">
                 <label for="extent-minx">Räumliche Ausdehnung</label>
                 <div class="input-group has-validation">
-                    <input type="text" class="form-control" id="extent-minx" aria-describedby="extentHelpminX" placeholder="min. X " required>
-                    <input type="text" class="form-control" id="extent-miny" aria-describedby="extentHelpminY" placeholder="min. Y" required>
-                    <input type="text" class="form-control" id="extent-maxx" aria-describedby="extentHelpmaxX" placeholder="max. X" required>
-                    <input type="text" class="form-control" id="extent-maxy" aria-describedby="extentHelpmaxY" placeholder="max. Y" required>
+                    <input type="number" class="form-control" id="extent-minx" aria-describedby="extentHelpminX"
+                           placeholder="min. X " required>
+                    <input type="number" class="form-control" id="extent-miny" aria-describedby="extentHelpminY"
+                           placeholder="min. Y" required>
+                    <input type="number" class="form-control" id="extent-maxx" aria-describedby="extentHelpmaxX"
+                           placeholder="max. X" required>
+                    <input type="number" class="form-control" id="extent-maxy" aria-describedby="extentHelpmaxY"
+                           placeholder="max. Y" required>
                     <div class="invalid-feedback">
                         Diese Angabe ist Pflicht.
                     </div>
@@ -135,17 +137,21 @@ if (!isset($_SESSION['authenticated'])) {
         <button type="button" id="submitAPIButton" class="btn btn-success">Speichern</button>
         <script>
             $('#submitAPIButton').on('click', async function () {
-                if (formIsValid) {
+                if (formIsValid()) {
                     submitFormData('mapForm', "mapHandler.php");
                 }
             });
 
             function formIsValid() {
-                return true;
-                let name = document.getElementById('name').getAttribute('value');
-                if (name == null || name === '') {
-                    document.getElementById('name');
-                }
+                const forms = document.querySelectorAll('.needs-validation')
+                let isValid = true;
+                Array.from(forms).forEach(form => {
+                    if (!form.checkValidity()) {
+                        isValid = false;
+                    }
+                    form.classList.add('was-validated')
+                });
+                return isValid;
             }
         </script>
         <button type="button" id="generateMap" class="btn btn-success">Dienst erstellen</button>
