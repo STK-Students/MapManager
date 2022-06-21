@@ -59,13 +59,17 @@ if($mode == "create") {
 </head>
 <body>
     <div class="main">
-        <h3>Gruppe erstellen</h3>
+
+        <?php if($mode == "create") echo '<h3>Gruppe erstellen</h3>'; ?>
+        <?php if($mode == "edit") echo '<h3>Gruppe bearbeiten</h3>'; ?>
         <form name="create_group_form" method="post">
             <div class="form-group">
                 <?php if($mode == "create") echo '<input type="text" class="form-control" name="input-name" id="inputGroupName" placeholder="Name eingeben">'; ?>
                 <?php if($mode == "edit") echo '<input type="text" class="form-control" value="'. $group->getName() .'" name="input-name" id="inputGroupName" placeholder="Name eingeben">'; ?>
             </div>
-            <button type="submit" name="submit_group_form" class="btn btn-danger">Submit</button>
+
+            <?php if($mode == "create") echo '<button type="submit" name="submit_group_form" class="btn btn-danger">Erstellen</button>'; ?>
+            <?php if($mode == "edit") echo '<button type="submit" name="submit_group_form" class="btn btn-danger">Ändern</button>'; ?>
         </form>
     </div>
 </body>
