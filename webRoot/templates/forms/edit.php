@@ -15,12 +15,14 @@ session_start();
 
 
 require "./MapLoader.php";
-$mapUUID = $_SESSION['currentMapUUID'];
-if ($mapUUID != $_GET['uuid']) {
-    require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
-    $db = Database::getInstance();
-    $db->getMap($mapUUID);
-    loadMapFile("./api/output.map");
+if (isset($_SESSION['currentMapUUID'])) {
+    $mapUUID = $_SESSION['currentMapUUID'];
+    if ($mapUUID != $_GET['uuid']) {
+        require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+        $db = Database::getInstance();
+        $db->getOGCService($mapUUID);
+        loadMapFileIntoSession("./api/output.map");
+    }
 }
 
 ?>
@@ -33,7 +35,7 @@ if ($mapUUID != $_GET['uuid']) {
     <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
     <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../dependencies/jQuery/jQuery.js"></script>
-    <script src="dataSubmitter.js"></script>
+    <script src="formController.js"></script>
 
     <title>Dienst erstellen</title>
 </head>
@@ -174,25 +176,6 @@ if ($mapUUID != $_GET['uuid']) {
         <!-- Submit Button Code -->
         <br>
         <button type="button" id="submitAPIButton" class="btn btn-success">Speichern</button>
-        <script>
-            $('#submitAPIButton').on('click', async function () {
-                if (formIsValid()) {
-                    submitFormData('mapForm', "mapHandler.php");
-                }
-            });
-
-            function formIsValid() {
-                const forms = document.querySelectorAll('.needs-validation')
-                let isValid = true;
-                Array.from(forms).forEach(form => {
-                    if (!form.checkValidity()) {
-                        isValid = false;
-                    }
-                    form.classList.add('was-validated')
-                });
-                return isValid;
-            }
-        </script>
         <button type="button" id="generateMap" class="btn btn-success">Dienst erstellen</button>
         <script>
             $('#generateMap').on('click', async function () {

@@ -54,10 +54,11 @@ class Database
         }
     }
 
-    function getMap($mapUUID): OGCService
+    function getOGCService($mapUUID): OGCService
     {
         $result = pg_query_params($this->db_connection, "Select * From public.map WHERE uuid=$1", array($mapUUID));
         $row = pg_fetch_array($result, null, PGSQL_ASSOC);
+        print_r($row);
         return new OGCService($row['uuid'], $row['name'], $row['description'], $row['creationDate'], $row['groupUUID']);
     }
 

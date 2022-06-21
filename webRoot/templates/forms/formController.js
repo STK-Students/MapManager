@@ -1,3 +1,21 @@
+$('#submitAPIButton').on('click', async function () {
+    if (formIsValid()) {
+        submitFormData('mapForm', "mapHandler.php");
+    }
+});
+
+function formIsValid() {
+    const forms = document.querySelectorAll('.needs-validation')
+    let isValid = true;
+    Array.from(forms).forEach(form => {
+        if (!form.checkValidity()) {
+            isValid = false;
+        }
+        form.classList.add('was-validated')
+    });
+    return isValid;
+}
+
 /**
  * Submits the data of a form to the given PHP handler using a POST HTTP request.
  * @param formID id of the form
@@ -31,7 +49,7 @@ function sendPOST(handlerLocation, payload) {
  */
 function buildPayload(formInputs) {
     let payload = {};
-   formInputs.forEach(input => {
+    formInputs.forEach(input => {
         let id = input.id;
         let value = input.value;
 

@@ -21,7 +21,7 @@ require "{$doctrineLoc}/Common/Collections/ArrayCollection.php";
  * @param $file string path to a mapfile relative to the webRoot
  * @return void
  */
-function loadMapFile(string $file) {
+function loadMapFileIntoSession(string $file) {
     $file = "../../" . $file;
     try {
         $map = (new MapParser($file))->parse($file);
