@@ -107,7 +107,7 @@ $groups = $db->getGroups();
     <div class="title"><h2 id="main-title"></h2></div>
     <div class="content">
         <div class="maps" id="maps">
-            <table id="table-maps" class="table">
+            <table id="table-maps" class="table table-striped">
                 <thead>
                 <tr>
                     <th>Name</th>
