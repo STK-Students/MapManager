@@ -1,6 +1,6 @@
 <?php
 
-require("database.php");
+require("./api/database.php");
 
 $db =  Database::getInstance();;
 

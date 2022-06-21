@@ -1,9 +1,8 @@
 <?php
 
-$path = "../model";
-include "../model/User.php";
-require $path . "Group.php";
-require $path . "OGCService.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/model/User.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/model/Group.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/model/OGCService.php";
 
 /**
  * A Singleton Database class.
@@ -21,8 +20,7 @@ class Database
     public static function getInstance(): Database
     {
         if (self::$instance === null) {
-            $config = json_decode(file_get_contents("../../config.json"));
-
+            $config = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/config.json"));
             self::$instance = new self($config);
         }
 
@@ -32,7 +30,7 @@ class Database
     private function __construct($config)
     {
         $dbData = $config->postgres;
-        $this->db_connection = pg_connect("host=$dbData->hostname dbname=$dbData->db user=$dbData->user password=$dbData->password") or die("Verbindungsaufbau fehlgeschlagen");
+        $this->db_connection = pg_connect("host=$dbData->hostname dbname=$dbData->database user=$dbData->user password=$dbData->password") or die("Verbindungsaufbau fehlgeschlagen");
     }
 
     function getGroups()
