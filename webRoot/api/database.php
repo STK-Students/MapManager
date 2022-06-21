@@ -1,9 +1,9 @@
 <?php
 
-$path = "../model/";
-require($path . "../model/User.php");
-require($path . "Group.php");
-require($path . "OGCService.php");
+$path = "../model";
+include "../model/User.php";
+require $path . "Group.php";
+require $path . "OGCService.php";
 
 /**
  * A Singleton Database class.
