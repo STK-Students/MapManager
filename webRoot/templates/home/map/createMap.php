@@ -1,7 +1,7 @@
 <?php
 require("../../../database.php");
 
-$db = new Database("Postgres", "webDevDB", "postgres", "postgres");
+$db =  Database::getInstance();;
 $group = $_GET['uuid'];
 
 if(isset($_POST['submit_group_form'])){

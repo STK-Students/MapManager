@@ -12,10 +12,17 @@
 
 <?php
 session_start();
-if (!isset($_SESSION['authenticated'])) {
-    header("Location: http://localhost/templates/login/login.php");
-    die("Sie müssen sich einloggen.");
+
+
+require "./MapLoader.php";
+$mapUUID = $_SESSION['currentMapUUID'];
+if ($mapUUID != $_GET['uuid']) {
+    require("../../api/database.php");
+    $db = Database::getInstance();
+    $db->getMap($mapUUID);
+    loadMapFile("./api/output.map");
 }
+
 ?>
 <!doctype html>
 <html lang="de">

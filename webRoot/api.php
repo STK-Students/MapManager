@@ -2,7 +2,7 @@
 
 require("database.php");
 
-$db = new Database("Postgres", "webDevDB", "postgres", "postgres");
+$db =  Database::getInstance();;
 
 if (isset($_GET['getGroup'])) {
     $groupUUID = $_GET['getGroup'];

@@ -1,12 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION['authenticated'])) {
-    header("Location: http://localhost/templates/login/login.php");
-    die("Sie müssen sich einloggen.");
-}
-require("../../database.php");
 
-$db = new Database("Postgres", "webDevDB", "postgres", "postgres");
+require("../../api/database.php");
+
+$db = Database::getInstance();
 $groups = $db->getGroups();
 ?>
 
@@ -52,15 +49,15 @@ $groups = $db->getGroups();
                                 const openTD = document.createElement("td");
                                 const editTD = document.createElement("td");
                                 const openLink = document.createElement("a");
-                                openLink.href = "/templates/forms/edit.php";
+                                openLink.href = "/templates/forms/edit.php?uuid=" + data[item].uuid;
                                 const editLink = document.createElement("a");
                                 editLink.href = "/templates/home/map/editMap.php?uuid=" + data[item].uuid;
 
                                 nameTD.innerText = data[item].name;
                                 descriptionTD.innerText = data[item].description;
                                 creationDateTD.innerText = data[item].creationDate;
-                                openLink.innerText = "Öffnen";
-                                editLink.innerText = "Bearbeiten";
+                                openLink.innerText = "Dienst bearbeiten";
+                                editLink.innerText = "Beschreibung bearbeiten";
                                 openTD.appendChild(openLink);
 
                                 editTD.appendChild(editLink);

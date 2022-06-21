@@ -1,11 +1,8 @@
 <?php
 session_start();
-if (!isset($_SESSION['authenticated'])) {
-    header("Location: http://localhost/templates/login/login.php");
-    die("Sie müssen sich einloggen.");
-}
+
 require("../../../database.php");
-$db = new Database("Postgres", "webDevDB", "postgres", "postgres");
+$db =  Database::getInstance();;
 $map = (object) $db->getMap($_GET["uuid"]);
 if (isset($_POST['submit_map_form'])) {
     $db->editMap($map->getUUID(), $_POST["input-name"], $_POST['input-description']);
