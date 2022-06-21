@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require("../../../database.php");
+require $_SERVER['DOCUMENT_ROOT'] . "api/database.php";
 
 $db =  Database::getInstance();;
 $groupUUID = $_GET['uuid'];
