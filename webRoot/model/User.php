@@ -9,7 +9,6 @@ class User
         $this->uuid = $uuid;
     }
 
-    // getter
     function getUUID()
     {
         return $this->uuid;

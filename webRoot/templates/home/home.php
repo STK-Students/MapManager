@@ -1,12 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION['authenticated'])) {
-    header("Location: http://localhost/templates/login/login.php");
-    die("Sie müssen sich einloggen.");
-}
-require("../../database.php");
 
-$db = new Database("Postgres", "webDevDB", "postgres", "postgres");
+require("../../api/database.php");
+
+$db = Database::getInstance();
 $groups = $db->getGroups();
 ?>
 
@@ -38,10 +35,13 @@ $groups = $db->getGroups();
                     await fetch('http://localhost/api.php?getMaps=' + uuid)
                         .then(response => response.json())
                         .then(data => {
+                            $('.dynamicTableElement').remove();
+
                             const table = document.getElementById("table-maps");
                             table.style.visibility = "visible";
                             for (const item in data) {
-                                const newTR = document.createElement("tr");
+                                const row = document.createElement("tr");
+                                row.classList.add("dynamicTableElement")
 
                                 const nameTD = document.createElement("td");
                                 const descriptionTD = document.createElement("td");
@@ -49,33 +49,25 @@ $groups = $db->getGroups();
                                 const openTD = document.createElement("td");
                                 const editTD = document.createElement("td");
                                 const openLink = document.createElement("a");
-                                openLink.href = "/templates/forms/edit.php";
+                                openLink.href = "/templates/forms/edit.php?uuid=" + data[item].uuid;
                                 const editLink = document.createElement("a");
                                 editLink.href = "/templates/home/map/editMap.php?uuid=" + data[item].uuid;
 
                                 nameTD.innerText = data[item].name;
                                 descriptionTD.innerText = data[item].description;
                                 creationDateTD.innerText = data[item].creationDate;
-                                openLink.innerText = "Öffnen";
-                                editLink.innerText = "Bearbeiten";
+                                openLink.innerText = "Dienst bearbeiten";
+                                editLink.innerText = "Beschreibung bearbeiten";
                                 openTD.appendChild(openLink);
+
                                 editTD.appendChild(editLink);
-
-                                newTR.appendChild(nameTD);
-                                newTR.appendChild(descriptionTD);
-                                newTR.appendChild(creationDateTD);
-                                newTR.appendChild(openTD);
-                                newTR.appendChild(editTD);
-
-                                table.appendChild(newTR);
+                                row.append(nameTD, descriptionTD, creationDateTD, openTD, editTD);
+                                table.appendChild(row);
                             }
                         });
                 }
-
             });
         });
-
-
     </script>
 </head>
 

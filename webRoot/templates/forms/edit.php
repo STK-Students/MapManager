@@ -12,10 +12,17 @@
 
 <?php
 session_start();
-if (!isset($_SESSION['authenticated'])) {
-    header("Location: http://localhost/templates/login/login.php");
-    die("Sie müssen sich einloggen.");
+
+
+require "./MapLoader.php";
+$mapUUID = $_SESSION['currentMapUUID'];
+if ($mapUUID != $_GET['uuid']) {
+    require("../../api/database.php");
+    $db = Database::getInstance();
+    $db->getMap($mapUUID);
+    loadMapFile("./api/output.map");
 }
+
 ?>
 <!doctype html>
 <html lang="de">
@@ -112,7 +119,7 @@ if (!isset($_SESSION['authenticated'])) {
             </div>
 
 
-            <div class="col-4 gy-1">
+            <div class="col-3 gy-1">
                 <label for="extent-minx">Räumliche Ausdehnung</label>
                 <div class="input-group has-validation">
                     <input type="number" class="form-control" id="extent-minx" aria-describedby="extentHelpminX"
@@ -130,6 +137,38 @@ if (!isset($_SESSION['authenticated'])) {
             </div>
 
         </div><!--End Row 2-->
+
+        <br><hr>
+        <h3>Ebenen</h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td></td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td colspan="2">Grundkarte</td>
+                <td>@twitter</td>
+            </tr>
+            </tbody>
+        </table>
 
 
         <!-- Submit Button Code -->

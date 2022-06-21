@@ -1,11 +1,8 @@
 <?php
 session_start();
-if (!isset($_SESSION['authenticated'])) {
-    header("Location: http://localhost/templates/login/login.php");
-    die("Sie müssen sich einloggen.");
-}
-require("../../../database.php");
-$db = new Database("Postgres", "webDevDB", "postgres", "postgres");
+
+require("../../../api/database.php");
+$db = Database::getInstance();
 $mode = $_GET["mode"];
 if($mode == "create") {
     if(isset($_POST['submit_group_form'])){
