@@ -17,7 +17,7 @@ session_start();
 require "./MapLoader.php";
 $mapUUID = $_SESSION['currentMapUUID'];
 if ($mapUUID != $_GET['uuid']) {
-    require $_SERVER['DOCUMENT_ROOT'] . "api/database.php";
+    require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
     $db = Database::getInstance();
     $db->getMap($mapUUID);
     loadMapFile("./api/output.map");
