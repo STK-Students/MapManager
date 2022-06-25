@@ -22,13 +22,17 @@ CREATE TABLE IF NOT EXISTS public.map
 
 CREATE TABLE IF NOT EXISTS public."user"
 (
-    "LDAP-UUID" uuid NOT NULL DEFAULT gen_random_uuid(),
-    PRIMARY KEY ("LDAP-UUID")
+    uuid uuid NOT NULL DEFAULT gen_random_uuid(),
+    firstname character varying NOT NULL,
+    lastname character varying NOT NULL,
+    username character varying NOT NULL,
+    password character varying NOT NULL,
+    PRIMARY KEY (uuid)
     );
 
 CREATE TABLE IF NOT EXISTS public.rel_user_group
 (
-    "user_LDAP-UUID" uuid NOT NULL,
+    user_uuid uuid NOT NULL,
     group_uuid uuid NOT NULL
 );
 
@@ -41,8 +45,8 @@ ALTER TABLE IF EXISTS public.map
 
 
 ALTER TABLE IF EXISTS public.rel_user_group
-    ADD FOREIGN KEY ("user_LDAP-UUID")
-    REFERENCES public."user" ("LDAP-UUID") MATCH SIMPLE
+    ADD FOREIGN KEY (user_uuid)
+    REFERENCES public."user" (uuid) MATCH SIMPLE
     ON UPDATE NO ACTION
        ON DELETE NO ACTION
     NOT VALID;

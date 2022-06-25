@@ -4,7 +4,20 @@ session_start();
 require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
 
 $db = Database::getInstance();
+
+if(isset($_SESSION["authenticatedUser"])){
+    $userUUID = $_SESSION["authenticatedUser"];
+    if(isset($_GET["inviteCode"])){
+        $groupUUID = $_GET["inviteCode"];
+        $db->addUserToGroup($groupUUID, $userUUID);
+        echo "Zur Gruppe hinzugefügt";
+    }
+} else {
+    header("Location: /templates/auth/login.php");
+}
+
 $groups = $db->getGroups();
+
 ?>
 
 <html lang="de">
@@ -31,6 +44,7 @@ $groups = $db->getGroups();
                             document.getElementById("remove-group").href = "/templates/home/groups/removeGroup.php?uuid=" + data.uuid;
                             document.getElementById("add-map").href = "/templates/home/map/createMap.php?uuid=" + data.uuid;
                             document.getElementById("remove-map").href = "/templates/home/map/removeMap.php?uuid=" + data.uuid;
+                            document.getElementById("add-employee").href = "/templates/home/employee/addEmployee.php?uuid=" + data.uuid;
                         });
                     await fetch('http://localhost/api.php?getMaps=' + uuid)
                         .then(response => response.json())

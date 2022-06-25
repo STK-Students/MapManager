@@ -62,15 +62,26 @@ class Database
         return new OGCService($row['uuid'], $row['name'], $row['description'], $row['creationDate'], $row['groupUUID']);
     }
 
-    function getUsers()
+    function getUser($uuid)
     {
         $users = array();
-        $result = pg_query($this->db_connection, "Select * From public.user");
+        $result = pg_query_params($this->db_connection, "Select * From public.user Where uuid=$1", array($uuid));
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-            $item = new User($line['uuid']);
-            array_push($users, $item);
+            $item = new User($line['uuid'], $line['firstname'], $line['lastname'], $line['username'], $line['password']);
+            return $item;
         }
-        return $users;
+        return null;
+    }
+
+    function login($username, $password)
+    {
+        $result = pg_query_params($this->db_connection, "Select * From public.user Where username=$1 and password=$2", array($username, $password));
+        $row = pg_fetch_array($result, null, PGSQL_ASSOC);
+        if(isset($row)){
+            return $row['uuid'];
+        }
+        return null;
+
     }
 
     function getMaps($groupUUID)
@@ -82,6 +93,11 @@ class Database
             $maps[] = $item;
         }
         return $maps;
+    }
+
+    function registerUser($firstname, $lastname, $username, $password)
+    {
+        return pg_query_params($this->db_connection, 'INSERT INTO public.user (firstname, lastname, username, password) VALUES ($1, $2, $3, $4)', array($firstname, $lastname, $username, $password));
     }
 
     function addGroup($name)
