@@ -22,7 +22,11 @@ if (isset($_SESSION['map'])) {
     $map = '';
 }
 
-$mapFilePath =  Database::getInstance()->getOGCService($mapUUID)->getMapFilePath();
-mkdir($mapFilePath, 0555, true);
-$file = fopen($mapFilePath, "w");
+$service = Database::getInstance()->getOGCService($mapUUID);
+$groupPath = "/mapfiles/" . $service->getGroupUUID();
+if (!file_exists($groupPath)) {
+    mkdir($groupPath);
+}
+$fileName = $service->getUUID() .".map";
+$file = fopen($groupPath . "/" . $fileName, "w");
 fwrite($file, (new MapFile\Writer\Map())->write($map));

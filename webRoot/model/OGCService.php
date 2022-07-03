@@ -62,13 +62,4 @@ class OGCService
     {
         $this->creationDate = $creationDate;
     }
-
-    /**
-     * @return string the absolute path to the mapfile on this server
-     */
-    function getMapFilePath(): string
-    {
-        return "/mapfiles/" . $this->getGroupUUID() . "/" . $this->getUUID() . ".map";
-    }
-
 }
