@@ -69,7 +69,6 @@ class Database
     {
         $result = pg_query_params($this->db_connection, "Select * From public.map WHERE uuid=$1", array($mapUUID));
         $row = pg_fetch_array($result, null, PGSQL_ASSOC);
-        print_r($row);
         return new OGCService($row['uuid'], $row['name'], $row['description'], $row['creationDate'], $row['groupUUID']);
     }
 
@@ -148,7 +147,7 @@ class Database
 
     function addMap($name, $description, $creationDate, $groupUUID)
     {
-        return pg_query_params($this->db_connection, 'INSERT INTO public.map (name, description, "creationDate", "groupUUID") VALUES ($1, $2, $3, $4)', array($name, $description, $creationDate, $groupUUID));
+        return pg_query_params($this->db_connection, 'INSERT INTO public.map (name, description, "creationDate", "groupUUID") VALUES ($1, $2, $3, $4) RETURNING uuid', array($name, $description, $creationDate, $groupUUID));
     }
 
     function editGroup($groupUUID, $name)

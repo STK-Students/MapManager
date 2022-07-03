@@ -1,8 +1,18 @@
-$('#submitAPIButton').on('click', async function () {
-    if (formIsValid()) {
-        submitFormData('mapForm', "mapHandler.php");
-    }
-});
+
+setupInvisibleSubmit()
+
+function fillForms() {
+
+}
+
+
+function setupInvisibleSubmit() {
+    $('#submitAPIButton').on('click', async function () {
+        if (formIsValid()) {
+            submitFormData('mapForm', "serviceHandler.php");
+        }
+    });
+}
 
 function formIsValid() {
     const forms = document.querySelectorAll('.needs-validation')

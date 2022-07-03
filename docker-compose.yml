@@ -15,6 +15,7 @@ services:
       - 9000:9000
     volumes:
       - ./webRoot:/app
+      - ./mapfiles:/mapfiles
       - ./containerConfigs/phpfpm/php.ini:/opt/bitnami/php/etc/php.ini
     networks:
       - mapmanager
@@ -41,7 +42,6 @@ services:
       - "6778:80"
     volumes:
       - ./webRoot:/etc/mapserver/
-      - ./webRoot/mapserver.map:/etc/mapserver/mapserver.map
   postgres:
     container_name: Postgres
     image: postgres:latest

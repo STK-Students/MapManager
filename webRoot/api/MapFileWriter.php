@@ -1,9 +1,8 @@
 <?php
 session_start();
 
-
-$mapFileLoc = "../dependencies/MapFileParser";
-$doctrineLoc = "../dependencies/Doctrine";
+$mapFileLoc = $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser";
+$doctrineLoc = $_SERVER['DOCUMENT_ROOT'] . "/dependencies/Doctrine";
 require_once("{$mapFileLoc}/Writer/WriterInterface.php");
 require_once("{$mapFileLoc}/Writer/Writer.php");
 require_once("{$mapFileLoc}/Writer/Map.php");
@@ -16,28 +15,14 @@ require_once("{$doctrineLoc}/Common/Collections/Selectable.php");
 require_once("{$doctrineLoc}/Common/Collections/Collection.php");
 require_once("{$doctrineLoc}/Common/Collections/ArrayCollection.php");
 
+$mapUUID = $_SESSION['currentMapUUID'];
 if (isset($_SESSION['map'])) {
     $map = unserialize($_SESSION['map']);
-    echo $_SESSION['map'];
-    $writer = new MapFileWriter($map);
-    $writer->saveMapFile('./output.map');
 } else {
-    echo "no map";
+    $map = '';
 }
 
-
-class MapFileWriter
-{
-    private string $serializedMapFile;
-
-    public function __construct($map)
-    {
-        $this->serializedMapFile = (new MapFile\Writer\Map())->write($map);
-    }
-
-    public function saveMapFile($path): void
-    {
-        $file = fopen($path, "w");
-        fwrite($file, $this->serializedMapFile);
-    }
-}
+$mapFilePath =  Database::getInstance()->getOGCService($mapUUID)->getMapFilePath();
+mkdir($mapFilePath, 0555, true);
+$file = fopen($mapFilePath, "w");
+fwrite($file, (new MapFile\Writer\Map())->write($map));

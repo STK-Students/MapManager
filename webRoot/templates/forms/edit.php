@@ -13,18 +13,23 @@
 <?php
 session_start();
 
-
 require "./MapLoader.php";
-if (isset($_SESSION['currentMapUUID'])) {
-    $mapUUID = $_SESSION['currentMapUUID'];
-    if ($mapUUID != $_GET['uuid']) {
-        require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
-        $db = Database::getInstance();
-        $db->getOGCService($mapUUID);
-        loadMapFileIntoSession("./api/output.map");
+require $_SERVER['DOCUMENT_ROOT'] . "/api/ServiceConverter.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+
+if (!isset($_GET['uuid'])) {
+    die("Diese Seite muss mit einer MapUUID aufgerufen werden!");
+
+}
+$mapUUID = $_GET['uuid'];
+if (isset($_SESSION['currentMapUUID']) && $_SESSION['currentMapUUID'] != $mapUUID) {
+    $mapFilePath = Database::getInstance()->getOGCService($mapUUID)->getMapFilePath();
+    if (file_exists($mapFilePath)) {
+        loadMapFileIntoSession($mapFilePath);
     }
 }
-
+$json = mapToJSON($_SESSION['map']);
+echo "<script>fillForms($json)</script>";
 ?>
 <!doctype html>
 <html lang="de">
@@ -140,7 +145,8 @@ if (isset($_SESSION['currentMapUUID'])) {
 
         </div><!--End Row 2-->
 
-        <br><hr>
+        <br>
+        <hr>
         <h3>Ebenen</h3>
         <table class="table">
             <thead>

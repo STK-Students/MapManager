@@ -17,7 +17,7 @@ if(isset($_POST['submit_map_form'])){
 }
 
 ?>
-<html>
+<html lang="de">
 <head>
     <title>Gruppe löschen</title>
     <link rel="stylesheet" href="../../../dependencies/Bootstrap/css/bootstrap.min.css">

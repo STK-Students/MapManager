@@ -12,7 +12,8 @@ class OGCService
     private $groupUUID;
 
 
-    function __construct($uuid, $name, $description, $creationDate, $groupUUID) {
+    function __construct($uuid, $name, $description, $creationDate, $groupUUID)
+    {
         $this->uuid = $uuid;
         $this->name = $name;
         $this->description = $description;
@@ -21,37 +22,53 @@ class OGCService
     }
 
     // getter
-    function getUUID(){
+    function getUUID()
+    {
         return $this->uuid;
     }
 
-    function getName(){
+    function getName()
+    {
         return $this->name;
     }
 
-    function getDescription(){
+    function getDescription()
+    {
         return $this->description;
     }
 
-    function getCreationDate(){
+    function getCreationDate()
+    {
         return $this->creationDate;
     }
 
-    function getGroupUUID(){
+    function getGroupUUID()
+    {
         return $this->groupUUID;
     }
 
     // setter
-    function setName($name){
+    function setName($name)
+    {
         $this->name = $name;
     }
 
-    function setDescription($description){
+    function setDescription($description)
+    {
         $this->description = $description;
     }
 
-    function setCreation($creationDate){
+    function setCreation($creationDate)
+    {
         $this->creationDate = $creationDate;
+    }
+
+    /**
+     * @return string the absolute path to the mapfile on this server
+     */
+    function getMapFilePath(): string
+    {
+        return "/mapfiles/" . $this->getGroupUUID() . "/" . $this->getUUID() . ".map";
     }
 
 }
