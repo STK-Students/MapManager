@@ -27,9 +27,9 @@ if($mode == "create") {
 <head>
     <title>Gruppe erstellen</title>
     <title>Home</title>
-    <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
-    <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../../dependencies/jQuery/jQuery.js"></script>
+    <link rel="stylesheet" href="../../../dependencies/Bootstrap/css/bootstrap.min.css">
+    <script src="../../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../dependencies/jQuery/jQuery.js"></script>
     <style>
         body{
             background-color: #DC3545;

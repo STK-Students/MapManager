@@ -1,3 +1,4 @@
+
 <?php
 
 require $_SERVER['DOCUMENT_ROOT'] . "/model/User.php";
@@ -43,6 +44,16 @@ class Database
         }
         return $groups;
     }
+    function getGroupsFromUser($user_uuid)
+    {
+        $groups = array();
+        $result = pg_query_params($this->db_connection, "Select public.group.uuid, public.group.name From public.group, public.rel_user_group Where public.rel_user_group.user_uuid = $1 And public.rel_user_group.group_uuid=public.group.uuid", Array($user_uuid));
+        while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+            $item = new Group($line['uuid'], $line['name']);
+            array_push($groups, $item);
+        }
+        return $groups;
+    }
 
     function getGroup($groupUUID)
     {
@@ -62,15 +73,35 @@ class Database
         return new OGCService($row['uuid'], $row['name'], $row['description'], $row['creationDate'], $row['groupUUID']);
     }
 
-    function getUser($uuid)
+    function getUser($user_uuid)
     {
-        $users = array();
-        $result = pg_query_params($this->db_connection, "Select * From public.user Where uuid=$1", array($uuid));
+        $result = pg_query_params($this->db_connection, "Select * From public.user Where uuid=$1", array($user_uuid));
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
             $item = new User($line['uuid'], $line['firstname'], $line['lastname'], $line['username'], $line['password']);
             return $item;
         }
         return null;
+    }
+
+    function getUsersFromGroup($group_uuid){
+        $users = array();
+        $result = pg_query_params($this->db_connection, "Select * From public.rel_user_group Where group_uuid=$1", array($group_uuid));
+        while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+            $user = (object) $this->getUser($line['user_uuid']);
+            $users[] = $user;
+        }
+        return $users;
+    }
+
+    function isUserInGroup($user_uuid, $group_uuid){
+        $result = pg_query_params($this->db_connection, "Select * From public.rel_user_group Where group_uuid=$1 And user_uuid=$2", array($group_uuid, $user_uuid));
+        while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+            if($line == null){
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 
     function login($username, $password)
@@ -137,7 +168,7 @@ class Database
 
     function addUserToGroup($groupUUID, $userUUID)
     {
-        return pg_query_params($this->db_connection, 'INSERT INTO public.rel_user_group (group_uuid, user_LDAP_UUID) VALUES ($1, $2)', array($groupUUID, $userUUID));
+        return pg_query_params($this->db_connection, 'INSERT INTO public.rel_user_group (group_uuid, user_uuid) VALUES ($1, $2)', array($groupUUID, $userUUID));
     }
 
     function removeUserFromGroup($groupUUID, $userUUID)

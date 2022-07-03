@@ -9,14 +9,15 @@ if(isset($_SESSION["authenticatedUser"])){
     $userUUID = $_SESSION["authenticatedUser"];
     if(isset($_GET["inviteCode"])){
         $groupUUID = $_GET["inviteCode"];
-        $db->addUserToGroup($groupUUID, $userUUID);
-        echo "Zur Gruppe hinzugefügt";
+        if($db->isUserInGroup($userUUID, $groupUUID) == false){
+            $db->addUserToGroup($groupUUID, $userUUID);
+        }
     }
 } else {
     header("Location: /templates/auth/login.php");
 }
 
-$groups = $db->getGroups();
+$groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
 
 ?>
 
