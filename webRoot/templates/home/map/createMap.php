@@ -23,7 +23,7 @@ if (isset($_POST['submit_group_form'])) {
 ?>
 <html>
 <head>
-    <title>Gruppe erstellen</title>
+    <title>Dienst erstellen</title>
     <title>Home</title>
     <link rel="stylesheet" href="../../../dependencies/Bootstrap/css/bootstrap.min.css">
     <script src="../../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -61,15 +61,22 @@ if (isset($_POST['submit_group_form'])) {
 </head>
 <body>
 <div class="main">
-    <h3>Gruppe erstellen</h3>
-    <form name="create_group_form" method="post">
-        <div class="form-group">
-            <input type="text" class="form-control" name="input-name" id="inputGroupName" placeholder="Name eingeben">
-            <input type="text" class="form-control" name="input-description" id="inputGroupDescription"
-                   placeholder="Beschreibung eingeben">
-        </div>
-        <button type="submit" name="submit_group_form" class="btn btn-danger">Submit</button>
-    </form>
+    <h3>Dienst erstellen</h3>
+    <div class="container overflow-hidden">
+        <form name="create_group_form" method="post">
+            <div class="form-group">
+                <div class="row gy-4">
+                    <input type="text" class="form-control" name="input-name" id="inputGroupName"
+                           placeholder="Name eingeben">
+                </div>
+                <div class="row gy-4">
+                    <input type="text" class="form-control" name="input-description" id="inputGroupDescription"
+                           placeholder="Beschreibung eingeben">
+                </div>
+            </div>
+            <button type="submit" name="submit_group_form" class="btn btn-danger">Submit</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>
