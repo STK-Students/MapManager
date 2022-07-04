@@ -8,7 +8,9 @@ if($mode == "create") {
     if(isset($_POST['submit_group_form'])){
         $name = $_POST['input-name'];
         try{
-            $result = $db->addGroup($name);
+            $userUUID = $_SESSION['authenticatedUser'];
+            $groupUUID = $db->addGroup($name);
+            $result = $db->addUserToGroup($groupUUID, $userUUID);
             header('Location: /templates/home/home.php');
         } catch(Exception $e){
             print($e->getMessage());

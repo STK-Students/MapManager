@@ -132,7 +132,7 @@ class Database
 
     function addGroup($name)
     {
-        return pg_query_params($this->db_connection, 'INSERT INTO public.group (name) VALUES ($1)', array($name));
+        return pg_query_params($this->db_connection, 'INSERT INTO public.group (name) VALUES ($1) RETURNING uuid', array($name));
     }
 
     function removeGroup($groupUUID)
