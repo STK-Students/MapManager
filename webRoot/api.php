@@ -1,6 +1,6 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
 
 $db =  Database::getInstance();;
 
@@ -18,4 +18,7 @@ if (isset($_GET['getGroup'])) {
         $maps[] = array("uuid" => $map->getUUID(), "name" => $map->getName(), "description" => $map->getDescription(), "creationDate" => $map->getCreationDate(), "groupUUID" => $map->getGroupUUID());
     }
     print(json_encode($maps));
+} if(isset($_GET['setGroupSession'])) {
+    $groupUUID = $_GET['setGroupSession'];
+    $_SESSION['currentGroup'] = $groupUUID;
 }

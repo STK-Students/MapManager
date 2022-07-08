@@ -11,6 +11,7 @@ $(document).ready(function () {
 
             await setupPageTitle(groupUUID);
             await setupServiceTable(groupUUID);
+            await setGroupSession(groupUUID);
         }
     });
 });
@@ -60,6 +61,10 @@ async function setupServiceTable(uuid) {
         });
 }
 
-function setupModal(uuid) {
-
+async function setGroupSession(uuid){
+    await fetch('http://localhost/api.php?setGroupSession=' + uuid)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Session created.");
+        });
 }

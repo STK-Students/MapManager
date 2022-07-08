@@ -35,6 +35,11 @@
     overflow: hidden;
 }
 
+.nav-item button{
+    margin-left: 20px;
+    width: 150px;
+}
+
 .uniform-buttons {
     width: 45%
 }
