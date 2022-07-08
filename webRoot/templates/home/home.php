@@ -32,7 +32,21 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
     <?php
     if (isset($_GET['uuid'])) {
         $selectedGroup = $db->getGroup($_GET['uuid']);
-        echo "<script>$('#selectGroup').val(". $selectedGroup->getUUID() .");</script>";
+        echo "<script>$('#selectGroup').val(" . $selectedGroup->getUUID() . ");</script>";
+    }
+    if (isset($_GET['result'])) {
+        if ($_GET['result'] == "success") {
+            echo '<div class="alert alert-success alert-dismissible fade show shadow">
+                <i class="bi bi-info-square"></i> Erfolgreich
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>';
+        } else if ($_GET['result'] == "failed") {
+            echo '<div class="alert alert-danger alert-dismissible fade show shadow">
+                    <i class="bi bi-exclamation-triangle"></i> Fehler
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                 </div>';
+        }
+
     }
     ?>
     <link rel="stylesheet" href="home_style.css">
@@ -41,6 +55,7 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
 
 <body>
 <input type="text" id="hiddenGroupUUID" style="visibility: hidden; position: absolute">
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -112,13 +127,13 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
                 </div>
                 <div class="col-11">
                     <button type="button" class="btn btn-danger uniform-buttons" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
+                            data-bs-target="#deleteGroupModal">
                         Gruppe löschen
                     </button>
                 </div>
                 <div class="col-11">
                     <button type="button" class="btn btn-secondary uniform-buttons" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
+                            data-bs-target="#editGroupModal">
                         Gruppe bearbeiten
                     </button>
                 </div>
@@ -225,7 +240,7 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
                 <h5 class="modal-title" id="modalTitleDeleteService">Gruppe erstellen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form name="remove_map_form" action="group/createGroup.php" method="post">
+            <form name="create_group_form" action="group/createGroup.php" method="post">
                 <div class="modal-body">
                     <label for="groupName">Gruppenname</label>
                     <input type="text" class="form-control" id="groupName" name="groupName"
@@ -242,19 +257,18 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
 
 
 <!-- Remove Group -->
-
-<div class="modal fade" id="deleteServiceModal" tabindex="-1" aria-labelledby="modalTitleDeleteService"
+<div class="modal fade" id="deleteGroupModal" tabindex="-1" aria-labelledby="modalTitleDeleteGroup"
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalTitleDeleteService">Gruppe löschen</h5>
+                <h5 class="modal-title" id="modalTitleDeleteGroup">Gruppe löschen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form name="remove_map_form" action="map/deleteGroup.php" method="post">
+            <form name="remove_group_form" action="group/deleteGroup.php" method="post">
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                    <button type="submit" class="btn btn-danger">Löschen</button>
+                    <button type="submit" name="remove_group_form_submit" class="btn btn-danger">Löschen</button>
                 </div>
             </form>
         </div>
@@ -262,6 +276,32 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
 </div>
 
 <!-- Edit Group -->
+<div class="modal fade" id="editGroupModal" tabindex="-1" aria-labelledby="modalTitleEditGroup"
+     aria-hidden="true">
+    <?php
+    $currentGroup = $_SESSION['currentGroup'];
+    ?>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleEditGroup">Gruppe bearbeiten</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form name="remove_group_form" action="group/editGroup.php" method="post">
+                <div class="modal-body">
+                    <label for="groupName">Gruppenname</label>
+                    <input type="text" class="form-control" id="groupName" name="groupName"
+                           value="<?php echo $db->getGroup($currentGroup)->getName(); ?>"
+                           aria-describedby="groupName">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                    <button type="submit" name="edit_group_form_submit" class="btn btn-danger">Bearbeiten</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- Add User -->
 <!-- Remove User-->
 <!-- Show User -->

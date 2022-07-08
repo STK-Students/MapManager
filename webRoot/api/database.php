@@ -140,6 +140,10 @@ class Database
         return pg_query_params($this->db_connection, 'DELETE From public.group WHERE uuid=$1', array($groupUUID));
     }
 
+    function removeUsersFromGroup($groupUUID){
+        return pg_query_params($this->db_connection, 'DELETE From public.rel_user_group WHERE group_uuid=$1', array($groupUUID));
+    }
+
     function removeMap($mapUUID)
     {
         return pg_query_params($this->db_connection, 'DELETE From public.map WHERE uuid=$1', array($mapUUID));
