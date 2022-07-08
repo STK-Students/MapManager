@@ -1,6 +1,7 @@
 <?php
 session_start();
-require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/MapFileWriter.php";
 
 $db = Database::getInstance();;
 $group = $_POST['group-uuid'];
@@ -13,5 +14,5 @@ $result = $db->addMap($name, $description, $creationDate, $group);
 $generatedUUID = pg_fetch_result($result, 0, 0);
 $_SESSION['currentMapUUID'] = $generatedUUID;
 header('Location: /templates/forms/edit.php?uuid=' . $generatedUUID);
-require $_SERVER['DOCUMENT_ROOT'] . "/api/MapFileWriter.php";
+$w = (new MapFileWriter())->writeMapFile();
 

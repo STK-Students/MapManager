@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
 $db =  Database::getInstance();;
 $map = (object) $db->getOGCService($_GET["uuid"]);
 if (isset($_POST['submit_map_form'])) {

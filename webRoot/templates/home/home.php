@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
 
 /** Invite System for adding members to groups **/
 $db = Database::getInstance();

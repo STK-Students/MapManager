@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
 
 $db = Database::getInstance();;
 
@@ -18,6 +18,10 @@ function deleteMap(Database $db): void
     header('Location: /templates/home/home.php');
 }
 
+/**
+ * Builds a dropdown with all services in the given group.
+ * @param Database $db to use
+ */
 function buildMapOptions(Database $db): void
 {
     $groupUUID = $_GET['uuid'];

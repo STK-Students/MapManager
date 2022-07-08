@@ -37,6 +37,7 @@ function writeMapFile(): void
     fwrite($file, (new MapFile\Writer\Map())->write($map));
 }
 
-function deleteMapFile() {
-    
+function deleteMapFile($path)
+{
+    unlink($path);
 }

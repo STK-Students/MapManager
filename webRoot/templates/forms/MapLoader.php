@@ -7,15 +7,15 @@ use MapFile\Parser\Map as MapParser;
 
 $mapFileLoc = "../../dependencies/MapFileParser/";
 $doctrineLoc = "../../dependencies/Doctrine";
-require "$mapFileLoc/Exception/FileException.php";
-require "$mapFileLoc/Parser/ParserInterface.php";
-require "$mapFileLoc/Parser/Parser.php";
-require "$mapFileLoc/Model/Map.php";
-require "$mapFileLoc/Parser/Map.php";
-require "$mapFileLoc/Model/Layer.php";
-require "$doctrineLoc/Common/Collections/Selectable.php";
-require "$doctrineLoc/Common/Collections/Collection.php";
-require "$doctrineLoc/Common/Collections/ArrayCollection.php";
+require_once "$mapFileLoc/Exception/FileException.php";
+require_once "$mapFileLoc/Parser/ParserInterface.php";
+require_once "$mapFileLoc/Parser/Parser.php";
+require_once "$mapFileLoc/Model/Map.php";
+require_once "$mapFileLoc/Parser/Map.php";
+require_once "$mapFileLoc/Model/Layer.php";
+require_once "$doctrineLoc/Common/Collections/Selectable.php";
+require_once "$doctrineLoc/Common/Collections/Collection.php";
+require_once "$doctrineLoc/Common/Collections/ArrayCollection.php";
 
 /**
  * Loads a mapfile.
@@ -26,7 +26,7 @@ function loadMapFromFile(string $filePath): Map
 {
     try {
         return (new MapParser($filePath))->parse($filePath);
-    } catch (UnsupportedException $e) {
+    } catch (UnsupportedException|FileException  $e) {
         die("Ein Fehler ist beim Laden des Mapfiles aufgetreten" . $e);
     }
 }

@@ -25,9 +25,12 @@
     <?php
     session_start();
 
-    require "./MapLoader.php";
-    require $_SERVER['DOCUMENT_ROOT'] . "/api/ServiceConverter.php";
-    require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+    /**
+     * Fills the forms on this page if there is already data for them.
+     */
+    require_once "./MapLoader.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/ServiceConverter.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
 
     if (!isset($_GET['uuid'])) {
         die("Diese Seite muss mit einer MapUUID aufgerufen werden!");
@@ -37,6 +40,7 @@
     if (isset($_SESSION['currentMapUUID']) && $_SESSION['currentMapUUID'] != $mapUUID || !isset($_SESSION['map'])) {
         $mapFilePath = Database::getInstance()->getOGCService($mapUUID)->getPath();
         $map = loadMapFromFile($mapFilePath);
+        $_SESSION['currentMapUUID'] = $map;
     } else {
         $map = unserialize($_SESSION['map']);
     }

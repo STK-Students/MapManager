@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
 $groupUUID = $_GET['uuid'];
 $inviteCode = "http://localhost/templates/home/home.php?inviteCode=" . $groupUUID;
 
