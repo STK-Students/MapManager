@@ -7,6 +7,7 @@ session_start();
     <meta charset="UTF-8"> <!--Ermöglicht einfache Eingabe von Sonderzeichen-->
     <meta name="viewport" content="width=device-width, initial-scale=1"> <!--Bootstrap responsive design meta tag-->
     <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../.media/fontAndNavbar.css">
     <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../dependencies/Bootstrap/js/formValidator.js" defer></script>
     <link rel="stylesheet" href="auth_style.css">
@@ -19,11 +20,17 @@ session_start();
     <title>MapManager</title>
 </head>
 <body>
-<img src="../../.media/Stadt_Koeln_Logo.jpg" class="center" alt="Logo der Stadt Köln">
-
+<br>
+<br>
+<br>
+<br>
+<img src="../../.media/stadt-köln-logo.svg" class="center" alt="Logo der Stadt Köln">
+<br>
+<br>
+<br>
 
 <div id="form_content" class="container-sm wrapper">
-    <h1>Login</h1>
+    <h1 class="kölnFontRegular">Login</h1>
     <form name="login_form" id="auth_form" method="post">
         <div class="row row-cols-1">
             <div class="form-floating gx-1">
@@ -42,6 +49,7 @@ session_start();
             <input type="submit" name="submit-login-form" class="btn btn-danger gy-4 col-6 ms-md-auto" value="Anmelden">
             <p class="col-3 col-auto"></p>
         </div>
+        <br>
         <div class="row">
             <a href="register.php">Noch kein Konto? Registriere dich!</a>
         </div>
