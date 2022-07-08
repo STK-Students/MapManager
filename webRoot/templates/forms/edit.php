@@ -28,7 +28,7 @@
     /**
      * Fills the forms on this page if there is already data for them.
      */
-    require_once "./MapLoader.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/MapFileHandler.php";
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/ServiceConverter.php";
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
 
@@ -37,10 +37,10 @@
     }
     $mapUUID = $_GET['uuid'];
 
-    if (isset($_SESSION['currentMapUUID']) && $_SESSION['currentMapUUID'] != $mapUUID || !isset($_SESSION['map'])) {
+    if (isset($_SESSION['currentServiceUUID']) && $_SESSION['currentServiceUUID'] != $mapUUID || !isset($_SESSION['map'])) {
         $mapFilePath = Database::getInstance()->getOGCService($mapUUID)->getPath();
-        $map = loadMapFromFile($mapFilePath);
-        $_SESSION['currentMapUUID'] = $map;
+        $map = MapFileHandler::loadMapFromFile($mapFilePath);
+        $_SESSION['currentServiceUUID'] = $mapUUID;
     } else {
         $map = unserialize($_SESSION['map']);
     }
@@ -53,6 +53,25 @@
 <body>
 
 
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="/.media/stadt-köln-logo.svg" alt="" height="50">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/templates/home/home.php">Zurück zur Übersicht</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <h1>Dienst bearbeiten</h1>
 <div class="container-lg">
     <form name="Eingabe" id='mapForm' class="needs-validation">
@@ -159,27 +178,23 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <th scope="row">1</th>
-                <td></td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <td>Grundkarte</td>
+                <td>
+                    <button class="btn btn-outline-primary">Bearbeiten</button>
+                </td>
             </tr>
             <tr>
                 <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Grundkarte</td>
-                <td>@twitter</td>
+                <td>Bäume</td>
+                <td>
+                    <button class="btn btn-outline-primary">Bearbeiten</button>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -191,7 +206,7 @@
         <button type="button" id="generateMap" class="btn btn-success">Dienst erstellen</button>
         <script>
             $('#generateMap').click(async function () {
-                await fetch('/api/MapFileWriter.php');
+                await fetch('/api/MapFileHandler.php?mode=WRITE');
             });
 
         </script>

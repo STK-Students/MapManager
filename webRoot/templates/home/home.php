@@ -30,13 +30,17 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
     <script src="../../dependencies/jQuery/jQuery.js"></script>
     <script src="OGCServiceTableBuilder.js"></script>
     <link rel="stylesheet" href="home_style.css">
+    <link rel="stylesheet" href="/.media/fontAndNavbar.css">
 </head>
 
 <body>
-<input type="text" id="hiddenGroupUUID" style="visibility: hidden; position: absolute"></input>
-<nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+<input type="text" id="hiddenGroupUUID" style="visibility: hidden; position: absolute">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Map Manager</a>
+        <a class="navbar-brand" href="#">
+            <img src="/.media/stadt-köln-logo.svg" alt="" height="50">
+            <p class="kölnFontBold navbarSubText">MapManager</p>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

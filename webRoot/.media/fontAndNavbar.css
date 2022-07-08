@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'KölnFontBold';
+    src: url('/.media/KölnFontBold.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'KölnFontRegular';
+    src: url('/.media/KölnFontRegular.woff2') format('woff2');
+}
+
+.kölnFontRegular {
+    font-family: 'KölnFontRegular', sans-serif;
+}
+
+.kölnFontBold {
+    font-family: 'KölnFontBold', sans-serif;
+}
+
+.navbarSubText {
+    margin-left: 90px;
+    margin-bottom: -5px;
+}
