@@ -1,13 +1,8 @@
 
 setupInvisibleSubmit()
 
-function fillForms() {
-
-}
-
-
 function setupInvisibleSubmit() {
-    $('#submitAPIButton').on('click', async function () {
+    $('#submitAPIButton').click(async function () {
         if (formIsValid()) {
             submitFormData('mapForm', "serviceHandler.php");
         }

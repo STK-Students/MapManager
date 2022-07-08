@@ -3,13 +3,14 @@ session_start();
 
 require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
 
+/** Invite System for adding members to groups **/
 $db = Database::getInstance();
 
-if(isset($_SESSION["authenticatedUser"])){
+if (isset($_SESSION["authenticatedUser"])) {
     $userUUID = $_SESSION["authenticatedUser"];
-    if(isset($_GET["inviteCode"])){
+    if (isset($_GET["inviteCode"])) {
         $groupUUID = $_GET["inviteCode"];
-        if(!$db->isUserInGroup($userUUID, $groupUUID)){
+        if (!$db->isUserInGroup($userUUID, $groupUUID)) {
             $db->addUserToGroup($groupUUID, $userUUID);
         }
     }
@@ -20,72 +21,19 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
 
 ?>
 
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <title>Home</title>
     <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
     <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../dependencies/jQuery/jQuery.js"></script>
+    <script src="OGCServiceTableBuilder.js"></script>
     <link rel="stylesheet" href="home_style.css">
-    <script>
-        $(document).ready(function () {
-            $("#selectGroup").change(async function () {
-                var uuid = document.getElementById("selectGroup").value;
-                if (uuid == "") {
-                    document.getElementById("sidebar-content").style.visibility = "hidden";
-                    document.getElementById("table-maps").style.visibility = "hidden";
-                } else {
-                    document.getElementById("sidebar-content").style.visibility = "visible";
-                    await fetch('http://localhost/api.php?getGroup=' + uuid)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById("main-title").innerText = data.name;
-                            document.getElementById("edit-group").href = "/templates/home/groups/editGroup.php?mode=edit&uuid=" + data.uuid;
-                            document.getElementById("remove-group").href = "/templates/home/groups/removeGroup.php?uuid=" + data.uuid;
-                            document.getElementById("add-map").href = "/templates/home/map/createMap.php?uuid=" + data.uuid;
-                            document.getElementById("remove-map").href = "/templates/home/map/removeMap.php?uuid=" + data.uuid;
-                            document.getElementById("add-employee").href = "/templates/home/employee/addEmployee.php?uuid=" + data.uuid;
-                        });
-                    await fetch('http://localhost/api.php?getMaps=' + uuid)
-                        .then(response => response.json())
-                        .then(data => {
-                            $('.dynamicTableElement').remove();
-
-                            const table = document.getElementById("table-maps");
-                            table.style.visibility = "visible";
-                            for (const item in data) {
-                                const row = document.createElement("tr");
-                                row.classList.add("dynamicTableElement")
-
-                                const nameTD = document.createElement("td");
-                                const descriptionTD = document.createElement("td");
-                                const creationDateTD = document.createElement("td");
-                                const openTD = document.createElement("td");
-                                const editTD = document.createElement("td");
-                                const openLink = document.createElement("a");
-                                openLink.href = "/templates/forms/edit.php?uuid=" + data[item].uuid;
-                                const editLink = document.createElement("a");
-                                editLink.href = "/templates/home/map/editMap.php?uuid=" + data[item].uuid;
-
-                                nameTD.innerText = data[item].name;
-                                descriptionTD.innerText = data[item].description;
-                                creationDateTD.innerText = data[item].creationDate;
-                                openLink.innerText = "Dienst bearbeiten";
-                                editLink.innerText = "Beschreibung bearbeiten";
-                                openTD.appendChild(openLink);
-
-                                editTD.appendChild(editLink);
-                                row.append(nameTD, descriptionTD, creationDateTD, openTD, editTD);
-                                table.appendChild(row);
-                            }
-                        });
-                }
-            });
-        });
-    </script>
 </head>
 
 <body>
+<input type="text" id="hiddenGroupUUID" style="visibility: hidden; position: absolute"></input>
 <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Map Manager</a>
@@ -110,14 +58,10 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
                     <a class="nav-link" href="groups/editGroup.php?mode=create">Gruppe erstellen</a>
                 </li>
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-light" type="submit">Search</button>
-            </form>
         </div>
     </div>
 </nav>
-<div class="main">
+<div>
     <div class="title"><h2 id="main-title"></h2></div>
     <div class="content">
         <div class="maps" id="maps">
@@ -133,30 +77,126 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
                 </thead>
             </table>
         </div>
-        <div class="sidebar">
-            <ul class="sidebar-content" id="sidebar-content">
-                <li class="sidebar-item"><h4>Dienste</h4>
-                    <ul>
-                        <li class="sidebar-subitem"><a href="" id="add-map">Dienst hinzufügen</a></li>
-                        <li class="sidebar-subitem"><a href="#" id="remove-map">Dienst entfernen</a></li>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item"><h4>Mitarbeiter</h4>
-                    <ul>
-                        <li class="sidebar-subitem"><a href="#" id="add-employee">Mitarbeiter hinzufügen</a></li>
-                        <li class="sidebar-subitem"><a href="#" id="remove-employee">Mitarbeiter entfernen</a></li>
-                        <li class="sidebar-subitem"><a href="#" id="show-employees">Mitarbeiter der Gruppe anzeigen</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item"><h4>Gruppe</h4>
-                    <ul>
-                        <li class="sidebar-subitem"><a href="#" id="edit-group">Gruppe bearbeiten</a></li>
-                        <li class="sidebar-subitem"><a href="#" id="remove-group">Gruppe löschen</a></li>
-                    </ul>
-                </li>
-            </ul>
+        <div class="container sidebar">
+            <div class="row gy-2">
+                <div class="col-11">
+                    <h3>Dienste</h3>
+                </div>
+                <div class="col-11">
+                    <button type="button" class="btn btn-success uniform-buttons" data-bs-toggle="modal"
+                            data-bs-target="#createServiceModal" id="createService">
+                        Dienst erstellen
+                    </button>
+                </div>
+                <div class="col-11">
+                    <button type="button" class="btn btn-danger uniform-buttons" data-bs-toggle="modal"
+                            data-bs-target="#deleteServiceModal">
+                        Dienst löschen
+                    </button>
+                </div>
+                <div class="col-11">
+                    <h3>Gruppe</h3>
+                </div>
+                <div class="col-11">
+                    <button type="button" class="btn btn-success uniform-buttons" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                        Mitglieder hinzufügen
+                    </button>
+                </div>
+                <div class="col-11">
+                    <button type="button" class="btn btn-secondary uniform-buttons" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                        Mitglieder anzeigen
+                    </button>
+                </div>
+                <div class="col-11">
+                    <button type="button" class="btn btn-secondary uniform-buttons" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                        Gruppe bearbeiten
+                    </button>
+                </div>
+                <div class="col-11">
+                    <button type="button" class="btn btn-danger uniform-buttons" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                        Mitglieder entfernen
+                    </button>
+                </div>
+                <div class="col-11">
+                    <button type="button" class="btn btn-danger uniform-buttons" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                        Gruppe löschen
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Dialogs -->
+
+<!-- Create Service -->
+<div class="modal fade" id="createServiceModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Dienst erstellen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form name="create_group_form" action="./map/createMap.php" method="post">
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-12 gy-2">
+                            <input type="text" class="form-control" name="input-name" id="inputServiceName"
+                                   placeholder="Name des Dienstes">
+                        </div>
+                        <div class="col-12 gy-2">
+                            <textarea class="form-control" name="input-description" id="inputServiceDescription"
+                                      placeholder="Beschreibung des Dienstes"></textarea>
+                        </div>
+                    </div>
+                    <input type="text" style="visibility: hidden" name="group-uuid" id="hiddenInputGroupUUID">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                    <button type="submit" class="btn btn-primary">Ok</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Remove Service -->
+<div class="modal fade" id="deleteServiceModal" tabindex="-1" aria-labelledby="modalTitleDeleteService"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleDeleteService">Dienst löschen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form name="remove_map_form" action="map/deleteMap.php" method="post">
+                <div class="modal-body">
+                    <select name="input-map" id="deleteServiceList" class="dropdown">
+                        <script>
+                            $("#deleteServiceModal").on('show.bs.modal', function () {
+                                $.ajax("./map/deleteMap.php?uuid=" + $("#hiddenGroupUUID").val()).done(function (data) {
+                                    let options = JSON.parse(data);
+                                    for (const key in options) {
+                                        $("#deleteServiceList").append(options[key]);
+                                    }
+                                });
+                            });
+                        </script>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                    <button type="submit" class="btn btn-danger">Löschen</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

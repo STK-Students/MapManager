@@ -2,9 +2,10 @@
 
 use MapFile\Exception\FileException;
 use MapFile\Exception\UnsupportedException;
+use MapFile\Model\Map;
 use MapFile\Parser\Map as MapParser;
 
-$mapFileLoc = "../../dependencies/MapFileParser";
+$mapFileLoc = "../../dependencies/MapFileParser/";
 $doctrineLoc = "../../dependencies/Doctrine";
 require "$mapFileLoc/Exception/FileException.php";
 require "$mapFileLoc/Parser/ParserInterface.php";
@@ -17,17 +18,15 @@ require "$doctrineLoc/Common/Collections/Collection.php";
 require "$doctrineLoc/Common/Collections/ArrayCollection.php";
 
 /**
- * Loads a map into the user's session.
- * @param $file string path to a mapfile relative to the webRoot
- * @return void
+ * Loads a mapfile.
+ * @param $filePath string path to a mapfile relative to the webRoot
+ * @return Map the loaded mapfile.
  */
-function loadMapFileIntoSession(string $file)
+function loadMapFromFile(string $filePath): Map
 {
-    $file = "../../" . $file;
     try {
-        $map = (new MapParser($file))->parse($file);
-        $_SESSION['map'] = serialize($map);
-    } catch (UnsupportedException|FileException $e) {
-        echo "Ein Fehler ist beim Laden des Mapfiles aufgetreten" . $e;
+        return (new MapParser($filePath))->parse($filePath);
+    } catch (UnsupportedException $e) {
+        die("Ein Fehler ist beim Laden des Mapfiles aufgetreten" . $e);
     }
 }

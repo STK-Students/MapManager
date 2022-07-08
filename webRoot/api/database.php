@@ -1,9 +1,9 @@
 
 <?php
 
-require $_SERVER['DOCUMENT_ROOT'] . "/model/User.php";
-require $_SERVER['DOCUMENT_ROOT'] . "/model/Group.php";
-require $_SERVER['DOCUMENT_ROOT'] . "/model/OGCService.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/model/User.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/model/Group.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/model/OGCService.php";
 
 /**
  * A Singleton Database class.

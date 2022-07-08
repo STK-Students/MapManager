@@ -62,4 +62,19 @@ class OGCService
     {
         $this->creationDate = $creationDate;
     }
+
+    /**
+     * @return string the path to the directory of the group this service belongs to. Relative to the document root.
+     *
+     */
+    function getGroupPath(): string {
+        return $groupPath = "/mapfiles/" . $this->getGroupUUID();
+    }
+
+    /**
+     * @return string the path to the mapfile of this service. Relative to the document root.
+     */
+    function getPath(): string {
+        return $this->getGroupPath() . "/" . $this->getUUID() .".map";
+    }
 }

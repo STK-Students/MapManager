@@ -48,20 +48,7 @@ function mapToJSON(Map $map): string
     $json = [];
     foreach (get_object_vars($map) as $key=>$value) {
         if (isset($value)) {
-            // Handle edge cases first
-            switch ($key) {
-                case 'size':
-                    $json->size->x = $value['x'];
-                    $json->size->y = $value['y'];
-                    break;
-                case 'extent':
-                    $extent = array($value['minx'], $value['miny'], $value['maxx'], $value['maxy']);
-                    $map->extent = array_map("floatval", $extent);
-                    break;
-            }
-
-            // Handle all other cases
-            $json->$key = $value;
+            $json[$key] = $value;
         }
     }
     return json_encode($json);

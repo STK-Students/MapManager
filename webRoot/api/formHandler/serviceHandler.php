@@ -1,12 +1,14 @@
 <?php
+session_start();
 
-$mapFileLoc = "../../dependencies/MapFileParser";
-$doctrineLoc = "../../dependencies/Doctrine";
-require("{$mapFileLoc}/Model/Map.php");
-require("{$mapFileLoc}/Model/Layer.php");
-require "{$doctrineLoc}/Common/Collections/Selectable.php";
-require "{$doctrineLoc}/Common/Collections/Collection.php";
-require "{$doctrineLoc}/Common/Collections/ArrayCollection.php";
+use MapFile\Model\Map;
+
+require_once "../ServiceConverter.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser/Model/Map.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser/Model/Layer.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/Doctrine/Common/Collections/Selectable.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/Doctrine/Common/Collections/Collection.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/Doctrine/Common/Collections/ArrayCollection.php";
 
 /** Writes the new map state into the session **/
 

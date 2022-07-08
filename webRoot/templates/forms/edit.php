@@ -10,27 +10,7 @@
  Make sure you NEVER assign a group name as the name of an unrelated input.
  -->
 
-<?php
-session_start();
 
-require "./MapLoader.php";
-require $_SERVER['DOCUMENT_ROOT'] . "/api/ServiceConverter.php";
-require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
-
-if (!isset($_GET['uuid'])) {
-    die("Diese Seite muss mit einer MapUUID aufgerufen werden!");
-
-}
-$mapUUID = $_GET['uuid'];
-if (isset($_SESSION['currentMapUUID']) && $_SESSION['currentMapUUID'] != $mapUUID) {
-    $mapFilePath = Database::getInstance()->getOGCService($mapUUID)->getMapFilePath();
-    if (file_exists($mapFilePath)) {
-        loadMapFileIntoSession($mapFilePath);
-    }
-}
-$json = mapToJSON($_SESSION['map']);
-echo "<script>fillForms($json)</script>";
-?>
 <!doctype html>
 <html lang="de">
 <head>
@@ -40,14 +20,36 @@ echo "<script>fillForms($json)</script>";
     <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
     <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../dependencies/jQuery/jQuery.js"></script>
-    <script src="formController.js"></script>
+    <script src="formSubmitter.js" defer></script>
+    <script src="formFiller.js"></script>
+    <?php
+    session_start();
 
-    <title>Dienst erstellen</title>
+    require "./MapLoader.php";
+    require $_SERVER['DOCUMENT_ROOT'] . "/api/ServiceConverter.php";
+    require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+
+    if (!isset($_GET['uuid'])) {
+        die("Diese Seite muss mit einer MapUUID aufgerufen werden!");
+    }
+    $mapUUID = $_GET['uuid'];
+
+    if (isset($_SESSION['currentMapUUID']) && $_SESSION['currentMapUUID'] != $mapUUID || !isset($_SESSION['map'])) {
+        $mapFilePath = Database::getInstance()->getOGCService($mapUUID)->getPath();
+        $map = loadMapFromFile($mapFilePath);
+    } else {
+        $map = unserialize($_SESSION['map']);
+    }
+    $json = mapToJSON($map);
+
+    echo "<script type=\"text/javascript\" defer>fillForms(" . $json . ");</script>";
+    ?>
+    <title>Dienst bearbeiten</title>
 </head>
 <body>
 
 
-<h1>Dienst erstellen</h1>
+<h1>Dienst bearbeiten</h1>
 <div class="container-lg">
     <form name="Eingabe" id='mapForm' class="needs-validation">
         <h2>Allgemeine Einstellungen</h2>
@@ -184,9 +186,10 @@ echo "<script>fillForms($json)</script>";
         <button type="button" id="submitAPIButton" class="btn btn-success">Speichern</button>
         <button type="button" id="generateMap" class="btn btn-success">Dienst erstellen</button>
         <script>
-            $('#generateMap').on('click', async function () {
+            $('#generateMap').click(async function () {
                 await fetch('/api/MapFileWriter.php');
-            })
+            });
+
         </script>
     </form>
 
