@@ -17,11 +17,13 @@
     <meta charset="UTF-8"> <!--Ermöglicht einfache Eingabe von Sonderzeichen-->
     <meta name="viewport" content="width=device-width, initial-scale=1"> <!--Bootstrap responsive design meta tag-->
     <link rel="stylesheet" href="edit_style.css">
+    <link rel="stylesheet" href="/.media/fontAndNavbar.css">
     <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
     <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../dependencies/jQuery/jQuery.js"></script>
     <script src="formSubmitter.js" defer></script>
     <script src="formFiller.js"></script>
+    <script src="edit.js" defer></script>
     <?php
     session_start();
 
@@ -53,11 +55,11 @@
 <body>
 
 
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
             <img src="/.media/stadt-köln-logo.svg" alt="" height="50">
+            <p class="kölnFontBold navbarSubText">MapManager</p>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -169,48 +171,38 @@
             </div>
 
         </div><!--End Row 2-->
-
-        <br>
-        <hr>
-        <h3>Ebenen</h3>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Grundkarte</td>
-                <td>
-                    <button class="btn btn-outline-primary">Bearbeiten</button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Bäume</td>
-                <td>
-                    <button class="btn btn-outline-primary">Bearbeiten</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
-
-        <!-- Submit Button Code -->
-        <br>
-        <button type="button" id="submitAPIButton" class="btn btn-success">Speichern</button>
-        <button type="button" id="generateMap" class="btn btn-success">Dienst erstellen</button>
-        <script>
-            $('#generateMap').click(async function () {
-                await fetch('/api/MapFileHandler.php?mode=WRITE');
-            });
-
-        </script>
     </form>
+
+    <br>
+    <hr>
+    <h3 style="display: inline-block">Ebenen</h3>
+    <button style="margin-left: 15px; margin-bottom: 7px" data-bs-toggle="modal" data-bs-target="#addLayerModal"
+            class="btn btn-outline-success">+
+    </button>
+    <table id="layerTable" class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Aktionen</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+
+    <!-- Submit Button Code -->
+    <br>
+    <button type="button" id="submitAPIButton" class="btn btn-success">Speichern</button>
+    <button type="button" id="generateMap" class="btn btn-success">Dienst erstellen</button>
+    <script>
+        $('#generateMap').click(async function () {
+            await fetch('/api/MapFileHandler.php?mode=WRITE');
+        });
+
+    </script>
 
     <!-- INFORMATION MODALS -->
 
@@ -267,6 +259,28 @@
                             einen Wert von fast Null, z. B. 0,0001)
                         </li>
                     </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Site Layout Modals -->
+    <div class="modal fade" id="addLayerModal" tabindex="-1" aria-labelledby="layerModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="layerModal">Layer hinzufügen</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="layerName">Name der neuen Ebene</label>
+                        <input type="text" class="form-control" id="layerName">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                    <button type="button" id="layerCreatorButton" class="btn btn-primary" data-bs-dismiss="modal">Erstellen</button>
                 </div>
             </div>
         </div>

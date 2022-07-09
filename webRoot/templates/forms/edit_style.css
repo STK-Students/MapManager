@@ -10,6 +10,10 @@ h1 {
 
 }
 
+.actionButton {
+    margin-left: 10px;
+}
+
 /* Dropdown Button */
 .symbolsetbtn {
     background-color: #04AA6D;
