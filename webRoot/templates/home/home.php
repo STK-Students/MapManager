@@ -289,9 +289,6 @@ $currentGroup = $_SESSION['currentGroup'];
                     <label for="groupName">Gruppenname</label>
                     <input type="text" class="form-control" id="groupNameEdit" name="groupNameEdit"
                            aria-describedby="groupNameEdit">
-                    <script>
-                        $('#groupNameEdit').val(document.getElementById('selectGroup').value);
-                    </script>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
@@ -301,6 +298,14 @@ $currentGroup = $_SESSION['currentGroup'];
         </div>
     </div>
 </div>
+
+<script>
+    $('#editGroupModal').on('show.bs.modal', function () {
+        let name = $('#selectGroup option:selected').text();
+        $('#groupNameEdit').val(name);
+    });
+</script>
+
 
 <!-- Add User -->
 <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="modalTitleAddUser"
