@@ -30,10 +30,6 @@ $currentGroup = $_SESSION['currentGroup'];
     <script src="../../dependencies/jQuery/jQuery.js"></script>
     <script src="OGCServiceTableBuilder.js"></script>
     <?php
-    if (isset($_GET['uuid'])) {
-        $selectedGroup = $db->getGroup($_GET['uuid']);
-        echo "<script>$('#selectGroup').val(" . $selectedGroup->getUUID() . ");</script>";
-    }
     if (isset($_GET['result'])) {
         if ($_GET['result'] == "success") {
             echo '<div class="alert alert-success alert-dismissible fade show shadow">
@@ -55,7 +51,6 @@ $currentGroup = $_SESSION['currentGroup'];
 
 <body>
 <input type="text" id="hiddenGroupUUID" style="visibility: hidden; position: absolute">
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -79,6 +74,15 @@ $currentGroup = $_SESSION['currentGroup'];
                         ?>
                     </select>
                 </li>
+                <?php
+                if(isset($_SESSION['currentGroup'])){
+                    echo "Hello";
+                    echo '<script defer>
+                        $("#myselect option[value='. $_SESSION['currentGroup'] .']").attr("selected", "selected");
+                    </script>';
+
+                }
+                ?>
                 <li class="nav-item">
                     <button type="button" class="btn btn-danger uniform-buttons" data-bs-toggle="modal"
                             data-bs-target="#createGroupModal" id="createGroup">

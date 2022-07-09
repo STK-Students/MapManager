@@ -16,6 +16,9 @@ $(document).ready(function () {
     });
 });
 
+function changeGroup(){
+
+}
 
 function delay(time) {
     return new Promise(resolve => setTimeout(resolve, time));
