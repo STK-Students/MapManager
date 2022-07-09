@@ -196,13 +196,6 @@
     <!-- Submit Button Code -->
     <br>
     <button type="button" id="submitAPIButton" class="btn btn-success">Speichern</button>
-    <button type="button" id="generateMap" class="btn btn-success">Dienst erstellen</button>
-    <script>
-        $('#generateMap').click(async function () {
-            await fetch('/api/MapFileHandler.php?mode=WRITE');
-        });
-
-    </script>
 
     <!-- INFORMATION MODALS -->
 

@@ -4,6 +4,7 @@ session_start();
 use MapFile\Model\Map;
 
 require_once "../ServiceConverter.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/MapFileHandler.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser/Model/Map.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser/Model/Layer.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/Doctrine/Common/Collections/Selectable.php";
@@ -18,5 +19,8 @@ $map = isset($_SESSION['map']) ? unserialize($_SESSION['map']) : new Map();
 $json = json_decode(trim(file_get_contents('php://input')), true);
 $map = jsonToMap($map, $json);
 $_SESSION['map'] = serialize($map);
+
+$mapFilePath = MapFileHandler::getPath();
+MapFileHandler::writeMapFile($mapFilePath);
 
 print(json_encode($map));
