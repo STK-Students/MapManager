@@ -3,7 +3,7 @@ session_start();
 require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
 $db = Database::getInstance();
 if(isset($_POST['submit-create-group'])){
-    $name = $_POST['groupName'];
+    $name = $_POST['groupNameCreate'];
     try{
         $groupUUID = pg_fetch_result($db->addGroup($name), 0, 0);
         $userUUID = $_SESSION['authenticatedUser'];
