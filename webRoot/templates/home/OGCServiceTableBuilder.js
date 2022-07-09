@@ -16,6 +16,16 @@ $(document).ready(function () {
     });
 });
 
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
+
+function copy(){
+    var content = document.getElementById("inviteCode");
+    content.select();
+    document.execCommand('copy');
+}
+
 async function setupPageTitle(uuid) {
     $(".sidebar").css("visibility", "visible");
     await fetch('http://localhost/api.php?getGroup=' + uuid)
@@ -65,6 +75,7 @@ async function setGroupSession(uuid){
     await fetch('http://localhost/api.php?setGroupSession=' + uuid)
         .then(response => response.json())
         .then(data => {
-            console.log("Session created.");
+            console.log(data);
         });
 }
+

@@ -21,5 +21,10 @@ if (isset($_GET['getGroup'])) {
     print(json_encode($maps));
 } if(isset($_GET['setGroupSession'])) {
     $groupUUID = $_GET['setGroupSession'];
+    unset($_SESSION['currentGroup']);
     $_SESSION['currentGroup'] = $groupUUID;
+    $group = $db->getGroup($_SESSION['currentGroup']);
+    print(json_encode($group->getName()));
+} if(isset($_GET['getGroupUUID'])) {
+    print(json_encode($_SESSION['currentGroup']));
 }

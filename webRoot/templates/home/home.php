@@ -18,7 +18,7 @@ if (isset($_SESSION["authenticatedUser"])) {
     header("Location: /templates/auth/login.php");
 }
 $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
-
+$currentGroup = $_SESSION['currentGroup'];
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +46,7 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                  </div>';
         }
-
+        echo '<script>delay(3000).then(() => window.location.href = "http://localhost/templates/home/home.php");</script>'; // this reloads
     }
     ?>
     <link rel="stylesheet" href="home_style.css">
@@ -142,19 +142,19 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
                 </div>
                 <div class="col-11">
                     <button type="button" class="btn btn-success uniform-buttons" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
+                            data-bs-target="#addUserModal">
                         Mitglieder hinzufügen
                     </button>
                 </div>
                 <div class="col-11">
                     <button type="button" class="btn btn-danger uniform-buttons" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
+                            data-bs-target="#deleteUserModal">
                         Mitglieder entfernen
                     </button>
                 </div>
                 <div class="col-11">
                     <button type="button" class="btn btn-secondary uniform-buttons" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
+                            data-bs-target="#showUserModal">
                         Mitglieder anzeigen
                     </button>
                 </div>
@@ -242,9 +242,9 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
             </div>
             <form name="create_group_form" action="group/createGroup.php" method="post">
                 <div class="modal-body">
-                    <label for="groupName">Gruppenname</label>
-                    <input type="text" class="form-control" id="groupName" name="groupName"
-                           aria-describedby="groupName">
+                    <label for="groupNameCreate">Gruppenname</label>
+                    <input type="text" class="form-control" id="groupNameCreate" name="groupNameCreate"
+                           aria-describedby="groupNameCreate">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
@@ -278,9 +278,6 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
 <!-- Edit Group -->
 <div class="modal fade" id="editGroupModal" tabindex="-1" aria-labelledby="modalTitleEditGroup"
      aria-hidden="true">
-    <?php
-    $currentGroup = $_SESSION['currentGroup'];
-    ?>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -290,22 +287,109 @@ $groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
             <form name="remove_group_form" action="group/editGroup.php" method="post">
                 <div class="modal-body">
                     <label for="groupName">Gruppenname</label>
-                    <input type="text" class="form-control" id="groupName" name="groupName"
-                           value="<?php echo $db->getGroup($currentGroup)->getName(); ?>"
-                           aria-describedby="groupName">
+                    <input type="text" class="form-control" id="groupNameEdit" name="groupNameEdit"
+                           aria-describedby="groupNameEdit">
+                    <script>
+                        document.getElementById('groupNameEdit').value = document.getElementById('selectGroup').value;
+                    </script>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                    <button type="submit" name="edit_group_form_submit" class="btn btn-danger">Bearbeiten</button>
+                    <button type="submit" name="edit_group_form_submit" class="btn btn-success">Bearbeiten</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<!-- Add User -->
-<!-- Remove User-->
-<!-- Show User -->
 
+<!-- Add User -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="modalTitleAddUser"
+     aria-hidden="true">
+    <?php
+    $inviteCode = "http://localhost/templates/home/home.php?inviteCode=" . $currentGroup;
+    ?>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleAddUser">Mitarbeiter hinzufügen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label for="inviteCode">Einladungslink</label>
+                <input type="text" class="form-control" id="inviteCode" name="inviteCode"
+                       value="<?php echo $inviteCode ?>"
+                       aria-describedby="inviteCode">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                <button type="button" onclick="copy()" class="btn btn-primary" data-bs-dismiss="modal">Kopieren
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Remove User-->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="modalTitledeleteUser"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleDeleteUser">Mitarbeiter löschen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <?php
+                    $users = $db->getUsersFromGroup($currentGroup);
+                    for ($i = 0; $i < count($users); $i++) {
+                        $user = (object)$users[$i];
+                        echo "<tr>";
+                        echo "<td>" . $user->getFirstname() . "</td>";
+                        echo "<td>" . $user->getLastname() . "</td>";
+                        echo "<td><a class='btn btn-danger' href='employee/deleteEmployee.php'>Löschen</a></td>";
+                        echo "</tr>";
+                    }
+
+                    ?>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Show User -->
+<div class="modal fade" id="showUserModal" tabindex="-1" aria-labelledby="modalTitleshowUser"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleShowUser">Mitarbeiter anzeigen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <?php
+                    $users = $db->getUsersFromGroup($currentGroup);
+                    for ($i = 0; $i < count($users); $i++) {
+                        $user = (object)$users[$i];
+                        echo "<tr>";
+                        echo "<td>" . $user->getFirstname() . "</td>";
+                        echo "<td>" . $user->getLastname() . "</td>";
+                        echo "</tr>";
+                    }
+                    ?>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

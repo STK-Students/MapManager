@@ -51,7 +51,7 @@ session_start();
         </div>
         <br>
         <div class="row">
-            <a href="register.php">Noch kein Konto? Registriere dich!</a>
+            <a id="register-now" href="register.php">Noch kein Konto? Registriere dich!</a>
         </div>
     </form>
 </div>
