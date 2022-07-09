@@ -6,7 +6,6 @@ $(document).ready(function () {
             $("#table-maps").css("visibility", "hidden");
         } else {
             $("#hiddenGroupUUID").val(groupUUID)
-            console.log("Setting to "+ groupUUID);
             $("#hiddenInputGroupUUID").val(groupUUID);
 
             await setupPageTitle(groupUUID);
