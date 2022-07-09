@@ -20,3 +20,11 @@
     margin-left: 90px;
     margin-bottom: -5px;
 }
+
+* {
+    font-family: 'KölnFontRegular', sans-serif;
+}
+
+h1,h2,h3 {
+    font-family: 'KölnFontBold', sans-serif ;
+}
