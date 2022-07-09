@@ -290,7 +290,7 @@ $currentGroup = $_SESSION['currentGroup'];
                     <input type="text" class="form-control" id="groupNameEdit" name="groupNameEdit"
                            aria-describedby="groupNameEdit">
                     <script>
-                        document.getElementById('groupNameEdit').value = document.getElementById('selectGroup').value;
+                        $('#groupNameEdit').val(document.getElementById('selectGroup').value);
                     </script>
                 </div>
                 <div class="modal-footer">
