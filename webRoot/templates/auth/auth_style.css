@@ -16,8 +16,7 @@ body {
 
 h1 {
     text-align: center;
-    font-size: 52px;
-    font-weight: bold;
+    font-size: 40px;
     color: #fa0001;
 }
 
@@ -25,7 +24,7 @@ h1 {
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    width: 25%;
+    width: 40%;
     height: 50%;
 }
 

@@ -13,6 +13,7 @@ $creationDate = date('Y-m-d');
 $result = $db->addMap($name, $description, $creationDate, $group);
 $generatedUUID = pg_fetch_result($result, 0, 0);
 $_SESSION['currentServiceUUID'] = $generatedUUID;
+unset($_SESSION['map']);
 header('Location: /templates/forms/edit.php?uuid=' . $generatedUUID);
 
 MapFileHandler::writeMapFile(MapFileHandler::getPath());

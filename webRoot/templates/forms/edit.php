@@ -39,13 +39,13 @@
     }
     $mapUUID = $_GET['uuid'];
 
-    if (isset($_SESSION['currentServiceUUID']) && $_SESSION['currentServiceUUID'] != $mapUUID || !isset($_SESSION['map'])) {
-        $mapFilePath = Database::getInstance()->getOGCService($mapUUID)->getPath();
-        $map = MapFileHandler::loadMapFromFile($mapFilePath);
-        $_SESSION['currentServiceUUID'] = $mapUUID;
-    } else {
-        $map = unserialize($_SESSION['map']);
-    }
+    // if (isset($_SESSION['currentServiceUUID']) && $_SESSION['currentServiceUUID'] != $mapUUID || !isset($_SESSION['map'])) {
+    $mapFilePath = Database::getInstance()->getOGCService($mapUUID)->getPath();
+    $map = MapFileHandler::loadMapFromFile($mapFilePath);
+    $_SESSION['currentServiceUUID'] = $mapUUID;
+    //} else {
+    //   $map = unserialize($_SESSION['map']);
+    // }
     $json = mapToJSON($map);
 
     echo "<script type=\"text/javascript\" defer>fillForms(" . $json . ");</script>";
