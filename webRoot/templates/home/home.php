@@ -2,49 +2,42 @@
 session_start();
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
-
-/** Invite System for adding members to group **/
 $db = Database::getInstance();
 
-if (isset($_SESSION["authenticatedUser"])) {
-    $userUUID = $_SESSION["authenticatedUser"];
-    if (isset($_GET["inviteCode"])) {
-        $groupUUID = $_GET["inviteCode"];
-        if (!$db->isUserInGroup($userUUID, $groupUUID)) {
-            $db->addUserToGroup($groupUUID, $userUUID);
-        }
-    }
-} else {
-    header("Location: /templates/auth/login.php");
+/** Emulating SSO on local dev setup **/
+if ($_SERVER['SERVER_NAME'] == 'localhost') {
+    $_SERVER['REMOTE_USER'] = 'bauml';
 }
-$groups = $db->getGroupsFromUser($_SESSION['authenticatedUser']);
-$currentGroup = $_SESSION['currentGroup'];
+/** Hack to use for local dev setup */
+$_SESSION['user'] = $_SERVER['REMOTE_USER'];
+
+/** Add new users to the DB */
+$activeDirectoryID = $_SERVER['REMOTE_USER'];
+$db->addUser($activeDirectoryID);
+
+/** Invite System for adding members to group **/
+$userID = $_SERVER['REMOTE_USER'];
+if (isset($_GET["inviteCode"])) {
+    $groupUUID = $_GET["inviteCode"];
+    if (!$db->isUserInGroup($userID, $groupUUID)) {
+        $db->addUserToGroup($groupUUID, $userID);
+    }
+}
+
+$groups = $db->getGroupsFromUser($userID);
+
+//TODO: currentGroup = BAD, must be pulled from page state
 ?>
 
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <title>Home</title>
+    <title>Übersicht</title>
     <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
     <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../dependencies/jQuery/jQuery.js"></script>
     <script src="OGCServiceTableBuilder.js"></script>
-    <?php
-    if (isset($_GET['result'])) {
-        if ($_GET['result'] == "success") {
-            echo '<div class="alert alert-success alert-dismissible fade show shadow">
-                <i class="bi bi-info-square"></i> Erfolgreich
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>';
-        } else if ($_GET['result'] == "failed") {
-            echo '<div class="alert alert-danger alert-dismissible fade show shadow">
-                    <i class="bi bi-exclamation-triangle"></i> Fehler
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                 </div>';
-        }
-        echo '<script>delay(3000).then(() => window.location.href = "http://localhost/templates/home/home.php");</script>'; // this reloads
-    }
-    ?>
+    <script src="home.js"></script>
     <link rel="stylesheet" href="home_style.css">
     <link rel="stylesheet" href="/.media/fontAndNavbar.css">
 </head>
@@ -67,21 +60,16 @@ $currentGroup = $_SESSION['currentGroup'];
                     <select class="dropdown" id="selectGroup">
                         <option value="">Gruppe wählen</option>
                         <?php
-                        for ($i = 0; $i < count($groups); $i++) {
-                            $item = (object)$groups[$i];
-                            echo '<option class="dropdown-item" value="' . $item->getUUID() . '">' . $item->getName() . '</option>';
+                        foreach ($groups as $group) {
+                            echo '<option class="dropdown-item" value="' . $group->getUUID() . '">' . $group->getName() . '</option>';
                         }
                         ?>
                     </select>
                 </li>
                 <?php
-                if(isset($_SESSION['currentGroup'])){
-                    echo "Hello";
-                    echo '<script defer>
-                        $("#myselect option[value='. $_SESSION['currentGroup'] .']").attr("selected", "selected");
+                echo '<script defer>
+                        $("#myselect option[value=' . $_GET['group'] . ']").attr("selected", "selected");
                     </script>';
-
-                }
                 ?>
                 <li class="nav-item">
                     <button type="button" class="btn btn-danger uniform-buttons" data-bs-toggle="modal"
@@ -93,6 +81,7 @@ $currentGroup = $_SESSION['currentGroup'];
         </div>
     </div>
 </nav>
+<div id="liveAlertPlaceholder"></div>
 <div>
     <div class="title"><h2 id="main-title"></h2></div>
     <div class="content">
@@ -202,6 +191,7 @@ $currentGroup = $_SESSION['currentGroup'];
         </div>
     </div>
 </div>
+
 <!-- Remove Service -->
 <div class="modal fade" id="deleteServiceModal" tabindex="-1" aria-labelledby="modalTitleDeleteService"
      aria-hidden="true">
@@ -309,7 +299,6 @@ $currentGroup = $_SESSION['currentGroup'];
         $('#groupNameEdit').val(name);
     });
 </script>
-
 
 <!-- Add User -->
 <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="modalTitleAddUser"
