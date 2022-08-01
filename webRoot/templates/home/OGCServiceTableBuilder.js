@@ -48,7 +48,7 @@ async function setupServiceTable(uuid) {
                 const openLink = $('<button>').text("Dienst bearbeiten").addClass('btn btn-outline-primary')
                     .on('click', () => openEditPage(data, item));
                 const editLink = $("<a>").text("Beschreibung bearbeiten").addClass('btn btn-outline-primary').
-                attr("href", "/templates/home/map/editMap.php?uuid=" + data[item].uuid);
+                on("click", () => openDescriptionEdit(data, item));
 
                 openTD.append(openLink);
                 editTD.append(editLink);
@@ -58,6 +58,10 @@ async function setupServiceTable(uuid) {
         });
 }
 
-function openEditPage(data,item) {
+function openEditPage(data, item) {
     window.location.href = "/templates/forms/edit.php?uuid=" + data[item].uuid
+}
+
+function openDescriptionEdit(data, item) {
+    window.location.href = "/templates/home/map/editMap.php?uuid=" + data[item].uuid
 }
