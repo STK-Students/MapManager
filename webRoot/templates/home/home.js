@@ -14,7 +14,7 @@ const alert = (message, type) => {
 let GETparam = window.location.search.split("=")[1];
 
 if (GETparam === "success") {
-    console.log("HEy")
+    console.log("Hey")
     alert("Aktion erfolgreich durchgeführt.", "success")
 
 } else if (GETparam === "failed") {
@@ -22,12 +22,13 @@ if (GETparam === "success") {
     alert("Aktion fehlgeschlagen.", "danger")
 }
 
+function copy(){
+    var content = document.getElementById("inviteCode");
+    content.select();
+    document.execCommand('copy');
+}
 
-// delay(3000).then(function () {
-//     $('#alertSuccess').remove();
-//     $('#alertFail').remove()
-// });
-//
-// // remove success state from URL
-// history.replaceState('', 'Übersicht', 'http://localhost/templates/home/home.php')
-//
+async function setGroupSession(uuid){
+    await fetch('http://localhost/api.php?setGroupSession=' + uuid);
+}
+

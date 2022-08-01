@@ -1,32 +1,25 @@
 $(document).ready(function () {
-    $("#selectGroup").change(async function () {
-        let groupUUID = $("#selectGroup").val();
-        if (groupUUID.length === 0) {
-            $(".sidebar").css("visibility", "hidden");
-            $("#table-maps").css("visibility", "hidden");
-        } else {
-            $("#hiddenGroupUUID").val(groupUUID)
-            $("#hiddenInputGroupUUID").val(groupUUID);
+    //Run once at page load
+    generatePageContent();
 
-            await setupPageTitle(groupUUID);
-            await setupServiceTable(groupUUID);
-            await setGroupSession(groupUUID);
-        }
+    $("#selectGroup").change(async function () {
+        await generatePageContent();
     });
 });
 
-function changeGroup(){
+async function generatePageContent() {
+    let groupUUID = $("#selectGroup").val();
+    if (groupUUID.length === 0) {
+        $(".sidebar").css("visibility", "hidden");
+        $("#table-maps").css("visibility", "hidden");
+    } else {
+        $("#hiddenGroupUUID").val(groupUUID)
+        $("#hiddenInputGroupUUID").val(groupUUID);
 
-}
-
-function delay(time) {
-    return new Promise(resolve => setTimeout(resolve, time));
-}
-
-function copy(){
-    var content = document.getElementById("inviteCode");
-    content.select();
-    document.execCommand('copy');
+        await setupPageTitle(groupUUID);
+        await setupServiceTable(groupUUID);
+        await setGroupSession(groupUUID);
+    }
 }
 
 async function setupPageTitle(uuid) {
@@ -73,8 +66,3 @@ async function setupServiceTable(uuid) {
             }
         });
 }
-
-async function setGroupSession(uuid){
-    await fetch('http://localhost/api.php?setGroupSession=' + uuid);
-}
-

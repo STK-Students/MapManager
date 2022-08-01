@@ -67,7 +67,7 @@ $currentGroup = $_SESSION['currentGroup'];
                 </li>
                 <?php
                 echo '<script defer>
-                        $("#myselect option[value=' . $_GET['group'] . ']").attr("selected", "selected");
+                        $("#selectGroup").val(\'' . $currentGroup . '\');
                     </script>';
                 ?>
                 <li class="nav-item">
@@ -241,7 +241,8 @@ $currentGroup = $_SESSION['currentGroup'];
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                    <button type="submit" value="Senden" name="submit-create-group" class="btn btn-success">Erstellen</button>
+                    <button type="submit" value="Senden" name="submit-create-group" class="btn btn-success">Erstellen
+                    </button>
                 </div>
             </form>
         </div>
