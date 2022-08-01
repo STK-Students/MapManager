@@ -22,17 +22,13 @@ CREATE TABLE IF NOT EXISTS public.map
 
 CREATE TABLE IF NOT EXISTS public."user"
 (
-    uuid uuid NOT NULL DEFAULT gen_random_uuid(),
-    firstname character varying NOT NULL,
-    lastname character varying NOT NULL,
-    username character varying NOT NULL,
-    password character varying NOT NULL,
-    PRIMARY KEY (uuid)
+    ad_id character varying NOT NULL,
+    PRIMARY KEY (ad_id)
     );
 
 CREATE TABLE IF NOT EXISTS public.rel_user_group
 (
-    user_uuid uuid NOT NULL,
+    user_ad_id character varying NOT NULL,
     group_uuid uuid NOT NULL
 );
 
@@ -45,8 +41,8 @@ ALTER TABLE IF EXISTS public.map
 
 
 ALTER TABLE IF EXISTS public.rel_user_group
-    ADD FOREIGN KEY (user_uuid)
-    REFERENCES public."user" (uuid) MATCH SIMPLE
+    ADD FOREIGN KEY (user_ad_id)
+    REFERENCES public."user" (ad_id) MATCH SIMPLE
     ON UPDATE NO ACTION
        ON DELETE NO ACTION
     NOT VALID;

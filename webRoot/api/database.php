@@ -47,7 +47,7 @@ class Database
     function getGroupsFromUser($user_uuid)
     {
         $groups = array();
-        $result = pg_query_params($this->db_connection, "Select public.group.uuid, public.group.name From public.group, public.rel_user_group Where public.rel_user_group.user_uuid = $1 And public.rel_user_group.group_uuid=public.group.uuid", Array($user_uuid));
+        $result = pg_query_params($this->db_connection, "Select public.group.uuid, public.group.name From public.group, public.rel_user_group Where public.rel_user_group.user_ad_id = $1 And public.rel_user_group.group_uuid=public.group.uuid", Array($user_uuid));
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
             $item = new Group($line['uuid'], $line['name']);
             array_push($groups, $item);
@@ -72,11 +72,15 @@ class Database
         return new OGCService($row['uuid'], $row['name'], $row['description'], $row['creationDate'], $row['groupUUID']);
     }
 
+    function addUser($adID) {
+        pg_query_params($this->db_connection, "INSERT INTO public.user(ad_id) VALUES ($1) On CONFLICT(ad_id) DO NOTHING;", array($adID));
+    }
+
     function getUser($user_uuid)
     {
-        $result = pg_query_params($this->db_connection, "Select * From public.user Where uuid=$1", array($user_uuid));
+        $result = pg_query_params($this->db_connection, "Select * From public.user Where ad_id=$1", array($user_uuid));
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-            $item = new User($line['uuid'], $line['firstname'], $line['lastname'], $line['username'], $line['password']);
+            $item = new User($line['ad_id'], $line['firstname'], $line['lastname'], $line['username'], $line['password']);
             return $item;
         }
         return null;
@@ -86,14 +90,14 @@ class Database
         $users = array();
         $result = pg_query_params($this->db_connection, "Select * From public.rel_user_group Where group_uuid=$1", array($group_uuid));
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-            $user = (object) $this->getUser($line['user_uuid']);
+            $user = (object) $this->getUser($line['user_ad_id']);
             $users[] = $user;
         }
         return $users;
     }
 
     function isUserInGroup($user_uuid, $group_uuid){
-        $result = pg_query_params($this->db_connection, "Select * From public.rel_user_group Where group_uuid=$1 And user_uuid=$2", array($group_uuid, $user_uuid));
+        $result = pg_query_params($this->db_connection, "Select * From public.rel_user_group Where group_uuid=$1 And user_ad_id=$2", array($group_uuid, $user_uuid));
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
             if($line == null){
                 return false;
@@ -101,17 +105,6 @@ class Database
                 return true;
             }
         }
-    }
-
-    function login($username, $password)
-    {
-        $result = pg_query_params($this->db_connection, "Select * From public.user Where username=$1 and password=$2", array($username, $password));
-        $row = pg_fetch_array($result, null, PGSQL_ASSOC);
-        if(isset($row)){
-            return $row['uuid'];
-        }
-        return null;
-
     }
 
     function getMaps($groupUUID)
@@ -123,11 +116,6 @@ class Database
             $maps[] = $item;
         }
         return $maps;
-    }
-
-    function registerUser($firstname, $lastname, $username, $password)
-    {
-        return pg_query_params($this->db_connection, 'INSERT INTO public.user (firstname, lastname, username, password) VALUES ($1, $2, $3, $4)', array($firstname, $lastname, $username, $password));
     }
 
     function addGroup($name)
