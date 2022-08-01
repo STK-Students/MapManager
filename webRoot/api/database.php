@@ -159,11 +159,11 @@ class Database
 
     function addUserToGroup($groupUUID, $userUUID)
     {
-        return pg_query_params($this->db_connection, 'INSERT INTO public.rel_user_group (group_uuid, user_ad_uuid) VALUES ($1, $2)', array($groupUUID, $userUUID));
+        return pg_query_params($this->db_connection, 'INSERT INTO public.rel_user_group (group_uuid, user_ad_id) VALUES ($1, $2)', array($groupUUID, $userUUID));
     }
 
     function removeUserFromGroup($groupUUID, $userUUID)
     {
-        return pg_query_params($this->db_connection, 'DELETE FROM public.rel_user_group WHERE group_uuid=$1 and user_ad_uuid=$2', array($groupUUID, $userUUID));
+        return pg_query_params($this->db_connection, 'DELETE FROM public.rel_user_group WHERE group_uuid=$1 and user_ad_id=$2', array($groupUUID, $userUUID));
     }
 }
