@@ -15,7 +15,6 @@ function fillForms(map) {
     });
 }
 
-
-function buildLayerTable(layerData) {
-
+function buildLayerTable() {
+    //TODO
 }

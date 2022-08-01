@@ -35,7 +35,7 @@ function jsonToMap(Map $map, array $json): Map
             }
 
             // Handle all other cases
-            $map->$argument = $json[$argument];
+            $map->$argument = $value;
         } else {
             $map->$argument = null;
         }
