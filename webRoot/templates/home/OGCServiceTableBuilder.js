@@ -37,32 +37,27 @@ async function setupServiceTable(uuid) {
         .then(data => {
             $('.dynamicTableElement').remove();
 
-            const table = document.getElementById("table-maps");
-            table.style.visibility = "visible";
+            const table = $("#table-maps").css('visibility', 'visible');
             for (const item in data) {
-                const row = document.createElement("tr");
-                row.classList.add("dynamicTableElement")
+                const row = $("<tr>").addClass("dynamicTableElement");
+                const nameTD = $("<td>").text(data[item].name);
+                const descriptionTD = $("<td>").text(data[item].description);
+                const creationDateTD = $("<td>").text(data[item].creationDate);
+                const openTD = $("<td>");
+                const editTD = $("<td>");
+                const openLink = $('<button>').text("Dienst bearbeiten").addClass('btn btn-outline-primary')
+                    .on('click', () => openEditPage(data, item));
+                const editLink = $("<a>").text("Beschreibung bearbeiten").addClass('btn btn-outline-primary').
+                attr("href", "/templates/home/map/editMap.php?uuid=" + data[item].uuid);
 
-                const nameTD = document.createElement("td");
-                const descriptionTD = document.createElement("td");
-                const creationDateTD = document.createElement("td");
-                const openTD = document.createElement("td");
-                const editTD = document.createElement("td");
-                const openLink = document.createElement("a");
-                openLink.href = "/templates/forms/edit.php?uuid=" + data[item].uuid;
-                const editLink = document.createElement("a");
-                editLink.href = "/templates/home/map/editMap.php?uuid=" + data[item].uuid;
-
-                nameTD.innerText = data[item].name;
-                descriptionTD.innerText = data[item].description;
-                creationDateTD.innerText = data[item].creationDate;
-                openLink.innerText = "Dienst bearbeiten";
-                editLink.innerText = "Beschreibung bearbeiten";
-                openTD.appendChild(openLink);
-
-                editTD.appendChild(editLink);
+                openTD.append(openLink);
+                editTD.append(editLink);
                 row.append(nameTD, descriptionTD, creationDateTD, openTD, editTD);
-                table.appendChild(row);
+                table.append(row);
             }
         });
+}
+
+function openEditPage(data,item) {
+    window.location.href = "/templates/forms/edit.php?uuid=" + data[item].uuid
 }
