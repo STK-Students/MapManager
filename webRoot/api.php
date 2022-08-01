@@ -3,28 +3,31 @@ session_start();
 
 require $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
 
-$db =  Database::getInstance();;
+$db = Database::getInstance();;
 
 if (isset($_GET['getGroup'])) {
     $groupUUID = $_GET['getGroup'];
     $group = $db->getGroup($groupUUID);
     $response = array("uuid" => $group->getUUID(), "name" => $group->getName());
     print(json_encode($response));
-} if(isset($_GET['getMaps'])){
+}
+if (isset($_GET['getMaps'])) {
     $groupUUID = $_GET['getMaps'];
     $maps = array();
     $response = $db->getMaps($groupUUID);
-    for($i = 0; $i < count($response); $i++){
-        $map = (object) $response[$i];
+    for ($i = 0; $i < count($response); $i++) {
+        $map = (object)$response[$i];
         $maps[] = array("uuid" => $map->getUUID(), "name" => $map->getName(), "description" => $map->getDescription(), "creationDate" => $map->getCreationDate(), "groupUUID" => $map->getGroupUUID());
     }
     print(json_encode($maps));
-} if(isset($_GET['setGroupSession'])) {
+}
+if (isset($_GET['setGroupSession'])) {
     $groupUUID = $_GET['setGroupSession'];
     unset($_SESSION['currentGroup']);
     $_SESSION['currentGroup'] = $groupUUID;
     $group = $db->getGroup($_SESSION['currentGroup']);
     print(json_encode($group->getName()));
-} if(isset($_GET['getGroupUUID'])) {
+}
+if (isset($_GET['getGroupUUID'])) {
     print(json_encode($_SESSION['currentGroup']));
 }
