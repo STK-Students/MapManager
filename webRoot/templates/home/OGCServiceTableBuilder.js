@@ -75,10 +75,6 @@ async function setupServiceTable(uuid) {
 }
 
 async function setGroupSession(uuid){
-    await fetch('http://localhost/api.php?setGroupSession=' + uuid)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-        });
+    await fetch('http://localhost/api.php?setGroupSession=' + uuid);
 }
 

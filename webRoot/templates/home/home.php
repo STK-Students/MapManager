@@ -25,8 +25,7 @@ if (isset($_GET["inviteCode"])) {
 }
 
 $groups = $db->getGroupsFromUser($userID);
-
-//TODO: currentGroup = BAD, must be pulled from page state
+$currentGroup = $_SESSION['currentGroup'];
 ?>
 
 <!DOCTYPE html>
@@ -242,7 +241,7 @@ $groups = $db->getGroupsFromUser($userID);
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                    <button type="submit" name="submit-create-group" class="btn btn-success">Erstellen</button>
+                    <button type="submit" value="Senden" name="submit-create-group" class="btn btn-success">Erstellen</button>
                 </div>
             </form>
         </div>
