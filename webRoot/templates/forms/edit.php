@@ -2,6 +2,7 @@
  Custom Forms Format:
 
  All forms on this page use a custom system for validation and submission to the backend.
+ Make sure the ID's of the forms equal the attribute names of the MapFile-PHP-Library objects.
  This system uses the ID's of all <input> elements to determine if a single input belongs to a group of inputs.
  Such groups are serialized to nested objects inside a parent payload that also contains any inputs without groups.
  This structure makes the parsing in the backend easier.
