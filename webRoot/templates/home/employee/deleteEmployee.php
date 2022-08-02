@@ -11,5 +11,3 @@ if(isset($_POST['uuid'])){
     $db->removeUserFromGroup($groupUUID, $userUUID);
     header('Location: /templates/home/home.php?result=success');
 }
-
-?>

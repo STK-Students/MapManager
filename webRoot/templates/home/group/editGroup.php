@@ -12,7 +12,7 @@ if (isset($_POST['edit_group_form_submit'])) {
         $db->editGroup($groupUUID, $name);
         header('Location: /templates/home/home.php?result=success');
     } catch (Exception $e) {
-        echo $e->getMessage();
+        header('Location: /templates/home/home.php?result=failure');
     }
 }
 

@@ -36,7 +36,7 @@ $currentGroup = $_SESSION['currentGroup'];
     <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../dependencies/jQuery/jQuery.js"></script>
     <script src="OGCServiceTableBuilder.js"></script>
-    <script src="home.js"></script>
+    <script src="home.js" defer></script>
     <link rel="stylesheet" href="home_style.css">
     <link rel="stylesheet" href="/.media/fontAndNavbar.css">
 </head>
@@ -80,7 +80,7 @@ $currentGroup = $_SESSION['currentGroup'];
         </div>
     </div>
 </nav>
-<div id="liveAlertPlaceholder"></div>
+
 <div>
     <div class="title"><h2 id="main-title"></h2></div>
     <div class="content">
@@ -385,6 +385,36 @@ $currentGroup = $_SESSION['currentGroup'];
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toasts -->
+
+<!-- Success -->
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive"
+         aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Aktion erfolgreich!
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<!-- Failure -->
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="failureToast" class="toast align-items-center bg-danger border-0" role="alert" aria-live="assertive"
+         aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Aktion fehlgeschlagen!
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
 </div>
