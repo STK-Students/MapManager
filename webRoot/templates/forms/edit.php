@@ -15,7 +15,7 @@
 <!doctype html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8"> <!--Ermöglicht einfache Eingabe von Sonderzeichen-->
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"> <!--Bootstrap responsive design meta tag-->
     <link rel="stylesheet" href="edit_style.css">
     <link rel="stylesheet" href="/.media/fontAndNavbar.css">
@@ -30,6 +30,8 @@
 
     /**
      * Fills the forms on this page if there is already data for them.
+     * The session may contain a serialized Map object. It is loaded if that's the one that shall be edited.
+     * Otherwise, the data is loaded from the MapFile.
      */
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/MapFileHandler.php";
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/ServiceConverter.php";
@@ -48,7 +50,7 @@
         $map = unserialize($_SESSION['map']);
     }
     $json = mapToJSON($map);
-
+    echo $json;
     echo "<script type=\"text/javascript\" defer>fillForms(" . $json . ");</script>";
     ?>
     <title>Dienst bearbeiten</title>
