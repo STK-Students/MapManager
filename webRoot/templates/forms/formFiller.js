@@ -1,18 +1,23 @@
-function fillForms(map) {
+function fillForms(ogcServiceData) {
     $("document").ready(function () {
-        for (const [setting, value] of Object.entries(map)) {
-            let nestedSetting = map[setting];
+        for (const [setting, value] of Object.entries(ogcServiceData)) {
+            let nestedSetting = ogcServiceData[setting];
             if (typeof nestedSetting == "object") {
-                if (setting == "layer") {
-                    buildLayerTable(value);
-                }
-                for (const property in nestedSetting) {
-                    $("#" + setting + "-" + property).val( nestedSetting[property]);
-                }
+                handleNestedSetting(setting, value, nestedSetting);
+            } else {
+                $("#" + setting).val(value);
             }
-            $("#" + setting).val(value);
         }
     });
+}
+
+function handleNestedSetting(setting, value, nestedSetting) {
+    if (setting === "layer") {
+        buildLayerTable(value);
+    }
+    for (const property in nestedSetting) {
+        $("#" + setting + "-" + property).val(nestedSetting[property]);
+    }
 }
 
 function buildLayerTable() {
