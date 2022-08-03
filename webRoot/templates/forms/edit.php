@@ -50,7 +50,6 @@
         $map = unserialize($_SESSION['map']);
     }
     $json = mapToJSON($map);
-    echo $json;
     echo "<script type=\"text/javascript\" defer>fillForms(" . $json . ");</script>";
     ?>
     <title>Dienst bearbeiten</title>
