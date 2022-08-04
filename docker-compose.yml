@@ -42,6 +42,7 @@ services:
       - "6778:80"
     volumes:
       - ./webRoot:/etc/mapserver/
+
   postgres:
     container_name: Postgres
     image: postgres:latest
