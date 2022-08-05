@@ -31,7 +31,8 @@ $currentGroup = $_SESSION['currentGroup'];
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <title>Übersicht</title>
+    <title>MapManager</title>
+    <link rel="icon" type="image/png" href="https://www.stadt-koeln.de/images/x22/logo-adler-stadt-koeln.png">
     <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
     <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../dependencies/jQuery/jQuery.js"></script>
@@ -160,23 +161,23 @@ $currentGroup = $_SESSION['currentGroup'];
 <!-- Dialogs -->
 
 <!-- Create Service -->
-<div class="modal fade" id="createServiceModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+<div class="modal fade" id="createServiceModal" tabindex="-1" aria-labelledby="modalTitleCreateService" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle">Dienst erstellen</h5>
+                <h5 class="modal-title" id="modalTitleCreateService">Dienst erstellen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form name="create_group_form" action="./map/createMap.php" method="post">
+            <form name="create_service_form" action="./map/createMap.php" method="post">
                 <div class="modal-body">
 
                     <div class="row">
                         <div class="col-12 gy-2">
-                            <input type="text" class="form-control" name="input-name" id="inputServiceName"
+                            <input type="text" class="form-control" name="input-name" id="inputCreateServiceName"
                                    placeholder="Name des Dienstes">
                         </div>
                         <div class="col-12 gy-2">
-                            <textarea class="form-control" name="input-description" id="inputServiceDescription"
+                            <textarea class="form-control" name="input-description" id="inputCreateServiceDescription"
                                       placeholder="Beschreibung des Dienstes"></textarea>
                         </div>
                     </div>
@@ -184,7 +185,42 @@ $currentGroup = $_SESSION['currentGroup'];
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                    <button type="submit" class="btn btn-primary">Ok</button>
+                    <button type="submit" name="submit-create-map" name="Senden" class="btn btn-primary">Ok</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Service -->
+<div class="modal fade" id="editServiceModal" tabindex="-1" aria-labelledby="modalTitleEditService" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleEditService">Dienst erstellen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form name="edit_service_form" action="./map/editMap.php" method="post">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 gy-2">
+                            <input type="text" class="form-control" name="input-uuid" id="inputEditServiceUUID"
+                                   placeholder="UUID des Dienstes" readonly>
+                        </div>
+                        <div class="col-12 gy-2">
+                            <input type="text" class="form-control" name="input-name" id="inputEditServiceName"
+                                   placeholder="Name des Dienstes">
+                        </div>
+                        <div class="col-12 gy-2">
+                            <textarea class="form-control" name="input-description" id="inputEditServiceDescription"
+                                      placeholder="Beschreibung des Dienstes"></textarea>
+                        </div>
+                    </div>
+                    <input type="text" style="visibility: hidden" name="group-uuid" id="hiddenInputGroupUUID">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                    <button type="submit" name="submit-edit-map" value="Senden" class="btn btn-primary">Ok</button>
                 </div>
             </form>
         </div>
@@ -230,7 +266,7 @@ $currentGroup = $_SESSION['currentGroup'];
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalTitleDeleteService">Gruppe erstellen</h5>
+                <h5 class="modal-title" id="modalTitleCreateGroup">Gruppe erstellen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form name="create_group_form" action="group/createGroup.php" method="post">
@@ -388,6 +424,7 @@ $currentGroup = $_SESSION['currentGroup'];
         </div>
     </div>
 </div>
+
 
 </body>
 </html>
