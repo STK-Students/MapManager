@@ -11,6 +11,6 @@ if (isset($_POST['remove_group_form_submit'])) {
         $db->removeGroup($groupUUID);
         header('Location: /templates/home/home.php?result=success');
     } catch (Exception $e) {
-        echo $e->getMessage();
+        header('Location: /templates/home/home.php?result=failure');
     }
 }

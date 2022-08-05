@@ -42,6 +42,7 @@ services:
       - "6778:80"
     volumes:
       - ./webRoot:/etc/mapserver/
+
   postgres:
     container_name: Postgres
     image: postgres:latest
@@ -76,58 +77,4 @@ services:
       - "5055:5050"
     depends_on:
       - postgres
-
-  openldap:
-    image: osixia/openldap:1.5.0
-    networks:
-      - mapmanager
-    container_name: LDAP
-    environment:
-      LDAP_LOG_LEVEL: "256"
-      LDAP_ORGANISATION: "webdevlocal"
-      LDAP_DOMAIN: "webdevlocal.com"
-      LDAP_BASE_DN: "dc=webdevlocal,dc=com"
-      LDAP_ADMIN_PASSWORD: "admin"
-      LDAP_CONFIG_PASSWORD: "admin"
-      LDAP_READONLY_USER: "false"
-      LDAP_RFC2307BIS_SCHEMA: "false"
-      LDAP_BACKEND: "mdb"
-      LDAP_TLS: "true"
-      LDAP_TLS_CRT_FILENAME: "ldap.crt"
-      LDAP_TLS_KEY_FILENAME: "ldap.key"
-      LDAP_TLS_DH_PARAM_FILENAME: "dhparam.pem"
-      LDAP_TLS_CA_CRT_FILENAME: "ca.crt"
-      LDAP_TLS_ENFORCE: "false"
-      LDAP_TLS_CIPHER_SUITE: "SECURE256:-VERS-SSL3.0"
-      LDAP_TLS_VERIFY_CLIENT: "demand"
-      LDAP_REPLICATION: "false"
-      KEEP_EXISTING_CONFIG: "false"
-      LDAP_REMOVE_CONFIG_AFTER_SETUP: "true"
-      LDAP_SSL_HELPER_PREFIX: "ldap"
-    tty: true
-    stdin_open: true
-    volumes:
-      - ldap:/var/lib/ldap
-      - ldap:/etc/ldap/slapd.d
-    ports:
-      - "389:389"
-      - "636:636"
-    domainname: "example.org"
-    hostname: "LDAP"
-
-  phpldapadmin:
-    image: osixia/phpldapadmin:latest
-    container_name: LDAPAdminPanel
-    networks:
-      - mapmanager
-    environment:
-      PHPLDAPADMIN_LDAP_HOSTS: "LDAP"
-      PHPLDAPADMIN_HTTPS: "false"
-    ports:
-      - "6060:80"
-    depends_on:
-      - openldap
-      - mapserver
-
-    
     

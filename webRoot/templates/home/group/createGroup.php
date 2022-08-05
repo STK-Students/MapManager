@@ -9,5 +9,6 @@ if (isset($_POST['submit-create-group'])) {
         $db->addUserToGroup($groupUUID, $_SESSION['user']);
         header('Location: /templates/home/home.php?result=success&uuid=' . $groupUUID);
     } catch (Exception $e) {
+        header('Location: /templates/home/home.php?result=failure');
     }
 }

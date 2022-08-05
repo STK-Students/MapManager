@@ -1,34 +1,22 @@
-let alertPlaceholder = $('#liveAlertPlaceholder');
-const alert = (message, type) => {
-    const wrapper = document.createElement('div')
-    wrapper.innerHTML = [
-        `<div class="alert alert-${type} alert-dismissible" role="alert">`,
-        `   <div>${message}</div>`,
-        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-        '</div>'
-    ].join('')
+// Toast notification are triggered based on URL GET params
+const successToast = document.getElementById('successToast')
+const failureToast = document.getElementById('failureToast')
 
-    alertPlaceholder.append(wrapper)
+const urlParams = new URLSearchParams(window.location.search)
+if (urlParams.has("result")) {
+    const result = urlParams.get("result")
+    toast = result === "success" ? new bootstrap.Toast(successToast) : new bootstrap.Toast(failureToast);
+    toast.show()
+
 }
 
-let GETparam = window.location.search.split("=")[1];
 
-if (GETparam === "success") {
-    console.log("Hey")
-    alert("Aktion erfolgreich durchgeführt.", "success")
-
-} else if (GETparam === "failed") {
-    console.log("Ho")
-    alert("Aktion fehlgeschlagen.", "danger")
-}
-
-function copy(){
-    var content = document.getElementById("inviteCode");
+function copy() {
+    let content = document.getElementById("inviteCode");
     content.select();
     document.execCommand('copy');
 }
 
-async function setGroupSession(uuid){
+async function setGroupSession(uuid) {
     await fetch('http://localhost/api.php?setGroupSession=' + uuid);
 }
-

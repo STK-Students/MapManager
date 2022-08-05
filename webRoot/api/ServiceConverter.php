@@ -10,20 +10,26 @@ require_once "$doctrineLoc/Common/Collections/Selectable.php";
 require_once "$doctrineLoc/Common/Collections/Collection.php";
 require_once "$doctrineLoc/Common/Collections/ArrayCollection.php";
 
+/**
+ * Set's the given values from the JSON in the given map object.
+ * @param Map $map to edit
+ * @param array $json to get the data from
+ * @return Map edited map
+ */
 function jsonToMap(Map $map, array $json): Map
 {
 
     /**
-     * An array of all valid arguments. Required so the value of the
-     * $_SESSION variable cannot be set freely by the user.
+     * An array of all valid arguments.
      */
-    $validArguments = array('name', 'scaledenom', 'angle', 'size', 'maxsize', 'extent');
-
+    $validArguments = array('name', 'scaledenom', 'units', 'angle', 'size', 'maxsize', 'extent');
     foreach ($validArguments as $argument) {
         $value = $json[$argument];
-        if (isset($value)) {
-
-            // Handle edge cases first
+        if (!isset($value)) {
+            // Explicitly unset arguments that have not been defined by the user.
+            $map->$argument = null;
+        } else {
+            // Some arguments require special conversion, e.g. because they need to be merged into a new data type.
             switch ($argument) {
                 case 'size':
                     $map->size = array($value['x'], $value['y']);
@@ -32,23 +38,34 @@ function jsonToMap(Map $map, array $json): Map
                     $extent = array($value['minx'], $value['miny'], $value['maxx'], $value['maxy']);
                     $map->extent = array_map("floatval", $extent);
                     break;
+                default:
+                    $map->$argument = $value;
             }
-
-            // Handle all other cases
-            $map->$argument = $value;
-        } else {
-            $map->$argument = null;
         }
     }
     return $map;
 }
 
+/**
+ * Converts the map object into a JSON format that can be understood by the JS for filling the forms.
+ * @param Map $map map to convert
+ * @return string JSON for the website JS
+ */
 function mapToJSON(Map $map): string
 {
     $json = [];
-    foreach (get_object_vars($map) as $key=>$value) {
+    foreach (get_object_vars($map) as $key => $value) {
         if (isset($value)) {
-            $json[$key] = $value;
+            switch ($key) {
+                case 'size':
+                    $json['size'] = array("x" => $value[0], "y" => $value[1]);
+                    break;
+                case 'extent':
+                    $json['extent'] = array("minx" => $value[0], "miny" => $value[1], "maxx" => $value[2], "maxy" => $value[3]);
+                    break;
+                default:
+                    $json[$key] = $value;
+            }
         }
     }
     return json_encode($json);
