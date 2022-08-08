@@ -5,11 +5,11 @@ class FormFiller {
 
     /**
      * Fills the forms on an edit page.
-     * @param ogcServiceData the data of the ogc service
+     * @param geoServiceData the data of the geoService
      * @param specialCaseFunction optional function to execute
      */
-    fillForms(ogcServiceData, specialCaseFunction) {
-            for (const [setting, value] of Object.entries(ogcServiceData)) {
+    fillForms(geoServiceData, specialCaseFunction) {
+            for (const [setting, value] of Object.entries(geoServiceData)) {
                 if (typeof value == "object") {
                     this.#handleNestedSetting(setting, value);
                 } else {
@@ -17,17 +17,11 @@ class FormFiller {
                 }
             }
             if (specialCaseFunction !== undefined) {
-                specialCaseFunction(ogcServiceData);
+                specialCaseFunction(geoServiceData);
             }
     }
 
     #handleNestedSetting(setting, value) {
-        if (setting === "layers") {
-            let layerTableBuilder = new LayerTableBuilder($('#layerTable'));
-            for (const layer of Object.values(value)) {
-                layerTableBuilder.addNewLayer(layer.name);
-            }
-        }
         for (const property in value) {
             $("#" + setting + "-" + property).val(value[property]);
         }
