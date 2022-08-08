@@ -17,14 +17,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"> <!--Bootstrap responsive design meta tag-->
-    <link rel="stylesheet" href="edit_style.css">
+    <link rel="stylesheet" href="map.css">
     <link rel="stylesheet" href="/.media/fontAndNavbar.css">
-    <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
-    <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../../dependencies/jQuery/jQuery.js"></script>
-    <script src="formSubmitter.js" defer></script>
-    <script src="formFiller.js"></script>
-    <script src="edit.js" defer></script>
+    <link rel="stylesheet" href="../../../dependencies/Bootstrap/css/bootstrap.min.css">
+    <script src="../../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../dependencies/jQuery/jQuery.js"></script>
+    <script src="../formSubmitter.js" defer></script>
+    <script src="../formFiller.js" defer></script>
+    <script src="LayerTableBuilder.js"></script>
+    <script src="map.js"></script>
     <?php
     session_start();
 
@@ -50,7 +51,7 @@
         $map = unserialize($_SESSION['map']);
     }
     $json = mapToJSON($map);
-    echo "<script type=\"text/javascript\" defer>fillForms(" . $json . ");</script>";
+    echo "<script type=\"text/javascript\" defer>phpHook(" . $json . ");</script>";
     ?>
     <title>Dienst bearbeiten</title>
 </head>
@@ -109,13 +110,13 @@
             <div class="col-2">
                 <label for="units">Koordinateneinheit</label>
                 <select class="form-select" id="units" required>
-                    <option value="meters">Meter</option>
-                    <option value="kilometers">Kilometer</option>
-                    <option value="dd">Dezimalgrad</option>
-                    <option value="feet">Feet</option>
-                    <option value="inches">Inches</option>
-                    <option value="miles">Miles</option>
-                    <option value="nauticalmiles">Seemeile</option>
+                    <option value="METERS">Meter</option>
+                    <option value="KILOMETERS">Kilometer</option>
+                    <option value="DD">Dezimalgrad</option>
+                    <option value="FEET">Feet</option>
+                    <option value="INCHES">Inches</option>
+                    <option value="MILES">Miles</option>
+                    <option value="NAUTICALMILE">Seemeile</option>
                 </select>
             </div>
 
@@ -135,7 +136,7 @@
         <div class="row"><!--Start Row 2-->
 
             <div class="col-2 gy-1">
-                <label for="size-x">Auflösung</label>
+                <label for="size-x">Größe in Pixel</label>
                 <div class="input-group has-validation">
                     <input type="number" class="form-control" id="size-x" placeholder="1920" required>
                     <span class="input-group-text" id="basic-addon2">x</span>
@@ -150,6 +151,14 @@
                 <label for="maxsize">Maximale Auflösung</label>
                 <div class="input-group">
                     <input type="number" class="form-control" id="maxsize" placeholder="4096" value="4096">
+                    <span class="input-group-text" id="basic-addon2">Pixel</span>
+                </div>
+            </div>
+
+            <div class="col-2 gy-1">
+                <label for="resolution">Maximale Pixel pro Zoll</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" id="resolution" placeholder="72" value="72">
                     <span class="input-group-text" id="basic-addon2">Pixel</span>
                 </div>
             </div>

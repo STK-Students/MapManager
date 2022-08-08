@@ -16,9 +16,9 @@ if(isset($_POST["submit-create-map"])){
         $generatedUUID = pg_fetch_result($result, 0, 0);
         $_SESSION['currentServiceUUID'] = $generatedUUID;
         MapFileHandler::writeMapFile(MapFileHandler::getPath());
-        header('Location: /templates/forms/edit.php?uuid=' . $generatedUUID);
+        header('Location: /templates/forms/map/map.php?uuid=' . $generatedUUID);
     } catch (Exception $e) {
-        echo $e->getMessage();
+        error_log($e->getMessage());
+        header('Location: /templates/);
     }
 }
-?>

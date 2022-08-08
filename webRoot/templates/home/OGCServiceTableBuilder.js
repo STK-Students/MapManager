@@ -65,5 +65,5 @@ async function setupServiceTable(uuid) {
 }
 
 function openEditPage(data, item) {
-    window.location.href = "/templates/forms/edit.php?uuid=" + data[item].uuid
+    window.location.href = "/templates/forms/map/map.php?uuid=" + data[item].uuid
 }
