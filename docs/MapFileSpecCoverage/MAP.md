@@ -30,11 +30,11 @@ Dies dient der Kontrolle, ob alle Features des MapFile abgebildet sind.
 - [ ] [PROJECTION](Nested)
 - [ ] [QUERYMAP](Nested)
 - [ ] [REFERENCE](Nested)
-- [ ] RESOLUTION
+- [X] RESOLUTION /  Maximale Pixel pro Zoll
 - [X] SCALEDENOM / Maßstab
 - [ ] SCALEBAR
 - [ ] SHAPEPATH
-- [X] SIZE / Auflösung -> Split into two inputs (x & y)
+- [X] SIZE /  Größe in Pixel  -> Split into two inputs (x & y)
 - [ ] STATUS -> Eventuell nicht im normalen Layout enthalten?
 - [ ] SYMBOLSET -> Immer gleich?
 - [ ] [SYMBOL](nested)

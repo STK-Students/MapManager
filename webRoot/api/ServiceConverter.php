@@ -22,7 +22,7 @@ function jsonToMap(Map $map, array $json): Map
     /**
      * An array of all valid arguments.
      */
-    $validArguments = array('name', 'scaledenom', 'units', 'angle', 'size', 'maxsize', 'extent');
+    $validArguments = array('name', 'scaledenom', 'units', 'angle', 'size', 'resolution', 'maxsize', 'extent');
     foreach ($validArguments as $argument) {
         $value = $json[$argument];
         if (!isset($value)) {
