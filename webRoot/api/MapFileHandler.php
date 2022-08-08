@@ -66,6 +66,7 @@ class MapFileHandler
         try {
             return (new MapParser($filePath))->parse($filePath);
         } catch (UnsupportedException|FileException  $e) {
+            error_log($e->getMessage());
             die("Ein Fehler ist beim Laden des Mapfiles aufgetreten" . $e);
         }
     }
