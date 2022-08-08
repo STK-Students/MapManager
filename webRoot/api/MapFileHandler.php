@@ -90,7 +90,7 @@ class MapFileHandler
     {
         $mapUUID = $_SESSION['currentServiceUUID'];
 
-        $service = Database::getInstance()->getOGCService($mapUUID);
+        $service = Database::getInstance()->getGeoService($mapUUID);
         $groupPath = $service->getGroupPath();
         $mapFilePath = $service->getPath();
 

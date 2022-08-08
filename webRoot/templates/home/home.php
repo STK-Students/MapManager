@@ -36,7 +36,7 @@ $currentGroup = $_SESSION['currentGroup'];
     <link rel="stylesheet" href="../../dependencies/Bootstrap/css/bootstrap.min.css">
     <script src="../../dependencies/Bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../dependencies/jQuery/jQuery.js"></script>
-    <script src="OGCServiceTableBuilder.js"></script>
+    <script src="GeoServiceTableBuilder.js"></script>
     <script src="home.js" defer></script>
     <link rel="stylesheet" href="home_style.css">
     <link rel="stylesheet" href="/.media/fontAndNavbar.css">

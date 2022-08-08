@@ -3,7 +3,7 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/model/User.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/model/Group.php";
-require_once $_SERVER['DOCUMENT_ROOT'] . "/model/OGCService.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/model/GeoService.php";
 
 /**
  * A Singleton Database class.
@@ -65,11 +65,11 @@ class Database
         }
     }
 
-    function getOGCService($mapUUID): OGCService
+    function getGeoService($mapUUID): GeoService
     {
         $result = pg_query_params($this->db_connection, "Select * From public.map WHERE uuid=$1", array($mapUUID));
         $row = pg_fetch_array($result, null, PGSQL_ASSOC);
-        return new OGCService($row['uuid'], $row['name'], $row['description'], $row['creationDate'], $row['groupUUID']);
+        return new GeoService($row['uuid'], $row['name'], $row['description'], $row['creationDate'], $row['groupUUID']);
     }
 
     function addUser($adID) {
@@ -107,12 +107,12 @@ class Database
         }
     }
 
-    function getMaps($groupUUID)
+    function getGeoServices($groupUUID)
     {
         $maps = array();
         $result = pg_query_params($this->db_connection, 'SELECT * FROM public.map WHERE "groupUUID"=$1', array($groupUUID));
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-            $item = new OGCService($line['uuid'], $line['name'], $line['description'], $line['creationDate'], $line['groupUUID']);
+            $item = new GeoService($line['uuid'], $line['name'], $line['description'], $line['creationDate'], $line['groupUUID']);
             $maps[] = $item;
         }
         return $maps;

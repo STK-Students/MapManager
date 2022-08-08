@@ -17,12 +17,12 @@ $(document).ready(function () {
 
 
 /**
- * Gets called by map.php with the data of the ogc service as a json.
- * @param ogcServiceData the data of the ogc service as a json
+ * Gets called by map.php with the data of the geoService as a json.
+ * @param geoServiceData the data of the geoService as a json
  */
-function phpHook(ogcServiceData) {
+function phpHook(geoServiceData) {
     $(document).ready(function () {
-        new FormFiller().fillForms(ogcServiceData);
+        new FormFiller().fillForms(geoServiceData, fillLayerTable);
     });
 }
 

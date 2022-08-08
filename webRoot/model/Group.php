@@ -1,7 +1,7 @@
 <?php
 
 /**
- * A collection of users that manage a number of @link OGCService s.
+ * A collection of users that manage a number of @link GeoService s.
  */
 class Group
 {

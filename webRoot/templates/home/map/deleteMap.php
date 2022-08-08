@@ -25,7 +25,7 @@ function deleteMap(Database $db): void
 function buildMapOptions(Database $db): void
 {
     $groupUUID = $_GET['uuid'];
-    $maps = $db->getMaps($groupUUID);
+    $maps = $db->getGeoServices($groupUUID);
 
     $options = [];
     for ($i = 0; $i < count($maps); $i++) {

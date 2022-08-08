@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Holds metadata about an OGC Service that is managed by the MapManager.
+ * Holds metadata about a GeoService that is managed by the MapManager.
  */
-class OGCService
+class GeoService
 {
     private $uuid;
     private $name;

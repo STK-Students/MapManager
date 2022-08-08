@@ -42,7 +42,7 @@
     $mapUUID = $_GET['uuid'];
 
     if (isset($_SESSION['currentServiceUUID']) && $_SESSION['currentServiceUUID'] != $mapUUID || !isset($_SESSION['map'])) {
-        $mapFilePath = Database::getInstance()->getOGCService($mapUUID)->getPath();
+        $mapFilePath = Database::getInstance()->getGeoService($mapUUID)->getPath();
         $map = MapFileHandler::loadMapFromFile($mapFilePath);
         $_SESSION['currentServiceUUID'] = $mapUUID;
     } else {
@@ -78,6 +78,19 @@
 <h1>Dienst bearbeiten</h1>
 <div class="container-lg">
     <form name="Eingabe" id='mapForm' class="needs-validation">
+
+
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault">Status</label>
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">INCLUDE</label>
+            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="andererDienst.map">
+        </div>
+
+
+
         <h2>Allgemeine Einstellungen</h2>
 
         <div class="row"><!--Start Row 1-->

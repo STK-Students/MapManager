@@ -1,5 +1,3 @@
-
-
 ## Was ist das?
 
 Alle Einstellungen aus der MapFile Spezifikation werden hier in der gleichen Reihenfolge wie auf
