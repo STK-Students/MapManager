@@ -18,7 +18,7 @@ class LayerTableBuilder {
     addNewLayer(layerName) {
         let newTableLength = $('#layerTable tr').length;
 
-        const tableRow = this.#generateTableRow(newTableLength, layerName);
+        const tableRow = this.#createTableRow(newTableLength, layerName);
 
         this.table.append(tableRow);
     }
@@ -29,19 +29,32 @@ class LayerTableBuilder {
      * @param layerName the name of the layer
      * @returns {*|jQuery|HTMLElement} the table row as a jQuery object
      */
-    #generateTableRow(rowNumber, layerName) {
-        const tr = $("<tr>");
+    #createTableRow(rowNumber, layerName) {
+        const uuid = self.crypto.randomUUID();
+        const tr = $("<tr>").attr({id: uuid});
         const th = $("<th>").attr({scope: 'row'}).text(rowNumber);
         const nameTD = $("<td>").text(layerName)
 
-        let buttonEdit = $('<button>').attr({id: 'layerEdit-' + rowNumber})
-            .addClass('btn btn-outline-primary').text('Bearbeiten');
-        let buttonDelete = $('<button>').attr({id: 'layerDelete-' + rowNumber})
-            .addClass('btn btn-outline-danger actionButton').text('Löschen');
+        let buttonEdit = $('<button>').addClass('btn btn-outline-primary').text('Bearbeiten');
+        let buttonDelete = $('<button>').addClass('btn btn-outline-danger actionButton').text('Löschen')
+            .on('click', () => {
+                this.#deleteTableRow(uuid);
+            });
 
         const actionsTD = $("<td>");
         actionsTD.append(buttonEdit, buttonDelete);
 
         return tr.append(th, nameTD, actionsTD);
+    }
+
+    #deleteTableRow(uuid) {
+        $(`#${uuid}`).closest('tr').remove();
+        this.#refreshTableRowNumbers();
+    }
+
+    #refreshTableRowNumbers() {
+        $('#layerTable tbody tr').each(function (index) {
+            $(this).children('th').text(index + 1);
+        });
     }
 }
