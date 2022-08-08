@@ -15,6 +15,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"> <!--Bootstrap responsive design meta tag-->
+    <link rel="icon" type="image/png" href="https://www.stadt-koeln.de/images/x22/logo-adler-stadt-koeln.png">
     <link rel="stylesheet" href="map.css">
     <link rel="stylesheet" href="/.media/fontAndNavbar.css">
     <link rel="stylesheet" href="../../../dependencies/Bootstrap/css/bootstrap.min.css">
