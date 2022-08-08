@@ -47,13 +47,11 @@ async function setupServiceTable(uuid) {
                 const editTD = $("<td>");
                 const openLink = $('<button>').text("Dienst bearbeiten").addClass('btn btn-outline-primary')
                     .on('click', () => openEditPage(data, item));
-                const editLink = $("<a>").text("Beschreibung bearbeiten").addClass('btn btn-outline-primary').
-                on("click", () =>  {
+                const editLink = $("<a>").text("Beschreibung bearbeiten").addClass('btn btn-outline-primary').on("click", () => {
                     $("#inputEditServiceUUID").val(data[item].uuid);
                     $("#inputEditServiceName").val(data[item].name);
                     $("#inputEditServiceDescription").val(data[item].description);
                     $("#editServiceModal").modal('show');
-
                 });
 
                 openTD.append(openLink);

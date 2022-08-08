@@ -34,4 +34,3 @@ function buildMapOptions(Database $db): void
     }
     echo json_encode($options);
 }
-
