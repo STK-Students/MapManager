@@ -204,7 +204,7 @@ $currentGroup = $_SESSION['currentGroup'];
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12 gy-2">
-                            <input type="text" class="form-control" name="input-uuid" id="inputEditServiceUUID"
+                            <input style="visibility: hidden; position: fixed" type="text" class="form-control" name="input-uuid" id="inputEditServiceUUID"
                                    placeholder="UUID des Dienstes" readonly>
                         </div>
                         <div class="col-12 gy-2">
