@@ -6,10 +6,9 @@ class FormFiller {
     /**
      * Fills the forms on an edit page.
      * @param ogcServiceData the data of the ogc service
-     * @param specialCaseFunction a function to execute
+     * @param specialCaseFunction optional function to execute
      */
     fillForms(ogcServiceData, specialCaseFunction) {
-
             for (const [setting, value] of Object.entries(ogcServiceData)) {
                 if (typeof value == "object") {
                     this.#handleNestedSetting(setting, value);
@@ -20,7 +19,6 @@ class FormFiller {
             if (specialCaseFunction !== undefined) {
                 specialCaseFunction(ogcServiceData);
             }
-
     }
 
     #handleNestedSetting(setting, value) {
