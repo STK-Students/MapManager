@@ -10,8 +10,6 @@
  Use the format "<groupID>-<elementID>" to signal which inputs belong together.
  Make sure you NEVER assign a group name as the name of an unrelated input.
  -->
-
-
 <!doctype html>
 <html lang="de">
 <head>

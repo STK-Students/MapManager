@@ -17,15 +17,17 @@ class FormFiller {
                     $("#" + setting).val(value);
                 }
             }
-            specialCaseFunction(ogcServiceData);
+            if (specialCaseFunction !== undefined) {
+                specialCaseFunction(ogcServiceData);
+            }
 
     }
 
     #handleNestedSetting(setting, value) {
-        if (setting === "layer") {
+        if (setting === "layers") {
             let layerTableBuilder = new LayerTableBuilder($('#layerTable'));
-            for (const layer in value) {
-                layerTableBuilder.addNewLayer(layer);
+            for (const layer of Object.values(value)) {
+                layerTableBuilder.addNewLayer(layer.name);
             }
         }
         for (const property in value) {

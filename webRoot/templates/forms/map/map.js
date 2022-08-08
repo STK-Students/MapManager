@@ -22,7 +22,7 @@ $(document).ready(function () {
  */
 function phpHook(ogcServiceData) {
     $(document).ready(function () {
-        new FormFiller().fillForms(ogcServiceData, parseLayers);
+        new FormFiller().fillForms(ogcServiceData);
     });
 }
 
@@ -34,10 +34,12 @@ function phpHook(ogcServiceData) {
  */
 function parseLayers(json) {
     let table = $('#layerTable td');
-    let layers = [];
+    let layers = {};
+    let layerIndex = 0;
     for (let i = 0; i < table.length; i++) {
         if (i % 2 === 0) {
-            layers.push(table[i].textContent)
+            layers[layerIndex] = {name: table[i].textContent};
+            layerIndex++;
         }
     }
     json['layers'] = layers;

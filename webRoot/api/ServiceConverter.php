@@ -1,5 +1,7 @@
 <?php
 
+use Doctrine\Common\Collections\ArrayCollection;
+use MapFile\Model\Layer;
 use MapFile\Model\Map as Map;
 
 $mapFileLoc = $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser";
@@ -22,7 +24,7 @@ function jsonToMap(Map $map, array $json): Map
     /**
      * An array of all valid arguments.
      */
-    $validArguments = array('name', 'scaledenom', 'units', 'angle', 'size', 'resolution', 'maxsize', 'extent');
+    $validArguments = array('name', 'scaledenom', 'units', 'angle', 'size', 'resolution', 'maxsize', 'extent', 'layers');
     foreach ($validArguments as $argument) {
         $value = $json[$argument];
         if (!isset($value)) {
@@ -38,12 +40,32 @@ function jsonToMap(Map $map, array $json): Map
                     $extent = array($value['minx'], $value['miny'], $value['maxx'], $value['maxy']);
                     $map->extent = array_map("floatval", $extent);
                     break;
+                case 'layers':
+                    convertLayerToObject($map, $value);
+                    break;
                 default:
                     $map->$argument = $value;
             }
         }
     }
     return $map;
+}
+
+function convertLayerToObject($map, $layerData)
+{
+    $layers = array();
+
+    foreach ($layerData as $layer) {
+        $parsedLayer = new Layer();
+        foreach ($layer as $key => $value) {
+            switch ($key) {
+                default:
+                    $parsedLayer->$key = $value;
+            }
+        }
+        $layers[] = $parsedLayer;
+    }
+    $map->layer = new ArrayCollection($layers);
 }
 
 /**
@@ -63,10 +85,23 @@ function mapToJSON(Map $map): string
                 case 'extent':
                     $json['extent'] = array("minx" => $value[0], "miny" => $value[1], "maxx" => $value[2], "maxy" => $value[3]);
                     break;
+                case 'layer':
+                    convertLayerToJSON($json, $value);
                 default:
                     $json[$key] = $value;
             }
         }
     }
     return json_encode($json);
+}
+
+function convertLayerToJSON(&$json, $layers)
+{
+    foreach ($layers as $layer) {
+        $layerJson = [];
+        foreach (get_object_vars($layer) as $key => $value) {
+            $layerJson[$key] = $value;
+        }
+        $json['layers'][] = $layerJson;
+    }
 }

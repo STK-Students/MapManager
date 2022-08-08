@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace MapFile\Parser;
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser/Exception/UnsupportedException.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser/Parser/Layer.php";
 use MapFile\Exception\UnsupportedException;
 use MapFile\Model\Map as MapObject;
 
