@@ -7,7 +7,6 @@ if (urlParams.has("result")) {
     const result = urlParams.get("result")
     toast = result === "success" ? new bootstrap.Toast(successToast) : new bootstrap.Toast(failureToast);
     toast.show()
-
 }
 
 

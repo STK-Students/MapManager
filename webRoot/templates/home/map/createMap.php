@@ -19,6 +19,6 @@ if(isset($_POST["submit-create-map"])){
         header('Location: /templates/forms/map/map.php?uuid=' . $generatedUUID);
     } catch (Exception $e) {
         error_log($e->getMessage());
-        header('Location: /templates/);
+        header('Location: /templates/home/home.php?result=failure');
     }
 }
