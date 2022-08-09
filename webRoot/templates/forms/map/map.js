@@ -110,8 +110,10 @@ function setIncludedServices(geoServiceData) {
  */
 function fillLayerTable(data) {
     const layers = data.layers;
-    let layerTableBuilder = new LayerTableBuilder($('#layerTable'));
-    for (const layer of Object.values(layers)) {
-        layerTableBuilder.addNewLayer(layer.name);
+    if (layers !== undefined) {
+        let layerTableBuilder = new LayerTableBuilder($('#layerTable'));
+        for (const layer of Object.values(layers)) {
+            layerTableBuilder.addNewLayer(layer.name);
+        }
     }
 }
