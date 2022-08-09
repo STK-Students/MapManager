@@ -5,8 +5,8 @@ const failureToast = document.getElementById('failureToast')
 const urlParams = new URLSearchParams(window.location.search)
 if (urlParams.has("result")) {
     const result = urlParams.get("result")
-    toast = result === "success" ? new bootstrap.Toast(successToast) : new bootstrap.Toast(failureToast);
-    toast.show()
+    let toast = result === "success" ? new bootstrap.Toast(successToast) : new bootstrap.Toast(failureToast);
+    toast.show();
 }
 
 

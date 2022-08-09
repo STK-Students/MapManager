@@ -35,7 +35,13 @@ class LayerTableBuilder {
         const th = $("<th>").attr({scope: 'row'}).text(rowNumber);
         const nameTD = $("<td>").text(layerName)
 
-        let buttonEdit = $('<button>').addClass('btn btn-outline-primary').text('Bearbeiten');
+        let buttonEdit = $('<button>').addClass('btn btn-outline-primary').text('Bearbeiten').on('click', () => {
+            const urlParams = new URLSearchParams(window.location.search)
+            if (urlParams.has("uuid")) {
+                const result = urlParams.get("uuid")
+                window.location.href = "http://localhost/templates/forms/layer/layer.php?mapUUID=" + result + "&layerUUID=" + uuid + "&rowNumber=" + rowNumber;
+            }
+        });
         let buttonDelete = $('<button>').addClass('btn btn-outline-danger actionButton').text('Löschen')
             .on('click', () => {
                 this.#deleteTableRow(uuid);
