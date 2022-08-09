@@ -61,8 +61,9 @@ class FormSubmitter {
         const optionJson = this.#autoParseOptionElements(optionElements);
 
         let json = {...inputJson, ...optionJson}
-        json = specialCaseFunction(json);
-
+        if (specialCaseFunction !== undefined) {
+            return specialCaseFunction(json);
+        }
         return json;
     }
 
