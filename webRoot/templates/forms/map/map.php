@@ -76,28 +76,39 @@
         </div>
     </div>
 </nav>
+<br>
 <h1>Dienst bearbeiten</h1>
 <div class="container-lg">
+
+
+    <!-- META Settings -->
+
+    <h2>Meta Einstellungen</h2>
+    <div class="row">
+        <div class="col-2">
+            <div class="form-check form-switch">
+                <input class="form-check-input" style="height: 1.5em; width: 3em; margin-right:5px; margin-top:0px"
+                       type="checkbox" role="switch" id="status">
+                <label class="form-check-label" for="status">Aus / An Status</label>
+            </div>
+        </div>
+        <div class="col-4">
+            <button id="includeModalShowButton" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#includeModal">
+                Vererbung bearbeiten
+            </button>
+
+        </div>
+    </div>
+
+    <br>
+    <br>
     <form name="Eingabe" id='mapForm' class="needs-validation">
-
-
-        <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-            <label class="form-check-label" for="flexSwitchCheckDefault">Status</label>
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">INCLUDE</label>
-            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="andererDienst.map">
-        </div>
-
-
-
         <h2>Allgemeine Einstellungen</h2>
 
         <div class="row"><!--Start Row 1-->
 
             <div class="col-4">
-                <label for="name">Kartenname</label>
+                <label for="name">Anzeigename</label>
                 <input type="text" class="form-control" id="name" placeholder="Grundwasserqualität"
                        aria-describedby="nameHelp" required>
                 <small id="nameHelp" class="form-text text-muted">
@@ -197,7 +208,10 @@
     </form>
 
     <br>
-    <hr>
+    <br>
+
+
+    <!-- LAYER -->
     <h3 style="display: inline-block">Ebenen</h3>
     <button style="margin-left: 15px; margin-bottom: 7px" data-bs-toggle="modal" data-bs-target="#addLayerModal"
             class="btn btn-outline-success">+
@@ -219,6 +233,45 @@
     <!-- Submit Button Code -->
     <br>
     <button type="button" id="submitAPIButton" class="btn btn-success">Speichern</button>
+
+    <!-- INCLUDE / Inheritance Modal  -->
+    <div class="modal fade" id="includeModal" tabindex="-1" aria-labelledby="includeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="includeModalLabel">Vererbung bearbeiten</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Wählen sie einen oder mehrere
+                                Dienste
+                                aus der folgenden Liste, deren Einstellungen auch für diesen Dienst gelten sollen. <br>
+                                Mit STRG+Linksklick können Sie mehrere Elemente auswählen.</label>
+                            <select class="form-select" multiple id="selectIncludeGeoServices"
+                                    aria-label="multiple select">
+                                <option value="0">Keine Vererbung (Standard)</option>
+                                <?php
+                                $groupUUID = Database::getInstance()->getGeoService($mapUUID)->getGroupUUID();
+                                $geoServices = Database::getInstance()->getGeoServices($groupUUID);
+
+                                foreach ($geoServices as $geoService) {
+                                    echo '<option class="dropdown-item" value="' . $geoService->getUUID() . '">' . $geoService->getName() . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                    <button type="button" id="includeSaveButton" class="btn btn-primary" data-bs-dismiss="modal">Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- INFORMATION MODALS -->
 
@@ -296,7 +349,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                    <button type="button" id="layerCreatorButton" class="btn btn-primary" data-bs-dismiss="modal">Erstellen</button>
+                    <button type="button" id="layerCreatorButton" class="btn btn-primary" data-bs-dismiss="modal">
+                        Erstellen
+                    </button>
                 </div>
             </div>
         </div>

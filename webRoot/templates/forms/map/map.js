@@ -1,3 +1,5 @@
+/** Parse & send form data to server: */
+let includedServices = {};
 $(document).ready(function () {
     /**
      * Setups the layer table button.
@@ -11,31 +13,41 @@ $(document).ready(function () {
      * Submits the form and other data to the given PHP handler.
      */
     $('#submitAPIButton').click(async function () {
-        new FormSubmitter().attemptSubmitFormData('mapForm', "serviceHandler.php", parseLayers)
+        new FormSubmitter().attemptSubmitFormData('mapForm', "serviceHandler.php", formSubmitterSpecialCaseMethodWrapper)
+    });
+
+
+    $("#includeSaveButton").on('click', function () {
+        includedServices = $("#selectIncludeGeoServices").val();
     });
 });
 
-
 /**
- * Gets called by map.php with the data of the geoService as a json.
- * @param geoServiceData the data of the geoService as a json
+ * Wraps all specialCaseHandlers in a function that gets called by the FormSubmitter.
+ * @param geoServiceData the auto-parsed data of the geoService as a json
+ * @returns {*} the data of the geoService as a json, including the data parsed by the specialCaseHandlers
  */
-function phpHook(geoServiceData) {
-    $(document).ready(function () {
-        new FormFiller().fillForms(geoServiceData, fillLayerTable);
-    });
+function formSubmitterSpecialCaseMethodWrapper(geoServiceData) {
+    geoServiceData = parseStatusCheckbox(geoServiceData);
+    geoServiceData = parseIncludedServices(geoServiceData)
+    return parseLayers(geoServiceData);
+}
+
+function parseStatusCheckbox(geoServiceData) {
+    geoServiceData['status'] = $('#status').is(':checked') ? "1" : "0";
+    return geoServiceData;
 }
 
 /**
- * Fills the layer table with the name of the given layers.
- * @param data geoService data as a json
+ * Parses the included services.
+ * The included services are stored in the includedServices global variable because they
+ * cannot be obtained when this code is executed.
+ * @param geoServiceData
+ * @returns {*}
  */
-function fillLayerTable(data) {
-    const layers = data.layers;
-    let layerTableBuilder = new LayerTableBuilder($('#layerTable'));
-    for (const layer of Object.values(layers)) {
-        layerTableBuilder.addNewLayer(layer.name);
-    }
+function parseIncludedServices(geoServiceData) {
+    geoServiceData.includedServices = includedServices;
+    return geoServiceData;
 }
 
 /**
@@ -56,4 +68,50 @@ function parseLayers(json) {
     }
     json['layers'] = layers;
     return json;
+}
+
+/** Apply data from server to forms: */
+
+/**
+ * Gets called by map.php with the data of the geoService as a json.
+ * @param geoServiceData the data of the geoService as a json
+ */
+function phpHook(geoServiceData) {
+    $(document).ready(function () {
+        new FormFiller().fillForms(geoServiceData, formFillerSpecialCaseMethodWrapper);
+    });
+}
+
+function formFillerSpecialCaseMethodWrapper(geoServiceData) {
+    setStatusCheckbox(geoServiceData);
+    fillLayerTable(geoServiceData);
+    setIncludedServices(geoServiceData);
+}
+
+function setStatusCheckbox(geoServiceData) {
+    if (geoServiceData.status === "1") {
+        $('#status').click();
+    }
+}
+
+function setIncludedServices(geoServiceData) {
+    $("#includeModal").on('shown.bs.modal', function () {
+        const includedServices = geoServiceData.includedServices;
+        console.log(includedServices);
+        for (const service in includedServices) {
+            $("#selectIncludeGeoServices option[value=" + service + "]").prop("selected", true);
+        }
+    });
+}
+
+/**
+ * Fills the layer table with the name of the given layers.
+ * @param data geoService data as a json
+ */
+function fillLayerTable(data) {
+    const layers = data.layers;
+    let layerTableBuilder = new LayerTableBuilder($('#layerTable'));
+    for (const layer of Object.values(layers)) {
+        layerTableBuilder.addNewLayer(layer.name);
+    }
 }

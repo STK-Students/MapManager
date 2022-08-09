@@ -48,24 +48,32 @@ $mapUUID = $_GET["mapUUID"];
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link active" href="/templates/forms/map/map.php?uuid=<?php echo $mapUUID; ?>">Zurück
-                        zur Übersicht</a>
+                        zu den Dienst-Einstellungen</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-<div class="wrapper">
+<div class="container-lg">
     <form name="Eingabe" id='layerForm' class="needs-validation">
-        <h1>Layer Einstellungen</h1>
-        <div class="row"><!--Start Row 1-->
+        <br>
+        <h1>Ebene</h1>
+
+        <!--Start Row 1-->
+
+        <div class="row">
             <div class="col-4">
-                <label for="name">Layer Name</label>
+                <label for="name">Name</label>
                 <input type="text" class="form-control" id="name" placeholder="Layer Name"
                        aria-describedby="nameHelp" readonly>
-                <small id="nameHelp" class="form-text text-muted">
-                    Der Name des Layers
-                </small>
             </div>
+        </div>
+
+        <br>
+        <!--Start Row 2-->
+
+
+        <div class="row">
             <div class="col-4">
                 <label for="name">Data</label>
                 <input type="text" class="form-control" id="data" placeholder="Data"
@@ -83,6 +91,7 @@ $mapUUID = $_GET["mapUUID"];
                 </small>
             </div>
         </div>
+        <br>
         <div class="row">
             <div class="col-4">
                 <button type="button" id="submitAPIButton" class="btn btn-success">Speichern</button>

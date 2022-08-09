@@ -12,6 +12,8 @@ require_once "$doctrineLoc/Common/Collections/Selectable.php";
 require_once "$doctrineLoc/Common/Collections/Collection.php";
 require_once "$doctrineLoc/Common/Collections/ArrayCollection.php";
 
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+
 /**
  * Set's the given values from the JSON in the given map object.
  * @param Map $map to edit
@@ -20,11 +22,10 @@ require_once "$doctrineLoc/Common/Collections/ArrayCollection.php";
  */
 function jsonToMap(Map $map, array $json): Map
 {
-
     /**
      * An array of all valid arguments.
      */
-    $validArguments = array('name', 'scaledenom', 'units', 'angle', 'size', 'resolution', 'maxsize', 'extent', 'layers');
+    $validArguments = array('name', 'scaledenom', 'units', 'angle', 'size', 'resolution', 'maxsize', 'extent', 'layers', 'status', 'includedServices');
     foreach ($validArguments as $argument) {
         $value = $json[$argument];
         if (!isset($value)) {
@@ -42,6 +43,14 @@ function jsonToMap(Map $map, array $json): Map
                     break;
                 case 'layers':
                     convertLayerToObject($map, $value);
+                    break;
+                case 'includedServices':
+                    $paths = [];
+                    foreach ($value as $service) {
+                        $paths[] = Database::getInstance()->getGeoService($service)->getPath();
+                        //TODO: Relativvize path
+                    }
+                    $map->include = $paths;
                     break;
                 default:
                     $map->$argument = $value;

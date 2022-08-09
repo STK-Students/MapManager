@@ -23,7 +23,7 @@ Dies dient der Kontrolle, ob alle Features des MapFile abgebildet sind.
 - [ ] [LAYER](Nested)
 - [ ] [LEGEND](Nested)
 - [X] MAXSIZE / Maximale Auflösung
-- [X] NAME
+- [X] NAME / Anzeigename
 - [ ] [OUTPUTFORMAT](Nested)
 - [ ] [PROJECTION](Nested)
 - [ ] [QUERYMAP](Nested)

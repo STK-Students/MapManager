@@ -68,7 +68,7 @@ class GeoService
      *
      */
     function getGroupPath(): string {
-        return $groupPath = "/mapfiles/" . $this->getGroupUUID();
+        return "/mapfiles/" . $this->getGroupUUID();
     }
 
     /**

@@ -1,4 +1,3 @@
-
 <?php
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/model/User.php";
@@ -44,16 +43,29 @@ class Database
         }
         return $groups;
     }
+
     function getGroupsFromUser($user_uuid)
     {
         $groups = array();
-        $result = pg_query_params($this->db_connection, "Select public.group.uuid, public.group.name From public.group, public.rel_user_group Where public.rel_user_group.user_ad_id = $1 And public.rel_user_group.group_uuid=public.group.uuid", Array($user_uuid));
+        $result = pg_query_params($this->db_connection, "Select public.group.uuid, public.group.name From public.group, public.rel_user_group Where public.rel_user_group.user_ad_id = $1 And public.rel_user_group.group_uuid=public.group.uuid", array($user_uuid));
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
             $item = new Group($line['uuid'], $line['name']);
             array_push($groups, $item);
         }
         return $groups;
     }
+
+    function getGroupsFromGeoService($service_uuid)
+    {
+        $groups = array();
+        $result = pg_query_params($this->db_connection, "Select public.group.uuid, public.group.name From public.group, public.rel_user_group Where public.rel_user_group.user_ad_id = $1 And public.rel_user_group.group_uuid=public.group.uuid", array($user_uuid));
+        while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+            $item = new Group($line['uuid'], $line['name']);
+            array_push($groups, $item);
+        }
+        return $groups;
+    }
+
 
     function getGroup($groupUUID)
     {
@@ -72,7 +84,8 @@ class Database
         return new GeoService($row['uuid'], $row['name'], $row['description'], $row['creationDate'], $row['groupUUID']);
     }
 
-    function addUser($adID) {
+    function addUser($adID)
+    {
         pg_query_params($this->db_connection, "INSERT INTO public.user(ad_id) VALUES ($1) On CONFLICT(ad_id) DO NOTHING;", array($adID));
     }
 
@@ -86,20 +99,22 @@ class Database
         return null;
     }
 
-    function getUsersFromGroup($group_uuid){
+    function getUsersFromGroup($group_uuid)
+    {
         $users = array();
         $result = pg_query_params($this->db_connection, "Select * From public.rel_user_group Where group_uuid=$1", array($group_uuid));
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-            $user = (object) $this->getUser($line['user_ad_id']);
+            $user = (object)$this->getUser($line['user_ad_id']);
             $users[] = $user;
         }
         return $users;
     }
 
-    function isUserInGroup($user_uuid, $group_uuid){
+    function isUserInGroup($user_uuid, $group_uuid)
+    {
         $result = pg_query_params($this->db_connection, "Select * From public.rel_user_group Where group_uuid=$1 And user_ad_id=$2", array($group_uuid, $user_uuid));
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-            if($line == null){
+            if ($line == null) {
                 return false;
             } else {
                 return true;
@@ -107,15 +122,14 @@ class Database
         }
     }
 
-    function getGeoServices($groupUUID)
+    function getGeoServices($groupUUID): array
     {
-        $maps = array();
+        $geoServices = array();
         $result = pg_query_params($this->db_connection, 'SELECT * FROM public.map WHERE "groupUUID"=$1', array($groupUUID));
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-            $item = new GeoService($line['uuid'], $line['name'], $line['description'], $line['creationDate'], $line['groupUUID']);
-            $maps[] = $item;
+            $geoServices[] = new GeoService($line['uuid'], $line['name'], $line['description'], $line['creationDate'], $line['groupUUID']);
         }
-        return $maps;
+        return $geoServices;
     }
 
     function addGroup($name)
@@ -128,7 +142,8 @@ class Database
         return pg_query_params($this->db_connection, 'DELETE From public.group WHERE uuid=$1', array($groupUUID));
     }
 
-    function removeUsersFromGroup($groupUUID){
+    function removeUsersFromGroup($groupUUID)
+    {
         return pg_query_params($this->db_connection, 'DELETE From public.rel_user_group WHERE group_uuid=$1', array($groupUUID));
     }
 
