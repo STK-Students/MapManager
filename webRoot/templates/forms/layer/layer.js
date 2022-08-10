@@ -9,12 +9,11 @@ $(document).ready(function () {
 
 function provideContext(json) {
     let searchParams = new URLSearchParams(window.location.search);
-    let layerUUID = searchParams.get('layerUUID');
-    outher = {}
-    outher.layers = layerUUID;
-    outher.layers[layerUUID] = json;
+    let layerID = searchParams.get('rowNumber');
+    let outher = {}
+    outher.layers = layerID;
+    outher.layers[layerID] = json;
     console.log(outher);
-    return outher;
 }
 
 /**
