@@ -340,7 +340,7 @@ $currentGroup = $_SESSION['currentGroup'];
 <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="modalTitleAddUser"
      aria-hidden="true">
     <?php
-    $inviteCode = "http://localhost/templates/home/home.php?inviteCode=" . $currentGroup;
+    $inviteCode = "http://localhost/public/home/home.php?inviteCode=" . $currentGroup;
     ?>
     <div class="modal-dialog">
         <div class="modal-content">

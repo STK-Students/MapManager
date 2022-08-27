@@ -13,7 +13,7 @@ $(document).ready(function () {
      * Submits the form and other data to the given PHP handler.
      */
     $('#submitAPIButton').click(async function () {
-        new FormSubmitter().attemptSubmitFormData('mapForm', "serviceHandler.php", formSubmitterSpecialCaseMethodWrapper)
+        new FormSubmitter().attemptSubmitFormData('mapForm', "updateHandler.php", formSubmitterSpecialCaseMethodWrapper)
     });
 
 

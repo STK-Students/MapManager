@@ -15,9 +15,9 @@ echo $description;
 if(isset($_POST["submit-edit-map"])){
     try {
         $result = $db->editMap($uuid, $name, $description);
-        header('Location: /templates/home/home.php?result=success');
+        header('Location: /public/home/home.php?result=success');
     } catch (Exception $e) {
         error_log($e->getMessage());
-        header('Location: /templates/home/home.php?result=failure');
+        header('Location: /public/home/home.php?result=failure');
     }
 }

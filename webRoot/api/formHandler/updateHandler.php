@@ -15,36 +15,27 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/Doctrine/Common/Collecti
 
 $map = isset($_SESSION['map']) ? unserialize($_SESSION['map']) : new Map();
 
-
 // Payload Format
 // type: map | layer
+// context: e.g. layerID
 // data: {...}
 
 // This is the content of the POST request submitted to this page
-$serviceJSON = mapToJSON($map);
-$servicePartUpdateJSON = json_decode(trim(file_get_contents('php://input')), true);
-switch ($servicePartUpdateJSON['type']) {
-    case 'map':
-        foreach ($servicePartUpdateJSON['data'] as $key => $value) {
-            switch ($key) {
-                case 'layers':
-                    break;
-                default:
-                    $serviceJSON[$key] = $value;
+$serviceUpdateJSON = json_decode(trim(file_get_contents('php://input')), true);
 
-            }
-            $serviceJSON[$key] = $value;
-        }
+$updateData = $serviceUpdateJSON['data'];
+switch ($serviceUpdateJSON['type']) {
+    case 'map':
+        MapDeserializer::handleMap($map, $updateData);
         break;
     case 'layer':
+        LayerDeserializer::handleLayer($map, $updateData);
         break;
 }
-
-$map = jsonToMap($map, $servicePartUpdateJSON);
-
 $_SESSION['map'] = serialize($map);
 
 $mapFilePath = MapFileHandler::getPath();
 MapFileHandler::writeMapFile($mapFilePath);
 
 print(json_encode($map));
+

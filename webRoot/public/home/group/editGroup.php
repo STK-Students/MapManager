@@ -10,9 +10,9 @@ if (isset($_POST['edit_group_form_submit'])) {
     try {
         echo $name;
         $db->editGroup($groupUUID, $name);
-        header('Location: /templates/home/home.php?result=success');
+        header('Location: /public/home/home.php?result=success');
     } catch (Exception $e) {
-        header('Location: /templates/home/home.php?result=failure');
+        header('Location: /public/home/home.php?result=failure');
     }
 }
 

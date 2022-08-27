@@ -3,7 +3,7 @@ $(document).ready(function () {
      * Submits the form and other data to the given PHP handler.
      */
     $('#submitAPIButton').click(async function () {
-        new FormSubmitter().attemptSubmitFormData('layerForm', "serviceHandler.php", provideContext);
+        new FormSubmitter().attemptSubmitFormData('layerForm', "updateHandler.php", provideContext);
     });
 });
 

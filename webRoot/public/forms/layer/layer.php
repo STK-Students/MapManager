@@ -47,7 +47,7 @@ $mapUUID = $_GET["mapUUID"];
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/templates/forms/map/map.php?uuid=<?php echo $mapUUID; ?>">Zurück
+                    <a class="nav-link active" href="/public/forms/map/map.php?uuid=<?php echo $mapUUID; ?>">Zurück
                         zu den Dienst-Einstellungen</a>
                 </li>
             </ul>

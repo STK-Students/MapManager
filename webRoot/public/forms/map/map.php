@@ -30,26 +30,24 @@
 
     /**
      * Fills the forms on this page if there is already data for them.
-     * The session may contain a serialized Map object. It is loaded if that's the one that shall be edited.
-     * Otherwise, the data is loaded from the MapFile.
+     * This data is loaded from the MapFile.
      */
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/MapFileHandler.php";
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/ServiceConverter.php";
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/MapSerializer.php";
 
-    if (!isset($_GET['uuid'])) {
-        die("Diese Seite muss mit einer MapUUID aufgerufen werden!");
+    if (!isset($_GET['serviceUUID'])) {
+        echo "Diese Seite können Sie nicht direkt aufrufen.";
+        echo "<br> Bitte rufen sie die <a href='/public/home/home.php'>Homepage</a> auf.";
+        die;
     }
-    $mapUUID = $_GET['uuid'];
 
-    if (isset($_SESSION['currentServiceUUID']) && $_SESSION['currentServiceUUID'] != $mapUUID || !isset($_SESSION['map'])) {
-        $mapFilePath = Database::getInstance()->getGeoService($mapUUID)->getPath();
-        $map = MapFileHandler::loadMapFromFile($mapFilePath);
-        $_SESSION['currentServiceUUID'] = $mapUUID;
-    } else {
-        $map = unserialize($_SESSION['map']);
-    }
-    $json = mapToJSON($map);
+    $mapUUID = $_GET['serviceUUID'];
+
+    $mapFilePath = Database::getInstance()->getGeoService($mapUUID)->getPath();
+    $map = MapFileHandler::loadMapFromFile($mapFilePath);
+
+    $json = MapSerializer::mapToJSON($map);
     echo "<script type=\"text/javascript\" defer>phpHook(" . $json . ");</script>";
     ?>
     <title>Dienst bearbeiten</title>
@@ -70,7 +68,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/templates/home/home.php">Zurück zur Übersicht</a>
+                    <a class="nav-link active" href="/public/home/home.php">Zurück zur Übersicht</a>
                 </li>
             </ul>
         </div>
@@ -93,7 +91,8 @@
             </div>
         </div>
         <div class="col-4">
-            <button id="includeModalShowButton" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#includeModal">
+            <button id="includeModalShowButton" type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                    data-bs-target="#includeModal">
                 Vererbung bearbeiten
             </button>
 

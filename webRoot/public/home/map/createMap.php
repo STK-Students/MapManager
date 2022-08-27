@@ -14,11 +14,10 @@ if(isset($_POST["submit-create-map"])){
     try {
         $result = $db->addMap($name, $description, $creationDate, $group);
         $generatedUUID = pg_fetch_result($result, 0, 0);
-        $_SESSION['currentServiceUUID'] = $generatedUUID;
         MapFileHandler::writeMapFile(MapFileHandler::getPath());
-        header('Location: /templates/forms/map/map.php?uuid=' . $generatedUUID);
+        header('Location: /public/forms/map/map.php?serviceUUID=' . $generatedUUID);
     } catch (Exception $e) {
         error_log($e->getMessage());
-        header('Location: /templates/home/home.php?result=failure');
+        header('Location: /public/home/home.php?result=failure');
     }
 }

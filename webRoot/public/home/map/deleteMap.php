@@ -15,7 +15,7 @@ function deleteMap(Database $db): void
 {
     $mapUUID = $_POST['input-map'];
     $db->removeMap($mapUUID);
-    header('Location: /templates/home/home.php?result=success');
+    header('Location: /public/home/home.php?result=success');
 }
 
 /**

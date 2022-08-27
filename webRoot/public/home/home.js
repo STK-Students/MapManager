@@ -17,5 +17,5 @@ function copy() {
 }
 
 async function setGroupSession(uuid) {
-    await fetch('http://localhost/api.php?setGroupSession=' + uuid);
+    await fetch('http://localhost/api/api.php?setGroupSession=' + uuid);
 }

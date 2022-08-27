@@ -9,5 +9,5 @@ $groupUUID = $_SESSION['currentGroup'];
 if(isset($_POST['uuid'])){
     $userUUID = $_POST['uuid'];
     $db->removeUserFromGroup($groupUUID, $userUUID);
-    header('Location: /templates/home/home.php?result=success');
+    header('Location: /public/home/home.php?result=success');
 }

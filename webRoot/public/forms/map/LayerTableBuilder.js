@@ -39,7 +39,7 @@ class LayerTableBuilder {
             const urlParams = new URLSearchParams(window.location.search)
             if (urlParams.has("uuid")) {
                 const result = urlParams.get("uuid")
-                window.location.href = "http://localhost/templates/forms/layer/layer.php?mapUUID=" + result + "&layerUUID=" + uuid + "&rowNumber=" + rowNumber;
+                window.location.href = "http://localhost/public/forms/layer/layer.php?mapUUID=" + result + "&layerUUID=" + uuid + "&rowNumber=" + rowNumber;
             }
         });
         let buttonDelete = $('<button>').addClass('btn btn-outline-danger actionButton').text('Löschen')

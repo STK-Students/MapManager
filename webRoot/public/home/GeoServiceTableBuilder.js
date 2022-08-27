@@ -24,7 +24,7 @@ async function generatePageContent() {
 
 async function setupPageTitle(uuid) {
     $(".sidebar").css("visibility", "visible");
-    await fetch('http://localhost/api.php?getGroup=' + uuid)
+    await fetch('http://localhost/api/api.php?getGroup=' + uuid)
         .then(response => response.json())
         .then(data => {
             $("#main-title").text(data.name);
@@ -32,7 +32,7 @@ async function setupPageTitle(uuid) {
 }
 
 async function setupServiceTable(uuid) {
-    await fetch('http://localhost/api.php?getMaps=' + uuid)
+    await fetch('http://localhost/api/api.php?getMaps=' + uuid)
         .then(response => response.json())
         .then(data => {
             $('.dynamicTableElement').remove();
@@ -45,10 +45,11 @@ async function setupServiceTable(uuid) {
                 const creationDateTD = $("<td>").text(data[item].creationDate);
                 const openTD = $("<td>");
                 const editTD = $("<td>");
+                const serviceUUID = data[item].uuid;
                 const openLink = $('<button>').text("Dienst bearbeiten").addClass('btn btn-outline-primary')
-                    .on('click', () => openEditPage(data, item));
+                    .on('click', () => openEditPage(serviceUUID));
                 const editLink = $("<a>").text("Beschreibung bearbeiten").addClass('btn btn-outline-primary').on("click", () => {
-                    $("#inputEditServiceUUID").val(data[item].uuid);
+                    $("#inputEditServiceUUID").val(serviceUUID);
                     $("#inputEditServiceName").val(data[item].name);
                     $("#inputEditServiceDescription").val(data[item].description);
                     $("#editServiceModal").modal('show');
@@ -62,6 +63,6 @@ async function setupServiceTable(uuid) {
         });
 }
 
-function openEditPage(data, item) {
-    window.location.href = "/templates/forms/map/map.php?uuid=" + data[item].uuid
+function openEditPage(serviceUUID) {
+    window.location.href = "/public/forms/map/map.php?serviceUUID=" + serviceUUID;
 }
