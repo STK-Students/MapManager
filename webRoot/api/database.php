@@ -1,5 +1,6 @@
 <?php
 
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/Config.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/model/User.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/model/Group.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/model/GeoService.php";
@@ -20,8 +21,7 @@ class Database
     public static function getInstance(): Database
     {
         if (self::$instance === null) {
-            $config = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/config.json"));
-            self::$instance = new self($config);
+            self::$instance = new self(Config::getConfig());
         }
 
         return self::$instance;
@@ -29,8 +29,8 @@ class Database
 
     private function __construct($config)
     {
-        $dbData = $config->postgres;
-        $this->db_connection = pg_connect("host=$dbData->hostname dbname=$dbData->database user=$dbData->user password=$dbData->password") or die("Verbindungsaufbau fehlgeschlagen");
+        $dbData = $config['postgres'];
+        $this->db_connection = pg_connect("host={$dbData['hostname']} dbname={$dbData['database']} user={$dbData['user']} password={$dbData['password']}") or die("Verbindungsaufbau fehlgeschlagen");
     }
 
     function getGroups()

@@ -14,7 +14,7 @@ if(isset($_POST["submit-create-map"])){
     try {
         $result = $db->addMap($name, $description, $creationDate, $group);
         $generatedUUID = pg_fetch_result($result, 0, 0);
-        MapFileHandler::writeMapFile(MapFileHandler::getPath());
+        MapFileHandler::writeMapFile(null, $generatedUUID);
         header('Location: /public/forms/map/map.php?serviceUUID=' . $generatedUUID);
     } catch (Exception $e) {
         error_log($e->getMessage());

@@ -26,6 +26,9 @@ class MapSerializer
         foreach (get_object_vars($map) as $key => $value) {
             if (isset($value)) {
                 switch ($key) {
+                    default:
+                        $json[$key] = $value;
+                        break;
                     case 'size':
                         $json['size'] = array("x" => $value[0], "y" => $value[1]);
                         break;
@@ -35,15 +38,26 @@ class MapSerializer
                     case 'layer':
                         self::convertLayerToJSON($json, $value);
                         break;
-                    default:
-                        $json[$key] = $value;
+                    case 'status':
+                        $json['status'] = $value == "ON" ? 1 : 0;
+                        break;
+                    case 'include':
+                        $json['include'] = [];
+                        foreach ($value as $service) {
+                            $pathParts = explode("/", $service);
+                            $length = count($pathParts);
+                            $fileName = $pathParts[$length - 1];
+                            $serviceUUID = explode(".", $fileName);
+                            $json['include'][] = $serviceUUID[0];
+                        }
+                        break;
                 }
             }
         }
         return json_encode($json);
     }
 
-   static function convertLayerToJSON(&$json, $layers)
+    static function convertLayerToJSON(&$json, $layers)
     {
         foreach ($layers as $layer) {
             $layerJson = [];

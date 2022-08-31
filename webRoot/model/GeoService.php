@@ -68,13 +68,16 @@ class GeoService
      *
      */
     function getGroupPath(): string {
-        return "/mapfiles/" . $this->getGroupUUID();
+        return Config::getConfig()['directories']['mapfiles'] . $this->getGroupUUID();
     }
 
     /**
      * @return string the path to the mapfile of this service. Relative to the document root.
      */
     function getPath(): string {
-        return $this->getGroupPath() . "/" . $this->getUUID() .".map";
+        chdir("../../../");
+        $path = $this->getGroupPath() . "/" . $this->getUUID() . ".map";
+        $realpath =  realpath($path);
+        return $realpath;
     }
 }

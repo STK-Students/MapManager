@@ -23,7 +23,7 @@
     <script src="../../../dependencies/jQuery/jQuery.js"></script>
     <script src="../formSubmitter.js" defer></script>
     <script src="../formFiller.js" defer></script>
-    <script src="LayerTableBuilder.js"></script>
+    <script src="../TableBuilder.js"></script>
     <script src="map.js"></script>
     <?php
     session_start();
@@ -34,7 +34,9 @@
      */
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/MapFileHandler.php";
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/MapSerializer.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Map/MapSerializer.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Map/MapDeserializer.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
 
     if (!isset($_GET['serviceUUID'])) {
         echo "Diese Seite können Sie nicht direkt aufrufen.";
@@ -68,7 +70,8 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/public/home/home.php">Zurück zur Übersicht</a>
+                    <a class="btn btn-outline-secondary nav-link active" style="margin-top:10px; margin-left:20px"
+                       id="backToMainPage">Zurück zu den Diensten</a>
                 </li>
             </ul>
         </div>
@@ -228,11 +231,6 @@
         </tbody>
     </table>
 
-
-    <!-- Submit Button Code -->
-    <br>
-    <button type="button" id="submitAPIButton" class="btn btn-success">Speichern</button>
-
     <!-- INCLUDE / Inheritance Modal  -->
     <div class="modal fade" id="includeModal" tabindex="-1" aria-labelledby="includeModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -246,20 +244,20 @@
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Wählen sie einen oder mehrere
                                 Dienste
-                                aus der folgenden Liste, deren Einstellungen auch für diesen Dienst gelten sollen. <br>
-                                Mit STRG+Linksklick können Sie mehrere Elemente auswählen.</label>
-                            <select class="form-select" multiple id="selectIncludeGeoServices"
-                                    aria-label="multiple select">
-                                <option value="0">Keine Vererbung (Standard)</option>
-                                <?php
-                                $groupUUID = Database::getInstance()->getGeoService($mapUUID)->getGroupUUID();
-                                $geoServices = Database::getInstance()->getGeoServices($groupUUID);
+                                aus der folgenden Liste, deren Einstellungen auch für diesen Dienst gelten sollen.
+                                <br>
+                                <br>
+                                <div id="includeCheckBoxes">
+                                    <?php
+                                    $groupUUID = Database::getInstance()->getGeoService($mapUUID)->getGroupUUID();
+                                    $geoServices = Database::getInstance()->getGeoServices($groupUUID);
 
-                                foreach ($geoServices as $geoService) {
-                                    echo '<option class="dropdown-item" value="' . $geoService->getUUID() . '">' . $geoService->getName() . '</option>';
-                                }
-                                ?>
-                            </select>
+                                    foreach ($geoServices as $geoService) {
+                                        echo '<input type="checkbox"  value="' . $geoService->getUUID() . '"> ' . $geoService->getName() . '</input>';
+                                        echo '<br>';
+                                    }
+                                    ?>
+                                </div>
                         </div>
                     </div>
                 </div>

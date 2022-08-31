@@ -14,6 +14,9 @@ namespace MapFile\Parser;
 use MapFile\Exception\FileException;
 use OutOfBoundsException;
 
+$mapFileLoc = $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser";
+require_once("$mapFileLoc/Parser/ParserInterface.php");
+
 abstract class Parser implements ParserInterface
 {
     protected $content;

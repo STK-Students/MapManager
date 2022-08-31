@@ -1,26 +1,39 @@
-/** Parse & send form data to server: */
-let includedServices = {};
 $(document).ready(function () {
     /**
      * Setups the layer table button.
      */
-    let layerTableBuilder = new LayerTableBuilder($('#layerTable'));
+    let layerTableBuilder = new TableBuilder($('#layerTable'), '#layerTable');
     $('#layerCreatorButton').click(function () {
         layerTableBuilder.addNewLayer($('#layerName').val());
     });
 
     /**
-     * Submits the form and other data to the given PHP handler.
+     * Save data upon leaving the page.
      */
-    $('#submitAPIButton').click(async function () {
-        new FormSubmitter().attemptSubmitFormData('mapForm', "updateHandler.php", formSubmitterSpecialCaseMethodWrapper)
+    $('#backToMainPage').click(async function () {
+        if (saveData()) {
+            window.location.href = "/public/home/home.php";
+        }
     });
 
-
-    $("#includeSaveButton").on('click', function () {
-        includedServices = $("#selectIncludeGeoServices").val();
-    });
+    addEventListener('beforeunload', (event) => {
+        if (!saveData()) {
+            event.preventDefault();
+            return event.returnValue = "Ihre Eingaben sind nicht valide und werden daher nicht automatisch gespeichert."
+        };
+    })
 });
+
+/**
+ * Submits the form and other data to the given PHP handler.
+ * @return {boolean} if the form is valid for submission
+ * */
+function saveData() {
+    let searchParams = new URLSearchParams(window.location.search);
+    let serviceUUID = searchParams.get('serviceUUID');
+    const submitter = new FormSubmitter();
+    return submitter.attemptSubmitFormData(serviceUUID, 'map', 'mapForm', "updateHandler.php", formSubmitterSpecialCaseMethodWrapper)
+}
 
 /**
  * Wraps all specialCaseHandlers in a function that gets called by the FormSubmitter.
@@ -40,13 +53,13 @@ function parseStatusCheckbox(geoServiceData) {
 
 /**
  * Parses the included services.
- * The included services are stored in the includedServices global variable because they
- * cannot be obtained when this code is executed.
  * @param geoServiceData
  * @returns {*}
  */
 function parseIncludedServices(geoServiceData) {
-    geoServiceData.includedServices = includedServices;
+    geoServiceData.include = $("#includeCheckBoxes :checkbox:checked").map(function () {
+        return $(this).val();
+    }).get();
     return geoServiceData;
 }
 
@@ -89,17 +102,17 @@ function formFillerSpecialCaseMethodWrapper(geoServiceData) {
 }
 
 function setStatusCheckbox(geoServiceData) {
-    if (geoServiceData.status === "1") {
-        $('#status').click();
+    if (geoServiceData.status === 1) {
+        $('#status').prop("checked", true);
     }
 }
 
 function setIncludedServices(geoServiceData) {
-    $("#includeModal").on('shown.bs.modal', function () {
-        const includedServices = geoServiceData.includedServices;
-        console.log(includedServices);
-        for (const service in includedServices) {
-            $("#selectIncludeGeoServices option[value=" + service + "]").prop("selected", true);
+    $("#includeModal").on('shown.bs.modal', null, geoServiceData, function (geoServiceData) {
+        const includedServices = geoServiceData.data.include;
+
+        for (const index in includedServices) {
+            $("#includeCheckBoxes input[value=" + includedServices[index] + "]").prop("checked", true);
         }
     });
 }
@@ -111,7 +124,7 @@ function setIncludedServices(geoServiceData) {
 function fillLayerTable(data) {
     const layers = data.layers;
     if (layers !== undefined) {
-        let layerTableBuilder = new LayerTableBuilder($('#layerTable'));
+        let layerTableBuilder = new TableBuilder($('#layerTable'));
         for (const layer of Object.values(layers)) {
             layerTableBuilder.addNewLayer(layer.name);
         }

@@ -1,14 +1,16 @@
 /**
  * A class that builds a table of layers.
  */
-class LayerTableBuilder {
+class TableBuilder {
 
     /**
-     * Constructs a new LayerTableBuilder for the given table.
+     * Constructs a new TableBuilder for the given table.
      * @param table the table to modify
+     * @param tableID the id of the table
      */
-    constructor(table) {
+    constructor(table, tableID) {
         this.table = table;
+        this.tableID = tableID;
     }
 
     /**
@@ -16,7 +18,7 @@ class LayerTableBuilder {
      * @param layerName the name of the layer
      */
     addNewLayer(layerName) {
-        let newTableLength = $('#layerTable tr').length;
+        let newTableLength = $(this.tableID + ' tr').length;
 
         const tableRow = this.#createTableRow(newTableLength, layerName);
 
@@ -36,15 +38,18 @@ class LayerTableBuilder {
         const nameTD = $("<td>").text(layerName)
 
         let buttonEdit = $('<button>').addClass('btn btn-outline-primary').text('Bearbeiten').on('click', () => {
-            const urlParams = new URLSearchParams(window.location.search)
-            if (urlParams.has("uuid")) {
-                const result = urlParams.get("uuid")
-                window.location.href = "http://localhost/public/forms/layer/layer.php?mapUUID=" + result + "&layerUUID=" + uuid + "&rowNumber=" + rowNumber;
+            if (saveData()) {
+                const urlParams = new URLSearchParams(window.location.search)
+                if (urlParams.has("serviceUUID")) {
+                    const result = urlParams.get("serviceUUID")
+                    window.location.href = "http://localhost/public/forms/layer/layer.php?mapUUID=" + result + "&rowNumber=" + rowNumber;
+                }
             }
         });
         let buttonDelete = $('<button>').addClass('btn btn-outline-danger actionButton').text('Löschen')
             .on('click', () => {
                 this.#deleteTableRow(uuid);
+                saveData();
             });
 
         const actionsTD = $("<td>");
@@ -59,7 +64,7 @@ class LayerTableBuilder {
     }
 
     #refreshTableRowNumbers() {
-        $('#layerTable tbody tr').each(function (index) {
+        $(this.tableID + ' tbody tr').each(function (index) {
             $(this).children('th').text(index + 1);
         });
     }

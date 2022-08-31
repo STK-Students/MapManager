@@ -10,6 +10,9 @@ declare(strict_types=1);
  */
 
 namespace MapFile\Writer;
+$mapFileLoc = $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser";
+require_once("$mapFileLoc/Parser/Composite.php");
+require_once("$mapFileLoc/Writer/Composite.php");
 
 class Layer extends Writer
 {
@@ -60,7 +63,7 @@ class Layer extends Writer
         $this->text .= self::getTextRaw('MINSCALEDENOM', $layer->minscaledenom, $indentSize + 1, $indent);
         $this->text .= self::getTextString('NAME', $layer->name, $indentSize + 1, $indent);
         $this->text .= is_array($layer->offsite) ? self::getTextArray('OFFSITE', $layer->offsite, $indentSize + 1, $indent) : self::getTextString('OFFSITE', $layer->offsite, $indentSize + 1, $indent);
-        $this->text .= self::getText('OPACITY', $layer->opacity, $indentSize + 1, $indent);
+        $this->text .= self::getTextRaw('OPACITY', $layer->opacity, $indentSize + 1, $indent);
         $this->text .= self::getTextString('PLUGIN', $layer->plugin, $indentSize + 1, $indent);
         $this->text .= self::getTextBoolean('POSTLABELCACHE', $layer->postlabelcache, $indentSize + 1, $indent);
 

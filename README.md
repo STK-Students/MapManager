@@ -1,0 +1,1 @@
+All paths in the config are relative to the location of the project root folder.

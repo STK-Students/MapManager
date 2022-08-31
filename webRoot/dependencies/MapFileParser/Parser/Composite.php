@@ -14,6 +14,11 @@ namespace MapFile\Parser;
 use MapFile\Exception\UnsupportedException;
 use MapFile\Model\Composite as CompositeObject;
 
+$mapFileLoc = $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser";
+require_once("$mapFileLoc/Model/Composite.php");
+require_once("$mapFileLoc/Parser/Parser.php");
+require_once("$mapFileLoc/Parser/ParserInterface.php");
+
 class Composite extends Parser
 {
     public function parse($content = null): CompositeObject

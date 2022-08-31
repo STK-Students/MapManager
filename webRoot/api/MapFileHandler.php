@@ -25,41 +25,40 @@ require_once("$doctrineLoc/Common/Collections/Selectable.php");
 require_once("$doctrineLoc/Common/Collections/Collection.php");
 require_once("$doctrineLoc/Common/Collections/ArrayCollection.php");
 
-
-if (isset($_GET['mode'])) {
-    $mode = $_GET['mode'];
-    $mapFilePath = MapFileHandler::getPath();
-
-    if ($mode === 'WRITE') {
-        MapFileHandler::writeMapFile($mapFilePath);
-    } else if ($mode === 'DELETE') {
-        MapFileHandler::deleteMapFile($mapFilePath);
-    }
-}
-
 class MapFileHandler
 {
     /**
      * Writes the service with the currentServiceUUID to a MapFile.
-     * @param $path string path to write to
+     * @param $map which is going to be saved
+     * @param string $uuid serviceUUID
      * @return void
      */
-    static function writeMapFile(string $path): void
+    static function writeMapFile($map, string $uuid): void
     {
-        if (isset($_SESSION['map'])) {
-            $map = unserialize($_SESSION['map']);
-        } else {
+        if ($map === null) {
             $map = '';
         }
-
+        $path = self::getPath($uuid);
         $file = fopen($path, "w");
         fwrite($file, (new MapFile\Writer\Map())->write($map));
     }
 
+
     /**
-     * Loads a mapfile.
+     * Loads a Map.
+     * @param string $uuid UUID of the service that represents the map
+     * @return Map
+     */
+    static function loadMapByUUID(string $uuid): Map
+    {
+        $mapFilePath = Database::getInstance()->getGeoService($uuid)->getPath();
+        return self::loadMapFromFile($mapFilePath);
+    }
+
+    /**
+     * Loads a Map.
      * @param $filePath string path to a mapfile relative to the webRoot
-     * @return Map the loaded mapfile.
+     * @return Map the mapfile as a Map.
      */
     static function loadMapFromFile(string $filePath): Map
     {
@@ -84,12 +83,11 @@ class MapFileHandler
     /**
      * Gets the path of the current service's MapFile.
      * The current service is determined through the session variable 'currentServiceUUID'.
+     * @param string $mapUUID UUID of the service that represents the map
      * @return string path to the MapFile
      */
-    static function getPath(): string
+    private static function getPath(string $mapUUID): string
     {
-        $mapUUID = $_SESSION['currentServiceUUID'];
-
         $service = Database::getInstance()->getGeoService($mapUUID);
         $groupPath = $service->getGroupPath();
         $mapFilePath = $service->getPath();
