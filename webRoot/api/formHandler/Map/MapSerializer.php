@@ -11,6 +11,7 @@ require_once "$doctrineLoc/Common/Collections/Collection.php";
 require_once "$doctrineLoc/Common/Collections/ArrayCollection.php";
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Layer/LayerSerializer.php";
 
 class MapSerializer
 {
@@ -36,7 +37,9 @@ class MapSerializer
                         $json['extent'] = array("minx" => $value[0], "miny" => $value[1], "maxx" => $value[2], "maxy" => $value[3]);
                         break;
                     case 'layer':
-                        self::convertLayerToJSON($json, $value);
+                        foreach ($value as $layer) {
+                            $json['layers'][] = LayerSerializer::layerToJSON($layer);
+                        }
                         break;
                     case 'status':
                         $json['status'] = $value == "ON" ? 1 : 0;
@@ -55,16 +58,5 @@ class MapSerializer
             }
         }
         return json_encode($json);
-    }
-
-    static function convertLayerToJSON(&$json, $layers)
-    {
-        foreach ($layers as $layer) {
-            $layerJson = [];
-            foreach (get_object_vars($layer) as $key => $value) {
-                $layerJson[$key] = $value;
-            }
-            $json['layers'][] = $layerJson;
-        }
     }
 }

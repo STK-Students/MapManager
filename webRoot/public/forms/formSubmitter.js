@@ -19,7 +19,7 @@ class FormSubmitter {
      * @return boolean if the form is valid for submission
      */
     attemptSubmitFormData(serviceUUID, type, formID, handlerLocation, specialCaseFunction) {
-        if (this.#formIsValid()) {
+        if (FormSubmitter.formIsValid()) {
             const formSelector = '#' + formID;
             const inputElements = $(formSelector + ' input').toArray();
             const optionElements = $(formSelector + ' select').toArray();
@@ -35,7 +35,7 @@ class FormSubmitter {
      * Styling will be applied based on the validity of every single input.
      * @returns {boolean} if all inputs contain valid data
      */
-    #formIsValid() {
+    static formIsValid() {
         const forms = $('.needs-validation')
         let isValid = true;
         Array.from(forms).forEach(form => {

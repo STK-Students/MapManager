@@ -71,7 +71,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="btn btn-outline-secondary nav-link active" style="margin-top:10px; margin-left:20px"
-                       id="backToMainPage">Zurück zu den Diensten</a>
+                       href="/public/home/home.php">Zurück zu den Diensten</a>
                 </li>
             </ul>
         </div>

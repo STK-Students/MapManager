@@ -18,7 +18,7 @@ class TableBuilder {
      * @param layerName the name of the layer
      */
     addNewLayer(layerName) {
-        let newTableLength = $(this.tableID + ' tr').length;
+        let newTableLength = $(this.tableID + ' tr').size();
 
         const tableRow = this.#createTableRow(newTableLength, layerName);
 
@@ -38,7 +38,7 @@ class TableBuilder {
         const nameTD = $("<td>").text(layerName)
 
         let buttonEdit = $('<button>').addClass('btn btn-outline-primary').text('Bearbeiten').on('click', () => {
-            if (saveData()) {
+            if (FormSubmitter.formIsValid()) {
                 const urlParams = new URLSearchParams(window.location.search)
                 if (urlParams.has("serviceUUID")) {
                     const result = urlParams.get("serviceUUID")

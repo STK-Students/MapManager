@@ -33,7 +33,7 @@ $mapUUID = $_GET["mapUUID"];
 
     $layerIndex = $_GET['rowNumber'];
     $layer = $map->layer->get($layerIndex);
-    $json = LayerSerializer::layerToJSON($layer);
+    $json = json_encode(LayerSerializer::layerToJSON($layer));
     echo "<script type=\"text/javascript\" defer>phpHook(" . $json . ");</script>";
     ?>
 </header>
@@ -51,9 +51,13 @@ $mapUUID = $_GET["mapUUID"];
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a id="backButton" class="btn btn-outline-secondary nav-link active"
-                       style="margin-top:10px; margin-left:20px">Zurück
-                        zu den Dienst-Einstellungen</a>
+                    <?php
+                    echo '<a href="/public/forms/map/map.php?serviceUUID=' . $_GET['mapUUID'] . '" class="btn
+                        btn-outline-secondary nav-link active"
+                        style="margin-top:10px; margin-left:20px">Zurück
+                        zu den Dienst-Einstellungen</a>';
+                    ?>
+
                 </li>
             </ul>
         </div>

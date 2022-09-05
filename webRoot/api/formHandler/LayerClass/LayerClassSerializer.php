@@ -1,18 +1,19 @@
 <?php
 
 use MapFile\Model\Layer;
+use MapFile\Model\LayerClass;
 
-class LayerSerializer
+class LayerClassSerializer
 {
     /**
-     * Converts the layer object into a JSON format that can be understood by the JS for filling the forms.
-     * @param Layer $layer map to convert
-     * @return array array for serialization into JSON for the website JS
+     * Converts the styleClass object into a JSON format that can be understood by the JS for filling the forms.
+     * @param LayerClass $style map to convert
+     * @return string JSON for the website JS
      */
-    static function layerToJSON(Layer $layer): array
+    static function layerClassToJSON(LayerClass $style): string
     {
         $json = [];
-        foreach (get_object_vars($layer) as $key => $value) {
+        foreach (get_object_vars($style) as $key => $value) {
             if (isset($value)) {
                 switch ($key) {
                     default:
@@ -28,6 +29,6 @@ class LayerSerializer
                 }
             }
         }
-        return $json;
+        return json_encode($json);
     }
 }

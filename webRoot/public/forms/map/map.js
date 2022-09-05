@@ -7,14 +7,8 @@ $(document).ready(function () {
         layerTableBuilder.addNewLayer($('#layerName').val());
     });
 
-    /**
-     * Save data upon leaving the page.
-     */
-    $('#backToMainPage').click(async function () {
-        if (saveData()) {
-            window.location.href = "/public/home/home.php";
-        }
-    });
+    //TODO: Remove this + saveData() in TableBuilder
+    //TODO: + generalize tableBuilder
 
     addEventListener('beforeunload', (event) => {
         if (!saveData()) {
@@ -124,7 +118,7 @@ function setIncludedServices(geoServiceData) {
 function fillLayerTable(data) {
     const layers = data.layers;
     if (layers !== undefined) {
-        let layerTableBuilder = new TableBuilder($('#layerTable'));
+        let layerTableBuilder = new TableBuilder($('#layerTable'), '#layerTable');
         for (const layer of Object.values(layers)) {
             layerTableBuilder.addNewLayer(layer.name);
         }

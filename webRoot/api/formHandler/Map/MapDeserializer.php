@@ -2,6 +2,7 @@
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MapFile\Model\Layer;
+use MapFile\Model\Style;
 use MapFile\Model\Map;
 
 $mapFileLoc = $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser";
@@ -68,44 +69,4 @@ class MapDeserializer
         }
         return $currentMap;
     }
-}
-
-/**
- * Set's the given layers on the given map.
- * New layers will be added.
- * Layers not given in $layerData will be removed.
- * @param Map $map to edit
- * @param array $layerData that contains new layer data
- * @return void
- */
-function setLayersOnMap(Map $map, array $layerData): void
-{
-    $currentLayers = $map->layer;
-
-    $sizeNewLayers = count($layerData);
-    $currentLayers = addInstance($sizeNewLayers, $layerData, $currentLayers);
-    $currentLayers = deleteRemovedInstances($currentLayers, $sizeNewLayers);
-    $map->layer = $currentLayers;
-}
-
-function addLayers(int $sizeNewLayers, array $layerData, ArrayCollection $currentLayers): ArrayCollection
-{
-    for ($i = 0; $i < $sizeNewLayers; $i++) {
-        if (!$currentLayers->containsKey($i)) {
-            $currentLayers->add(LayerDeserializer::handleLayer(new Layer(), $layerData[$i]));
-        }
-    }
-    return $currentLayers;
-}
-
-function deleteRemovedLayers(ArrayCollection $currentLayers, int $sizeNewLayers): ArrayCollection
-{
-    $sizeCurrentLayers = count($currentLayers);
-    if ($sizeCurrentLayers > $sizeNewLayers) {
-        $deletedLayers = $sizeCurrentLayers - $sizeNewLayers;
-        for ($i = $sizeNewLayers; $i <= $sizeNewLayers + $deletedLayers; $i++) {
-            unset($currentLayers[$i]);
-        }
-    }
-    return $currentLayers;
 }

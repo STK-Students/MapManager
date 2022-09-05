@@ -29,7 +29,7 @@ class MapFileHandler
 {
     /**
      * Writes the service with the currentServiceUUID to a MapFile.
-     * @param $map which is going to be saved
+     * @param $map Map which is going to be saved
      * @param string $uuid serviceUUID
      * @return void
      */

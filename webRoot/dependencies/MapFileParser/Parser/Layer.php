@@ -14,6 +14,9 @@ namespace MapFile\Parser;
 use MapFile\Exception\UnsupportedException;
 use MapFile\Model\Layer as LayerObject;
 
+$mapFileLoc = $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser";
+require_once "$mapFileLoc/Model/Style.php";
+
 class Layer extends Parser
 {
     public function parse($content = null): LayerObject

@@ -2,7 +2,7 @@
 session_start();
 
 use MapFile\Model\Layer;
-use MapFile\Model\Map;
+use MapFile\Model\LayerClass;
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/api/MapFileHandler.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Map/MapDeserializer.php";
@@ -11,6 +11,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Layer/LayerDeserializ
 require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Layer/LayerSerializer.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser/Model/Map.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser/Model/Layer.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser/Model/LayerClass.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/Doctrine/Common/Collections/Selectable.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/Doctrine/Common/Collections/Collection.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/Doctrine/Common/Collections/ArrayCollection.php";
@@ -39,6 +40,15 @@ switch ($serviceUpdateJSON['type']) {
         }
         $newLayer = LayerDeserializer::handleLayer($layer, $updateData);
         $map->layer->set($updateData['layerIndex'], $newLayer);
+        break;
+    case 'layerClass':
+        $layer = $map->layer->get($updateData['layerIndex']);
+        $style = $layer->class->get($updateData['layerClassIndex']);
+        if ($style == null) {
+            $style = new LayerClass();
+        }
+        $newStyle = LayerClassDeserializer::handleLayerClass($style, $updateData);
+        $layer->class->set($updateData['styleIndex'], $newStyle);
         break;
 }
 MapFileHandler::writeMapFile($map, $serviceUpdateJSON['uuid']);

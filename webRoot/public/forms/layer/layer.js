@@ -1,24 +1,14 @@
 $(document).ready(function () {
-    // Setup of the "backButton" in the header.
-    $('#backButton').click(async function () {
-        if (saveData()) {
-            let searchParams = new URLSearchParams(window.location.search);
-            let mapUUID = searchParams.get("mapUUID");
-            window.location.href = "/public/forms/map/map.php?serviceUUID=" + mapUUID;
-        }
-    });
-
     let layerTableBuilder = new TableBuilder($('#classTable'), '#classTable');
     $('#classCreatorButton').click(function () {
         layerTableBuilder.addNewLayer($('#className').val());
     });
 
-
     addEventListener('beforeunload', (event) => {
         if (!saveData()) {
             event.preventDefault();
             return event.returnValue = "Ihre Eingaben sind nicht valide und werden daher nicht automatisch gespeichert."
-        };
+        }
     })
 });
 
@@ -72,7 +62,6 @@ function parseStyle(json) {
  */
 function phpHook(ogcServiceData) {
     $(document).ready(function () {
-        console.log(ogcServiceData["layer"]);
         new FormFiller().fillForms(ogcServiceData);
     });
 }
