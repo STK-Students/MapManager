@@ -2,6 +2,7 @@
   "postgres": {
     "hostname": "Postgres",
     "database": "webDevDB",
+    "schema": "public",
     "user": "postgres",
     "password": "postgres"
   },
