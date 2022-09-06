@@ -2,6 +2,7 @@
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MapFile\Model\Composite;
+use MapFile\Model\Label;
 use MapFile\Model\Style;
 use MapFile\Model\LayerClass;
 use MapFile\Model\Map;
@@ -9,7 +10,7 @@ use MapFile\Model\Map;
 $mapFileLoc = $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser";
 $doctrineLoc = $_SERVER['DOCUMENT_ROOT'] . "/dependencies/Doctrine";
 require_once "$mapFileLoc/Model/Map.php";
-require_once "$mapFileLoc/Model/Layer.php";
+require_once "$mapFileLoc/Model/Label.php";
 require_once "$mapFileLoc/Model/Composite.php";
 require_once "$doctrineLoc/Common/Collections/Selectable.php";
 require_once "$doctrineLoc/Common/Collections/Collection.php";
@@ -21,7 +22,7 @@ class LabelDeserializer
 {
     const validArguments = array('name');
 
-    public static function handleLabel(LayerClass $currentStyle, array $updateData): LayerClass
+    public static function handleLabel(Label $currentStyle, array $updateData): Label
     {
         foreach (self::validArguments as $argument) {
             $value = $updateData[$argument];
@@ -33,18 +34,6 @@ class LabelDeserializer
                 switch ($argument) {
                     default:
                         $currentStyle->$argument = $value;
-                        break;
-                    case 'style':
-                        $addHandler = function ($data) {
-                            StyleDeserializer::handleStyle(new Style(), $data);
-                        };
-                        NestedAttributeUpdater::setNestedAttribute($currentStyle->style, $value, $addHandler);
-                        break;
-                    case 'label':
-                        $addHandler = function ($data) {
-                            LabelDeserializer::handleLabel(new Label(), $data);
-                        };
-                        NestedAttributeUpdater::setNestedAttribute($currentStyle->label, $value, $addHandler);
                         break;
                 }
             }

@@ -13,8 +13,8 @@ if (isset($_POST['input-map'])) {
 
 function deleteMap(Database $db): void
 {
-    $mapUUID = $_POST['input-map'];
-    $db->removeMap($mapUUID);
+    $serviceUUID = $_POST['input-map'];
+    $db->removeMap($serviceUUID);
     header('Location: /public/home/home.php?result=success');
 }
 

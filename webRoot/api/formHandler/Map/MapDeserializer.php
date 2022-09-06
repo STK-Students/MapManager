@@ -48,7 +48,7 @@ class MapDeserializer
                         break;
                     case 'layers':
                         $addHandler = function ($data) {
-                            LayerDeserializer::handleLayer(new Layer(), $data);
+                            return LayerDeserializer::handleLayer(new Layer(), $data);
                         };
                         NestedAttributeUpdater::setNestedAttribute($currentMap->layer, $value, $addHandler);
                         break;

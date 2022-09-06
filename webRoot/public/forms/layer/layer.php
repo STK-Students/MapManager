@@ -1,8 +1,3 @@
-<?php
-$rowNumber = $_GET["rowNumber"];
-$layerUUID = $_GET["layerUUID"];
-$mapUUID = $_GET["mapUUID"];
-?>
 <html lang="de">
 <header>
     <title>Layer Details</title>
@@ -23,13 +18,13 @@ $mapUUID = $_GET["mapUUID"];
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Layer/LayerSerializer.php";
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Layer/LayerDeserializer.php";
 
-    if (!isset($_GET['mapUUID'])) {
+    if (!isset($_GET['serviceUUID'])) {
         echo "Diese Seite können Sie nicht direkt aufrufen.";
         echo "<br> Bitte rufen sie die <a href='/public/home/home.php'>Homepage</a> auf.";
         die;
     }
 
-    $map = MapFileHandler::loadMapByUUID($_GET['mapUUID']);
+    $map = MapFileHandler::loadMapByUUID($_GET['serviceUUID']);
 
     $layerIndex = $_GET['rowNumber'];
     $layer = $map->layer->get($layerIndex);
@@ -52,7 +47,7 @@ $mapUUID = $_GET["mapUUID"];
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <?php
-                    echo '<a href="/public/forms/map/map.php?serviceUUID=' . $_GET['mapUUID'] . '" class="btn
+                    echo '<a href="/public/forms/map/map.php?serviceUUID=' . $_GET['serviceUUID'] . '" class="btn
                         btn-outline-secondary nav-link active"
                         style="margin-top:10px; margin-left:20px">Zurück
                         zu den Dienst-Einstellungen</a>';
@@ -63,10 +58,12 @@ $mapUUID = $_GET["mapUUID"];
         </div>
     </div>
 </nav>
+<br>
+<h1>Ebeneneinstellungen</h1>
 <div class="container-lg">
     <form name="Eingabe" id='layerForm' class="needs-validation">
         <br>
-        <h1>Ebene</h1>
+        <h3>Generelle Einstellungen</h3>
 
         <!--Start Row 1-->
 
@@ -83,6 +80,64 @@ $mapUUID = $_GET["mapUUID"];
                     <option value="LINE">Linie</option>
                     <option value="POLYGON">Polygon</option>
                 </select>
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class='col-3 gy-1'>
+                <label for='template'>Vorlagendatei</label>
+                <select class='form-select' name='template' id='template'>
+                    <option value="">Keine</option>
+                    <?php
+                    $templatePath = Config::getConfig()['directories']['templates'];
+                    chdir("../../../");
+                    $templatePath = realpath($templatePath);
+                    $files = scandir($templatePath);
+                    $files = array_diff($files, array('.', '..'));
+                    foreach ($files as $file) {
+                        echo "<option value='" . $file . "'>" . $file . "</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+
+            <div class="col-2 gy-1">
+                <label for="group">Gruppe</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="group">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                            data-bs-target="#groupModal"><b>?</b></button>
+                </div>
+            </div>
+
+            <div class="col-3">
+                <label class="form-label" for="tolerance">Genauigkeit</label>
+                <div class="input-group has-validation">
+                    <input type="number" class="form-control" id="tolerance">
+                    <span class="input-group-text">in</span>
+                    <select class="form-control form-select" id="toleranceunits" required>
+                        <option value="PIXELS">Pixel</option>
+                        <option value="METERS">Meter</option>
+                        <option value="KILOMETERS">Kilometer</option>
+                        <option value="DD">Dezimalgrad</option>
+                        <option value="FEET">Feet</option>
+                        <option value="INCHES">Inches</option>
+                        <option value="MILES">Miles</option>
+                        <option value="NAUTICALMILES">Seemeile</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2">
+                <label for="opacity">Transparenz</label>
+                <input id="opacity" type="number" class="form-control">
+            </div>
+            <div class="col-2">
+                <label for="maxscaledenom">Minimaler Maßstab</label>
+                <input id="maxscaledenom" type="number" class="form-control">
             </div>
         </div>
         <br>
@@ -131,70 +186,11 @@ $mapUUID = $_GET["mapUUID"];
                 </div>
             </div>
         </div>
-        <h3>Andere</h3>
-        <div class="row">
-            <div class='col-3 gy-1'>
-                <label for='template'>Vorlagendatei</label>
-                <select class='form-select' name='template' id='template'>
-                    <option value="">Keine</option>
-                    <?php
-                    $templatePath = Config::getConfig()['directories']['templates'];
-                    chdir("../../../");
-                    $templatePath = realpath($templatePath);
-                    $files = scandir($templatePath);
-                    $files = array_diff($files, array('.', '..'));
-                    foreach ($files as $file) {
-                        echo "<option value='" . $file . "'>" . $file . "</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-
-            <div class="col-2 gy-1">
-                <label for="group">Gruppe</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="group">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
-                            data-bs-target="#groupModal"><b>?</b></button>
-                </div>
-            </div>
-
-            <div class="col-3">
-                <label class="form-label" for="tolerance">Genauigkeit</label>
-                <div class="input-group has-validation">
-                    <input type="number" class="form-control" id="tolerance">
-                    <span class="input-group-text">in</span>
-                    <select class="form-control form-select" id="toleranceunits" required>
-                        <option value="PIXELS">Pixel</option>
-                        <option value="METERS">Meter</option>
-                        <option value="KILOMETERS">Kilometer</option>
-                        <option value="DD">Dezimalgrad</option>
-                        <option value="FEET">Feet</option>
-                        <option value="INCHES">Inches</option>
-                        <option value="MILES">Miles</option>
-                        <option value="NAUTICALMILES">Seemeile</option>
-                    </select>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
-                            data-bs-target="#dataModal"><b>?</b></button>
-                </div>
-            </div>
-
-            <div class="col-2">
-                <label for="maxscaledenom">Minimaler Maßstab</label>
-                <input id="maxscaledenom" type="number" class="form-control">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-2">
-                <label for="opacity">Transparenz</label>
-                <input id="opacity" type="number" class="form-control">
-            </div>
-        </div>
     </form>
 
     <br>
     <!-- CLASS Style Table -->
-    <h3 style="display: inline-block">Styles</h3>
+    <h3 style="display: inline-block">Style-Klassen</h3>
     <button style="margin-left: 15px; margin-bottom: 7px" data-bs-toggle="modal" data-bs-target="#addClassModal"
             class="btn btn-outline-success">+
     </button>

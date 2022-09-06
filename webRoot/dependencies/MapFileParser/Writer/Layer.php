@@ -13,6 +13,8 @@ namespace MapFile\Writer;
 $mapFileLoc = $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser";
 require_once("$mapFileLoc/Parser/Composite.php");
 require_once("$mapFileLoc/Writer/Composite.php");
+require_once("$mapFileLoc/Parser/LayerClass.php");
+require_once("$mapFileLoc/Writer/LayerClass.php");
 
 class Layer extends Writer
 {

@@ -44,9 +44,9 @@
         die;
     }
 
-    $mapUUID = $_GET['serviceUUID'];
+    $serviceUUID = $_GET['serviceUUID'];
 
-    $mapFilePath = Database::getInstance()->getGeoService($mapUUID)->getPath();
+    $mapFilePath = Database::getInstance()->getGeoService($serviceUUID)->getPath();
     $map = MapFileHandler::loadMapFromFile($mapFilePath);
 
     $json = MapSerializer::mapToJSON($map);
@@ -85,26 +85,27 @@
     <!-- META Settings -->
 
     <h2>Meta Einstellungen</h2>
-    <div class="row">
-        <div class="col-2">
-            <div class="form-check form-switch">
-                <input class="form-check-input" style="height: 1.5em; width: 3em; margin-right:5px; margin-top:0px"
-                       type="checkbox" role="switch" id="status">
-                <label class="form-check-label" for="status">Aus / An Status</label>
+    <form name="Eingabe" id='mapForm' class="needs-validation">
+        <div class="row">
+            <div class="col-2">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" style="height: 1.5em; width: 3em; margin-right:5px; margin-top:0px"
+                           type="checkbox" role="switch" id="status">
+                    <label class="form-check-label" for="status">Aus / An Status</label>
+                </div>
+            </div>
+            <div class="col-4">
+                <button id="includeModalShowButton" type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#includeModal">
+                    Vererbung bearbeiten
+                </button>
+
             </div>
         </div>
-        <div class="col-4">
-            <button id="includeModalShowButton" type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                    data-bs-target="#includeModal">
-                Vererbung bearbeiten
-            </button>
 
-        </div>
-    </div>
+        <br>
+        <br>
 
-    <br>
-    <br>
-    <form name="Eingabe" id='mapForm' class="needs-validation">
         <h2>Allgemeine Einstellungen</h2>
 
         <div class="row"><!--Start Row 1-->
@@ -249,7 +250,7 @@
                                 <br>
                                 <div id="includeCheckBoxes">
                                     <?php
-                                    $groupUUID = Database::getInstance()->getGeoService($mapUUID)->getGroupUUID();
+                                    $groupUUID = Database::getInstance()->getGeoService($serviceUUID)->getGroupUUID();
                                     $geoServices = Database::getInstance()->getGeoServices($groupUUID);
 
                                     foreach ($geoServices as $geoService) {

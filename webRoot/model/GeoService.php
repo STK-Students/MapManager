@@ -76,8 +76,8 @@ class GeoService
      */
     function getPath(): string {
         chdir("../../../");
-        $path = $this->getGroupPath() . "/" . $this->getUUID() . ".map";
-        $realpath =  realpath($path);
-        return $realpath;
+        $baseDir = realpath(Config::getConfig()['directories']['mapfiles']);
+        $path = $baseDir .  "/" . $this->getGroupUUID() . "/" . $this->getUUID() . ".map";
+        return $path;
     }
 }

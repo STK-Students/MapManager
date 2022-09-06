@@ -83,12 +83,12 @@ class MapFileHandler
     /**
      * Gets the path of the current service's MapFile.
      * The current service is determined through the session variable 'currentServiceUUID'.
-     * @param string $mapUUID UUID of the service that represents the map
+     * @param string $serviceUUID UUID of the service that represents the map
      * @return string path to the MapFile
      */
-    private static function getPath(string $mapUUID): string
+    private static function getPath(string $serviceUUID): string
     {
-        $service = Database::getInstance()->getGeoService($mapUUID);
+        $service = Database::getInstance()->getGeoService($serviceUUID);
         $groupPath = $service->getGroupPath();
         $mapFilePath = $service->getPath();
 

@@ -3,20 +3,28 @@ $(document).ready(function () {
      * Setups the layer table button.
      */
     let layerTableBuilder = new TableBuilder($('#layerTable'), '#layerTable');
-    $('#layerCreatorButton').click(function () {
-        layerTableBuilder.addNewLayer($('#layerName').val());
-    });
 
-    //TODO: Remove this + saveData() in TableBuilder
-    //TODO: + generalize tableBuilder
+    $('#layerCreatorButton').click(function () {
+        layerTableBuilder.addNewLayer($('#layerName').val(), layerTableEditButtonAction);
+    });
 
     addEventListener('beforeunload', (event) => {
         if (!saveData()) {
             event.preventDefault();
             return event.returnValue = "Ihre Eingaben sind nicht valide und werden daher nicht automatisch gespeichert."
-        };
+        }
     })
 });
+
+const layerTableEditButtonAction = function (rowNumber) {
+    if (FormSubmitter.formIsValid()) {
+        const urlParams = new URLSearchParams(window.location.search)
+        if (urlParams.has("serviceUUID")) {
+            const result = urlParams.get("serviceUUID")
+            window.location.href = "/public/forms/layer/layer.php?serviceUUID=" + result + "&rowNumber=" + rowNumber;
+        }
+    }
+}
 
 /**
  * Submits the form and other data to the given PHP handler.
@@ -120,7 +128,7 @@ function fillLayerTable(data) {
     if (layers !== undefined) {
         let layerTableBuilder = new TableBuilder($('#layerTable'), '#layerTable');
         for (const layer of Object.values(layers)) {
-            layerTableBuilder.addNewLayer(layer.name);
+            layerTableBuilder.addNewLayer(layer.name, layerTableEditButtonAction);
         }
     }
 }

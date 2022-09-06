@@ -1,17 +1,32 @@
 $(document).ready(function () {
-    let layerTableBuilder = new TableBuilder($('#classTable'), '#classTable');
-    $('#classCreatorButton').click(function () {
-        layerTableBuilder.addNewLayer($('#className').val(), styleClassTableEditButtonAction);
+    let classTableBuilder = new TableBuilder($('#styleTable'), '#styleTable');
+    $('#styleCreatorButton').click(function () {
+        layerTableBuilder.addNewLayer($('#styleName').val(), styleTableEditButtonAction);
+    });
+    let labelTableBuilder = new TableBuilder($('#labelTable'), '#labelTable');
+    $('#labelCreatorButton').click(function () {
+        labelTableBuilder.addNewLayer($('#labelName').val(), labelTableEditButtonAction);
     });
 });
 
-const styleClassTableEditButtonAction = function (rowNumber) {
+const styleTableEditButtonAction = function (rowNumber) {
     if (FormSubmitter.formIsValid()) {
         const urlParams = new URLSearchParams(window.location.search)
         if (urlParams.has("serviceUUID")) {
             const serviceUUID = urlParams.get("serviceUUID")
             const layerIndex = urlParams.get("rowNumber")
-            window.location.href = "/public/forms/layerClass/layerClass.php?serviceUUID=" + serviceUUID +
+            window.location.href = "/public/forms/label/label.php?serviceUUID=" + serviceUUID +
+                "&layerIndex=" + layerIndex + "&layerClassIndex=" + rowNumber;
+        }
+    }
+}
+const labelTableEditButtonAction = function (rowNumber) {
+    if (FormSubmitter.formIsValid()) {
+        const urlParams = new URLSearchParams(window.location.search)
+        if (urlParams.has("serviceUUID")) {
+            const serviceUUID = urlParams.get("serviceUUID")
+            const layerIndex = urlParams.get("rowNumber")
+            window.location.href = "/public/forms/style/style.php?serviceUUID=" + serviceUUID +
                 "&layerIndex=" + layerIndex + "&layerClassIndex=" + rowNumber;
         }
     }
@@ -33,9 +48,10 @@ function saveData() {
     let searchParams = new URLSearchParams(window.location.search);
     let serviceUUID = searchParams.get('serviceUUID');
     let submitter = new FormSubmitter();
-    return submitter.attemptSubmitFormData(serviceUUID, 'layer', 'layerForm', "updateHandler.php", formSubmitterWrapper);
+    return submitter.attemptSubmitFormData(serviceUUID, 'styleClass', 'mapForm', "updateHandler.php");
 }
 
+//Needed once this page is completed
 function formSubmitterWrapper(json) {
     json = provideContext(json);
     return parseStyle(json);
@@ -43,7 +59,7 @@ function formSubmitterWrapper(json) {
 
 function provideContext(json) {
     let searchParams = new URLSearchParams(window.location.search);
-    let layerID = searchParams.get('rowNumber');
+    let layerID = searchParams.get('layerIndex');
     let outher = {}
     outher.layerIndex = layerID;
     return {...outher, ...json};
@@ -75,20 +91,6 @@ function parseStyle(json) {
  */
 function phpHook(ogcServiceData) {
     $(document).ready(function () {
-        new FormFiller().fillForms(ogcServiceData, fillStyleTable);
+        new FormFiller().fillForms(ogcServiceData);
     });
-}
-
-/**
- * Fills the style table with the name of the given styles.
- * @param data geoService data as a json
- */
-function fillStyleTable(data) {
-    const layers = data.class;
-    if (layers !== undefined) {
-        let styleTableBuilder = new TableBuilder($('#classTable'), '#classTable');
-        for (const layer of Object.values(layers)) {
-            styleTableBuilder.addNewLayer(layer.name, styleClassTableEditButtonAction);
-        }
-    }
 }

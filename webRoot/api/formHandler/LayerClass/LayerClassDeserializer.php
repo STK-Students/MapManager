@@ -23,35 +23,35 @@ class LayerClassDeserializer
 {
     const validArguments = array('name');
 
-    public static function handleLayerClass(LayerClass $currentStyle, array $updateData): LayerClass
+    public static function handleLayerClass(LayerClass $currentLayerClass, array $updateData): LayerClass
     {
         foreach (self::validArguments as $argument) {
             $value = $updateData[$argument];
             if (!isset($value)) {
                 // Explicitly unset arguments that have not been defined by the user.
-                $currentStyle->$argument = null;
+                $currentLayerClass->$argument = null;
             } else {
                 // Some arguments require special conversion, e.g. because they need to be merged into a new data type.
                 switch ($argument) {
                     default:
-                        $currentStyle->$argument = $value;
+                        $currentLayerClass->$argument = $value;
                         break;
                     case 'style':
                         $addHandler = function ($data) {
-                            StyleDeserializer::handleStyle(new Style(), $data);
+                            return StyleDeserializer::handleStyle(new Style(), $data);
                         };
-                        NestedAttributeUpdater::setNestedAttribute($currentStyle->style, $value, $addHandler);
+                        NestedAttributeUpdater::setNestedAttribute($currentLayerClass->style, $value, $addHandler);
                         break;
                     case 'label':
                         $addHandler = function ($data) {
-                            LabelDeserializer::handleLabel(new Label(), $data);
+                           return LabelDeserializer::handleLabel(new Label(), $data);
                         };
-                        NestedAttributeUpdater::setNestedAttribute($currentStyle->label, $value, $addHandler);
+                        NestedAttributeUpdater::setNestedAttribute($currentLayerClass->label, $value, $addHandler);
                         break;
                 }
             }
         }
-        return $currentStyle;
+        return $currentLayerClass;
     }
 }
 

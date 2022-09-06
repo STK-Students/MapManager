@@ -124,7 +124,7 @@ class Database
 
     function addGroup($name, $uuid)
     {
-        pg_query_params($this->db_connection, "INSERT INTO {$this->schema}.group(uuid, name) VALUES ($1, $2) On CONFLICT(uuid) DO NOTHING;", array($uuid, $name));
+        pg_query_params($this->db_connection, "INSERT INTO {$this->schema}.group VALUES ($1, $2) On CONFLICT(uuid) DO NOTHING;", array($uuid, $name));
     }
 
     function removeGroup($groupUUID)
@@ -144,7 +144,8 @@ class Database
 
     function addMap($name, $description, $creationDate, $groupUUID, $mapUUID)
     {
-        pg_query_params($this->db_connection, "INSERT INTO {$this->schema}.map(name, uuid, description, creationDate, groupUUID) VALUES ($1, $2, $3, $4, $5) On CONFLICT(uuid) DO NOTHING;", array($name, $mapUUID, $description, $creationDate, $groupUUID));
+        $result = pg_query_params($this->db_connection, "INSERT INTO {$this->schema}.map VALUES ($1, $2, $3, $4, $5) On CONFLICT(uuid) DO NOTHING", array($name, $mapUUID, $description, $creationDate, $groupUUID));
+
     }
 
     function editGroup($groupUUID, $name)

@@ -17,10 +17,11 @@ require_once "$doctrineLoc/Common/Collections/Collection.php";
 require_once "$doctrineLoc/Common/Collections/ArrayCollection.php";
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/api/NestedAttributeUpdater.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/LayerClass/LayerClassDeserializer.php";
 
 class LayerDeserializer
 {
-    const validArguments = array('name', 'type', 'group', 'connectiontype', 'connection', 'data', 'template', 'tolerance', 'toleranceunits', 'maxscaledenom', 'opacity');
+    const validArguments = array('name', 'type', 'group', 'connectiontype', 'connection', 'data', 'template', 'tolerance', 'toleranceunits', 'maxscaledenom', 'opacity', 'styleClasses');
 
     public static function handleLayer(Layer $currentLayer, array $updateData): Layer
     {
@@ -40,10 +41,9 @@ class LayerDeserializer
                         break;
                     case 'styleClasses':
                         $addHandler = function ($data) {
-                            LabelDeserializer::handleLayerClass(new LayerClass(), $data);
+                            return LayerClassDeserializer::handleLayerClass(new LayerClass(), $data);
                         };
-                        $class = NestedAttributeUpdater::setNestedAttribute($currentLayer->class, $value, $addHandler);
-                        $currentLayer->class = $class;
+                        NestedAttributeUpdater::setNestedAttribute($currentLayer->class, $value, $addHandler);
                         break;
                 }
             }

@@ -21,7 +21,7 @@ class StyleDeserializer
 {
     const validArguments = array('name');
 
-    public static function handleStyle(LayerClass $currentStyle, array $updateData): LayerClass
+    public static function handleStyle(Style $currentStyle, array $updateData): Style
     {
         foreach (self::validArguments as $argument) {
             $value = $updateData[$argument];
@@ -33,18 +33,6 @@ class StyleDeserializer
                 switch ($argument) {
                     default:
                         $currentStyle->$argument = $value;
-                        break;
-                    case 'style':
-                        $addHandler = function ($data) {
-                            StyleDeserializer::handleStyle(new Style(), $data);
-                        };
-                        NestedAttributeUpdater::setNestedAttribute($currentStyle->style, $value, $addHandler);
-                        break;
-                    case 'label':
-                        $addHandler = function ($data) {
-                            LabelDeserializer::handleLabel(new Label(), $data);
-                        };
-                        NestedAttributeUpdater::setNestedAttribute($currentStyle->label, $value, $addHandler);
                         break;
                 }
             }

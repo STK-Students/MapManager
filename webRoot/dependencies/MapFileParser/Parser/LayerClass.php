@@ -10,6 +10,8 @@ declare(strict_types=1);
  */
 
 namespace MapFile\Parser;
+$mapFileLoc = $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser";
+require_once("$mapFileLoc/Model/LayerClass.php");
 
 use MapFile\Exception\UnsupportedException;
 use MapFile\Model\LayerClass as LayerClassObject;
