@@ -8,8 +8,6 @@ $db = Database::getInstance();
 if ($_SERVER['SERVER_NAME'] == 'localhost') {
     $_SERVER['REMOTE_USER'] = 'bauml';
 }
-/** Hack to use for local dev setup */
-$_SESSION['user'] = $_SERVER['REMOTE_USER'];
 
 /** Add new users to the DB */
 $activeDirectoryID = $_SERVER['REMOTE_USER'];

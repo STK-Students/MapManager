@@ -6,7 +6,7 @@ if (isset($_POST['submit-create-group'])) {
     $name = $_POST['groupNameCreate'];
     try {
         $groupUUID = pg_fetch_result($db->addGroup($name), 0, 0);
-        $db->addUserToGroup($groupUUID, $_SESSION['user']);
+        $db->addUserToGroup($groupUUID, $_SERVER['REMOTE_USER']);
         header('Location: /public/home/home.php?result=success&uuid=' . $groupUUID);
     } catch (Exception $e) {
         header('Location: /public/home/home.php?result=failure');
