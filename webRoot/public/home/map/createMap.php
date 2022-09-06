@@ -17,14 +17,15 @@ $name = $_POST['input-name'];
 $description = $_POST['input-description'];
 $creationDate = date('Y-m-d');
 
-if(isset($_POST["submit-create-map"])){
+if (isset($_POST["submit-create-map"])) {
     try {
-        $result = $db->addMap($name, $description, $creationDate, $group);
-        $generatedUUID = pg_fetch_result($result, 0, 0);
+        $mapUUID = GUIDGenerator::getGUIDv4();
+        $db->addMap($name, $description, $creationDate, $group, $mapUUID);
+
         $map = new Map();
         $map->status = "ON";
-        MapFileHandler::writeMapFile($map, $generatedUUID);
-        header('Location: /public/forms/map/map.php?serviceUUID=' . $generatedUUID);
+        MapFileHandler::writeMapFile($map, $mapUUID);
+        header('Location: /public/forms/map/map.php?serviceUUID=' . $mapUUID);
     } catch (Exception $e) {
         error_log($e->getMessage());
         header('Location: /public/home/home.php?result=failure');

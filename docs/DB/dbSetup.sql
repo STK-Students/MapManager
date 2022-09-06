@@ -5,7 +5,7 @@ BEGIN;
 
 CREATE TABLE IF NOT EXISTS public."group"
 (
-    uuid uuid NOT NULL DEFAULT gen_random_uuid(),
+    uuid uuid NOT NULL,
     name character varying NOT NULL,
     PRIMARY KEY (uuid)
     );
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS public."group"
 CREATE TABLE IF NOT EXISTS public.map
 (
     name character varying NOT NULL,
-    uuid uuid NOT NULL DEFAULT gen_random_uuid(),
+    uuid uuid NOT NULL,
     description character varying NOT NULL,
     "creationDate" date NOT NULL,
     "groupUUID" uuid NOT NULL,

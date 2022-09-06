@@ -142,9 +142,9 @@ class Database
         return pg_query_params($this->db_connection, "DELETE From {$this->schema}.map WHERE uuid=$1", array($mapUUID));
     }
 
-    function addMap($name, $description, $creationDate, $groupUUID)
+    function addMap($name, $description, $creationDate, $groupUUID, $mapUUID)
     {
-        return pg_query_params($this->db_connection, "INSERT INTO {$this->schema}.map (name, description, \"creationDate\", \"groupUUID\") VALUES ($1, $2, $3, $4) RETURNING uuid", array($name, $description, $creationDate, $groupUUID));
+        pg_query_params($this->db_connection, "INSERT INTO {$this->schema}.map(name, uuid, description, creationDate, groupUUID) VALUES ($1, $2, $3, $4, $5) On CONFLICT(uuid) DO NOTHING;", array($name, $mapUUID, $description, $creationDate, $groupUUID));
     }
 
     function editGroup($groupUUID, $name)
