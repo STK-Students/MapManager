@@ -18,7 +18,7 @@ class TableBuilder {
      * @param layerName the name of the layer
      */
     addNewLayer(layerName) {
-        let newTableLength = $(this.tableID + ' tr').size();
+        let newTableLength = $(this.tableID + ' tr').length - 1;
 
         const tableRow = this.#createTableRow(newTableLength, layerName);
 
