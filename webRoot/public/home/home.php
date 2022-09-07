@@ -158,7 +158,8 @@ $currentGroup = $_SESSION['currentGroup'];
 <!-- Dialogs -->
 
 <!-- Create Service -->
-<div class="modal fade" id="createServiceModal" tabindex="-1" aria-labelledby="modalTitleCreateService" aria-hidden="true">
+<div class="modal fade" id="createServiceModal" tabindex="-1" aria-labelledby="modalTitleCreateService"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -201,7 +202,8 @@ $currentGroup = $_SESSION['currentGroup'];
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12 gy-2">
-                            <input style="visibility: hidden; position: fixed" type="text" class="form-control" name="input-uuid" id="inputEditServiceUUID"
+                            <input style="visibility: hidden; position: fixed" type="text" class="form-control"
+                                   name="input-uuid" id="inputEditServiceUUID"
                                    placeholder="UUID des Dienstes" readonly>
                         </div>
                         <div class="col-12 gy-2">
@@ -292,11 +294,14 @@ $currentGroup = $_SESSION['currentGroup'];
                 <h5 class="modal-title" id="modalTitleDeleteGroup">Gruppe löschen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form name="remove_group_form" action="group/deleteGroup.php" method="post">
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                    <button type="submit" name="remove_group_form_submit" class="btn btn-danger">Löschen</button>
-                </div>
+            <div class="modal-body">
+                <p>Wollen sie die aktuelle Gruppe wirklich löschen?</p>
+                <form name="remove_group_form" action="group/deleteGroup.php" method="post">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                <button type="submit" name="remove_group_form_submit" class="btn btn-danger">Löschen</button>
+            </div>
             </form>
         </div>
     </div>
@@ -337,6 +342,7 @@ $currentGroup = $_SESSION['currentGroup'];
 <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="modalTitleAddUser"
      aria-hidden="true">
     <?php
+    //TODO: localhost reference
     $inviteCode = "http://localhost/public/home/home.php?inviteCode=" . $currentGroup;
     ?>
     <div class="modal-dialog">
@@ -376,8 +382,7 @@ $currentGroup = $_SESSION['currentGroup'];
                     for ($i = 0; $i < count($users); $i++) {
                         $user = (object)$users[$i];
                         echo "<tr>";
-                        echo "<td>" . $user->getFirstname() . "</td>";
-                        echo "<td>" . $user->getLastname() . "</td>";
+                        echo "<td>" . $user->getUUID() . "</td>";
                         echo "<td><a class='btn btn-danger' href='employee/deleteEmployee.php'>Löschen</a></td>";
                         echo "</tr>";
                     }
@@ -406,10 +411,9 @@ $currentGroup = $_SESSION['currentGroup'];
                     <?php
                     $users = $db->getUsersFromGroup($currentGroup);
                     for ($i = 0; $i < count($users); $i++) {
-                        $user = (object)$users[$i];
+                        $user = (object) $users[$i];
                         echo "<tr>";
-                        echo "<td>" . $user->getFirstname() . "</td>";
-                        echo "<td>" . $user->getLastname() . "</td>";
+                        echo "<td>" . $user->getUUID() . "</td>";
                         echo "</tr>";
                     }
                     ?>
@@ -427,7 +431,8 @@ $currentGroup = $_SESSION['currentGroup'];
 <!-- Success -->
 
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive"
+    <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert"
+         aria-live="assertive"
          aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
