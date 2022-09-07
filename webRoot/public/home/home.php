@@ -10,11 +10,10 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
 }
 
 /** Add new users to the DB */
-$activeDirectoryID = $_SERVER['REMOTE_USER'];
-$db->addUser($activeDirectoryID);
+$userID = $_SERVER['REMOTE_USER'];
+$db->addUser($userID);
 
 /** Invite System for adding members to group **/
-$userID = $_SERVER['REMOTE_USER'];
 if (isset($_GET["inviteCode"])) {
     $groupUUID = $_GET["inviteCode"];
     if (!$db->isUserInGroup($userID, $groupUUID)) {
