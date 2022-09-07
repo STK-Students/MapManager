@@ -7,6 +7,7 @@ use MapFile\Exception\UnsupportedException;
 
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/Config.php";
 $mapFileLoc = $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser";
 $doctrineLoc = $_SERVER['DOCUMENT_ROOT'] . "/dependencies/Doctrine";
 require_once("$mapFileLoc/Writer/WriterInterface.php");
@@ -77,7 +78,16 @@ class MapFileHandler
      */
     static function deleteMapFile(string $path)
     {
-        unlink($path);
+        //All these if statements are safety checks to prevent deleting files outside the mapfiles folder
+        chdir("../../../");
+        $mapFileMinPath = realpath(Config::getConfig()['directories']['mapfiles']);
+        if (strpos($path, $mapFileMinPath) !== false) {
+            $index = strpos($path, $mapFileMinPath);
+            if (substr_count($path, "/", $index) > 1) {
+                //delete the file
+                unlink($path);
+            }
+        }
     }
 
     /**

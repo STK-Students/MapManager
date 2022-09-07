@@ -2,6 +2,7 @@
 session_start();
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/MapFileHandler.php";
 
 $db = Database::getInstance();
 
@@ -14,7 +15,9 @@ if (isset($_POST['input-map'])) {
 function deleteMap(Database $db): void
 {
     $serviceUUID = $_POST['input-map'];
+    $path = $db->getGeoService($serviceUUID)->getPath();
     $db->removeMap($serviceUUID);
+    MapFileHandler::deleteMapFile($path);
     header('Location: /public/home/home.php?result=success');
 }
 
