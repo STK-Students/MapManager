@@ -1,7 +1,7 @@
 $(document).ready(function () {
-    let classTableBuilder = new TableBuilder($('#styleTable'), '#styleTable');
+    let styleTableBuilder = new TableBuilder($('#styleTable'), '#styleTable');
     $('#styleCreatorButton').click(function () {
-        layerTableBuilder.addNewLayer($('#styleName').val(), styleTableEditButtonAction);
+        styleTableBuilder.addNewLayer($('#styleName').val(), styleTableEditButtonAction);
     });
     let labelTableBuilder = new TableBuilder($('#labelTable'), '#labelTable');
     $('#labelCreatorButton').click(function () {

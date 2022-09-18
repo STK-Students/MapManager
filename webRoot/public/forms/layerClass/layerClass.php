@@ -81,7 +81,7 @@
 
     <!-- Label Table -->
     <h3 style="display: inline-block">Label</h3>
-    <button id="labelCreatorButton" style="margin-left: 15px; margin-bottom: 7px" data-bs-toggle="modal" data-bs-target="#addLabelModal"
+    <button id="labelModalButton" style="margin-left: 15px; margin-bottom: 7px" data-bs-toggle="modal" data-bs-target="#addLabelModal"
             class="btn btn-outline-success">+
     </button>
     <table id="labelTable" class="table">
@@ -100,7 +100,7 @@
     <br>
     <!-- Style Table -->
     <h3 style="display: inline-block">Style</h3>
-    <button id="styleCreatorButton" style="margin-left: 15px; margin-bottom: 7px" data-bs-toggle="modal" data-bs-target="#addStyleModal"
+    <button id="styleModalButton" style="margin-left: 15px; margin-bottom: 7px" data-bs-toggle="modal" data-bs-target="#addStyleModal"
             class="btn btn-outline-success">+
     </button>
     <table id="styleTable" class="table">
@@ -134,7 +134,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                    <button type="button" id="classCreatorButton" class="btn btn-primary" data-bs-dismiss="modal">
+                    <button type="button" id="labelCreatorButton" class="btn btn-primary" data-bs-dismiss="modal">
                         Erstellen
                     </button>
                 </div>
@@ -158,7 +158,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                    <button type="button" id="classCreatorButton" class="btn btn-primary" data-bs-dismiss="modal">
+                    <button type="button" id="styleCreatorButton" class="btn btn-primary" data-bs-dismiss="modal">
                         Erstellen
                     </button>
                 </div>
