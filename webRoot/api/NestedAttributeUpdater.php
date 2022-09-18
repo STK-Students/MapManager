@@ -8,7 +8,7 @@ require_once "$doctrineLoc/Common/Collections/ArrayCollection.php";
 class NestedAttributeUpdater
 {
     /**
-     * Updates a nested attribute (e.g. layers, styles).
+     * Updates a nested attribute (e.g. layers, style).
      * The problem is that only the context of a single instance of the nested attribute (e.g. one layer) is available.
      *
      * New attribute instances will be added.

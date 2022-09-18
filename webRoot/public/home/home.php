@@ -22,7 +22,7 @@ if (isset($_GET["inviteCode"])) {
 }
 
 $groups = $db->getGroupsFromUser($userID);
-$currentGroup = $_SESSION['currentGroup'];
+//$currentGroup = $_SESSION['currentGroup'];
 ?>
 
 <!DOCTYPE html>

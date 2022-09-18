@@ -24,3 +24,6 @@ All paths in the config are relative to the location of the project root folder.
 - Save GRPT instead of AD name.
 - Pipelines
 - Crosscheck with 120-2 dev guidelines
+
+#### ToDos:
+- add styles and labels

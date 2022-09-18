@@ -80,7 +80,7 @@ function phpHook(ogcServiceData) {
 }
 
 /**
- * Fills the style table with the name of the given styles.
+ * Fills the style table with the name of the given style.
  * @param data geoService data as a json
  */
 function fillStyleTable(data) {
