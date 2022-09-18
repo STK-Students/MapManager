@@ -15,7 +15,7 @@ const styleTableEditButtonAction = function (rowNumber) {
         if (urlParams.has("serviceUUID")) {
             const serviceUUID = urlParams.get("serviceUUID")
             const layerIndex = urlParams.get("rowNumber")
-            window.location.href = "/public/forms/label/label.php?serviceUUID=" + serviceUUID +
+            window.location.href = "/public/forms/style/style.php?serviceUUID=" + serviceUUID +
                 "&layerIndex=" + layerIndex + "&layerClassIndex=" + rowNumber;
         }
     }
@@ -26,7 +26,7 @@ const labelTableEditButtonAction = function (rowNumber) {
         if (urlParams.has("serviceUUID")) {
             const serviceUUID = urlParams.get("serviceUUID")
             const layerIndex = urlParams.get("rowNumber")
-            window.location.href = "/public/forms/style/style.php?serviceUUID=" + serviceUUID +
+            window.location.href = "/public/forms/label/label.php?serviceUUID=" + serviceUUID +
                 "&layerIndex=" + layerIndex + "&layerClassIndex=" + rowNumber;
         }
     }
