@@ -13,10 +13,15 @@
     <script src="../TableBuilder.js" defer></script>
     <script src="label.js"></script>
     <?php
+
+    use MapFile\Model\Label;
+
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/MapFileHandler.php";
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Layer/LayerSerializer.php";
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Layer/LayerDeserializer.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Label/LabelSerializer.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Label/LabelDeserializer.php";
+
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser/Model/Label.php";
 
     if (!isset($_GET['serviceUUID'])) {
         echo "Diese Seite können Sie nicht direkt aufrufen.";
@@ -26,9 +31,15 @@
 
     $map = MapFileHandler::loadMapByUUID($_GET['serviceUUID']);
 
-    $layerIndex = $_GET['rowNumber'];
-    $layer = $map->layer->get($layerIndex);
-    $json = json_encode(LayerSerializer::layerToJSON($layer));
+    $layerIndex = $_GET['layerIndex'];
+    $classIndex = $_GET['layerClassIndex'];
+    $labelIndex = $_GET['layerClassIndex'];
+    $labels = $map->layer->get($layerIndex)->class->get($classIndex);
+    $label =  $labels->get($labelIndex);
+    if ($label == null) {
+        $label = new Label();
+    }
+    $json = json_encode(LabelSerializer::labelToJSON($label));
     echo "<script type=\"text/javascript\" defer>phpHook(" . $json . ");</script>";
     ?>
 </header>
