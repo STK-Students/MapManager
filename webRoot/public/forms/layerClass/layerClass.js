@@ -29,7 +29,7 @@ const labelTableEditButtonAction = function (rowNumber) {
             const layerIndex = urlParams.get("rowNumber")
             const layerClassIndex = urlParams.get("layerClassIndex")
             window.location.href = "/public/forms/label/label.php?serviceUUID=" + serviceUUID +
-                "&layerIndex=" + layerIndex + "&layerClassIndex=" + rowNumber;
+                "&layerIndex=" + layerIndex + "&layerClassIndex=" + layerClassIndex + "&labelIndex=" + rowNumber;
         }
     }
 }
