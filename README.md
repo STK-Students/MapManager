@@ -15,3 +15,12 @@ All paths in the config are relative to the location of the project root folder.
 - Add new Serializers and Deserializers for the new subtype.
 - Make sure the corresponding Writers and Parsers of the MapFileParser library have the right imports set. 
   The MapFile will be empty when this is not the case.
+
+
+#### Feedback:
+- Title attribute for layer is missing, only technical name is supported.
+- Bounding Box / Extent logic check would be helpful.
+- No spaces or special characters allowed in layer names.
+- Save GRPT instead of AD name.
+- Pipelines
+- Crosscheck with 120-2 dev guidelines

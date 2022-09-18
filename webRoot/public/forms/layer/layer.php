@@ -69,7 +69,7 @@
 
         <div class="row">
             <div class="col-4 gy-1">
-                <label for="name">Name</label>
+                <label for="name">Technischer Name</label>
                 <input type="text" class="form-control" id="name" placeholder="Layer Name"
                        aria-describedby="nameHelp">
             </div>
