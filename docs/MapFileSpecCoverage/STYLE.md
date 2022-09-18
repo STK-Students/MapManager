@@ -10,4 +10,13 @@ Außerdem muss der Anzeigename im GUI durch ein `/` getrennt daneben geschrieben
 Dies dient der Kontrolle, ob alle Features des MapFile abgebildet sind.
 **Falls Felder bewusst nicht abgebildet werden, wird es hier dokumentiert.**
 
-- [X] NAME / Name
+## Optionen des STYLES
+
+SYMBOL "hatchsymbol"
+COLOR 255 240 0
+SIZE 7.6
+Width 1.13
+ANGLE 135
+OUTLINECOLOR 0 0 0
+OUTLINEWIDTH 0.945
+WIDTH 2
