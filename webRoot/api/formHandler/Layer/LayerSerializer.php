@@ -8,13 +8,13 @@ class LayerSerializer
 {
     /**
      * Converts the layer object into a JSON format that can be understood by the JS for filling the forms.
-     * @param Layer $style map to convert
+     * @param Layer $layer map to convert
      * @return array array for serialization into JSON for the website JS
      */
-    static function layerToJSON(Layer $style): array
+    static function layerToJSON(Layer $layer): array
     {
         $json = [];
-        foreach (get_object_vars($style) as $key => $value) {
+        foreach (get_object_vars($layer) as $key => $value) {
             if (isset($value)) {
                 switch ($key) {
                     default:
@@ -28,8 +28,8 @@ class LayerSerializer
                         }
                         break;
                     case 'class':
-                        foreach ($value as $style) {
-                            $json['class'][] = StyleSerializer::styleToJSON($style);
+                        foreach ($value as $layer) {
+                            $json['class'][] = StyleSerializer::styleToJSON($layer);
                         }
                         break;
                 }

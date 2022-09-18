@@ -48,10 +48,9 @@ function saveData() {
     let searchParams = new URLSearchParams(window.location.search);
     let serviceUUID = searchParams.get('serviceUUID');
     let submitter = new FormSubmitter();
-    return submitter.attemptSubmitFormData(serviceUUID, 'styleClass', 'mapForm', "updateHandler.php");
+    return submitter.attemptSubmitFormData(serviceUUID, 'layerClass', 'mapForm', "updateHandler.php", formSubmitterWrapper);
 }
 
-//Needed once this page is completed
 function formSubmitterWrapper(json) {
     json = provideContext(json);
     return parseStyle(json);
@@ -59,9 +58,11 @@ function formSubmitterWrapper(json) {
 
 function provideContext(json) {
     let searchParams = new URLSearchParams(window.location.search);
-    let layerID = searchParams.get('layerIndex');
+    let layerIndex = searchParams.get('layerIndex');
+    let classIndex = searchParams.get('layerClassIndex');
     let outher = {}
-    outher.layerIndex = layerID;
+    outher.layerIndex = layerIndex;
+    outher.layerClassIndex = classIndex;
     return {...outher, ...json};
 }
 

@@ -13,10 +13,15 @@
     <script src="../TableBuilder.js" defer></script>
     <script src="layerClass.js"></script>
     <?php
+
+    use MapFile\Model\LayerClass;
+
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/MapFileHandler.php";
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/LayerClass/LayerClassSerializer.php";
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/LayerClass/LayerClassDeserializer.php";
+
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser/Model/LayerClass.php";
 
     if (!isset($_GET['serviceUUID'])) {
         echo "Diese Seite können Sie nicht direkt aufrufen.";
@@ -28,8 +33,11 @@
 
     $layerIndex = $_GET['layerIndex'];
     $classIndex = $_GET['layerClassIndex'];
-    $layer = $map->layer->get($layerIndex)->class->get($classIndex);
-    $json = json_encode(LayerClassSerializer::layerClassToJSON($layer));
+    $layerClass = $map->layer->get($layerIndex)->class->get($classIndex);
+    if ($layerClass == null) {
+        $layerClass = new LayerClass();
+    }
+    $json = json_encode(LayerClassSerializer::layerClassToJSON($layerClass));
     echo "<script type=\"text/javascript\" defer>phpHook(" . $json . ");</script>";
     ?>
 </header>

@@ -13,10 +13,15 @@
     <script src="../TableBuilder.js" defer></script>
     <script src="layer.js"></script>
     <?php
+
+    use MapFile\Model\Layer;
+
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/MapFileHandler.php";
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Layer/LayerSerializer.php";
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Layer/LayerDeserializer.php";
+
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser/Model/Layer.php";
 
     if (!isset($_GET['serviceUUID'])) {
         echo "Diese Seite können Sie nicht direkt aufrufen.";
@@ -28,6 +33,9 @@
 
     $layerIndex = $_GET['rowNumber'];
     $layer = $map->layer->get($layerIndex);
+    if ($layer == null) {
+        $layer = new Layer();
+    }
     $json = json_encode(LayerSerializer::layerToJSON($layer));
     echo "<script type=\"text/javascript\" defer>phpHook(" . $json . ");</script>";
     ?>
