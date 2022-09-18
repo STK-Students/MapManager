@@ -48,7 +48,7 @@ switch ($serviceUpdateJSON['type']) {
             $style = new LayerClass();
         }
         $newStyle = LayerClassDeserializer::handleLayerClass($style, $updateData);
-        $layer->class->set($updateData['styleIndex'], $newStyle);
+        $layer->class->set($updateData['layerClassIndex'], $newStyle);
         break;
 }
 MapFileHandler::writeMapFile($map, $serviceUpdateJSON['uuid']);
