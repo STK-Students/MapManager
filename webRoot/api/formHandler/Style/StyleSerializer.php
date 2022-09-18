@@ -2,6 +2,9 @@
 
 use MapFile\Model\Layer;
 use MapFile\Model\LayerClass;
+use MapFile\Model\Style;
+
+require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser/Model/Style.php";
 
 class StyleSerializer
 {
@@ -10,7 +13,7 @@ class StyleSerializer
      * @param LayerClass $style map to convert
      * @return array JSON for the website JS
      */
-    static function styleToJSON(LayerClass $style): array
+    static function styleToJSON(Style $style): array
     {
         $json = [];
         foreach (get_object_vars($style) as $key => $value) {

@@ -15,8 +15,9 @@
     <?php
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/MapFileHandler.php";
     require_once $_SERVER['DOCUMENT_ROOT'] . "/api/database.php";
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Layer/LayerSerializer.php";
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Layer/LayerDeserializer.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Style/StyleSerializer.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Style/StyleDeserializer.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/dependencies/MapFileParser/Model/Style.php";
 
     if (!isset($_GET['serviceUUID'])) {
         echo "Diese Seite können Sie nicht direkt aufrufen.";
@@ -26,9 +27,14 @@
 
     $map = MapFileHandler::loadMapByUUID($_GET['serviceUUID']);
 
-    $layerIndex = $_GET['rowNumber'];
-    $layer = $map->layer->get($layerIndex);
-    $json = json_encode(LayerSerializer::layerToJSON($layer));
+    $layerIndex = $_GET['layerIndex'];
+    $layerClassIndex = $_GET['layerClassIndex'];
+    $styleIndex = $_GET['styleIndex'];
+    $style = $map->layer->get($layerIndex)->class->get($layerClassIndex)->style->get($styleIndex);
+    if(!isset($style)){
+        $style = new \MapFile\Model\Style();
+    }
+    $json = json_encode(StyleSerializer::styleToJSON($style));
     echo "<script type=\"text/javascript\" defer>phpHook(" . $json . ");</script>";
     ?>
 </header>
@@ -84,41 +90,6 @@
         </div>
         <br>
 
-    <div class="modal modal-lg" id="dataModal" tabindex="-1" aria-labelledby="dataModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="angleModalTitle">Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
-                </div>
-                <div class="modal-body">
-                    <p> Der Befehl muss die Form "&ltSpaltenname&gt from &ltTabellenname&gt" haben, wobei
-                        "&ltSpaltenname&gt" der Name der Spalte ist,
-                        die die Geometrieobjekte enthält, und "&ltTabellenname&gt" der Name der Tabelle ist, aus der
-                        die Geometriedaten gelesen werden. SELECT ist als erstes Wort des Befehls nicht notwendig.</p>
-                    Beispiel:<br>
-                    <code>the_geom from (select id_nr as gid, the_geom, bwnr, teil_bwnr, tw_name FROM public.bauwerke)
-                        as foo using unique gid using srid=25832</code>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal modal-lg" id="groupModal" tabindex="-1" aria-labelledby="groupModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="groupModalTitle">Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
-                </div>
-                <div class="modal-body">
-                    Name einer Gruppe, zu der diese Ebene gehört. Der Gruppenname kann dann als regulärer Ebenenname in
-                    den Vorlagendateien referenziert werden, wodurch Dinge wie das Ein- und Ausschalten einer Gruppe von
-                    Ebenen auf einmal möglich sind.
-                </div>
-            </div>
-        </div>
-    </div>
 
 </body>
 </html>
