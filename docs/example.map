@@ -1,0 +1,155 @@
+/* Muster zur Erstellung des Editors */
+
+MAP
+ NAME "bauwerke_69"
+ INCLUDE "koelngis_include.map"
+
+ WEB
+  METADATA
+   ....
+  END
+ END  
+
+/* Die Einstellungen für die verschiedenen Layer */
+
+/* PUNKTLAYER */
+
+ LAYER
+  NAME "bauwerksnummer"
+  GROUP ""
+  MAXSCALE 5000
+  TYPE POINT
+  CONNECTIONTYPE postgis
+  CONNECTION "user=giseye password=23gisdb dbname=amt69bauwerke_prod host=amt69bauwerke_prod port=5432"
+  DATA "the_geom from (select id_nr as gid, the_geom, bwnr, teil_bwnr, tw_name FROM public.bauwerke) as foo using unique gid using srid=25832"
+  METADATA
+   ....
+  END
+  TEMPLATE 'templates/empty.xml'
+  TOLERANCEUNITS pixels
+  TOLERANCE 10
+  CLASS
+   NAME "Bauwerksnummer"
+   STYLE
+	SYMBOL ""
+	SIZE 20
+	COLOR 255 0 0
+	ANGLE []
+	Width
+    MAXSCALEDENOM 5000
+   END
+   LABEL
+    FONT "arial"
+	TYPE truetype
+    SIZE 8
+	COLOR 0 0 0
+	OUTLINECOLOR 255 255 255
+	OUTLINEWIDTH 2
+    POSITION UR 
+	FORCE true
+	ANGLE []
+	PARTIALS
+	TEXT ("BW " + "[gid]")
+	MAXSCALEDENOM 5000
+   END
+  END
+ END
+ 
+/* LINIENLAYER */ 
+
+ LAYER
+  NAME "rad_fahrradstrasse"
+  GROUP ""
+  TYPE LINE
+  CONNECTIONTYPE postgis
+  CONNECTION "user=giseye password=23gisdb dbname=strassen_test host=strassen_test"
+  DATA "geom from (select id as gid,geom, strassenna, von, bis, eingericht, kfz, bemerkung, stand FROM fahrrad.rad_fahrradstrasse) as foo using unique gid using srid=25832"
+  METADATA
+   ....
+  END
+  TEMPLATE "templates/empty.xml"
+   CLASS
+	STYLE
+	 COLOR
+	 OUTLINECOLOR 0 0 255
+	 WIDTH 2
+	END
+   END
+  END	
+
+
+/* FLÄCHENLAYER */
+ 
+LAYER 
+  NAME "bruecke_f"
+  GROUP Amt69
+  TYPE POLYGON
+  CONNECTIONTYPE postgis
+  CONNECTION "user=giseye password=23gisdb dbname=amt69bauwerke_prod host=amt69bauwerke_prod port=5432"
+  DATA "geom from (select id as gid, bauwerksnummer, bauwerksname, teilbauwerksnummer, teilbauwerksname, bauwerksart, baujahr, stadium, baulast, unterhaltungspflicht, unterhaltungspflicht_zusatz, geom, 'https://koelngis.verwaltung.stadtkoeln.de/sib69/' || bauwerksnummer || '/SEITENANSICHT.jpg' as foto FROM public.v_koelngis_bauwerke_flaechen where art_bw = 1 and (unterhalt = 1 or unterhalt = 99)) as foo using unique gid using srid=25832"
+  METADATA
+  .... 
+  END
+  TEMPLATE 'templates/empty.xml'
+  OPACITY 100
+  CLASS
+   NAME "Brücke"
+   STYLE
+    COLOR 150 220 150
+	OUTLINECOLOR 0 0 0 
+	OUTLINEWIDTH 0.945
+   END
+  END
+ END
+ 
+ 
+ /* Style Beispiel für Schraffur */
+ 
+   STYLE
+	OUTLINECOLOR 0 60 225 
+	OUTLINEWIDTH 1.74
+   END
+   STYLE
+    SYMBOL "hatchsymbol"
+    COLOR 0 60 255
+	SIZE 7.6
+	Width 1.13
+    ANGLE 135
+   END
+   
+ /* Style Beispiel für gekreuzte Schraffur */
+ 
+   STYLE
+	OUTLINECOLOR 255 240 0 
+	OUTLINEWIDTH 1.74
+   END
+   STYLE
+	SYMBOL "hatchsymbol"
+    COLOR 255 240 0
+	SIZE 7.6
+	Width 1.13
+    ANGLE 45
+   END
+   STYLE
+    SYMBOL "hatchsymbol"
+    COLOR 255 240 0
+	SIZE 7.6
+	Width 1.13
+    ANGLE 135
+   END
+   
+   
+ /* Beispiel für Karten */
+ 
+ # gdaltindex stadtkarte_2010.shp \\kudm202\geobasisdat\geodaten\Karten\historische_Karten\Stadtkarten\2010\*.tif
+ LAYER
+  NAME "stadtkarte_2010"
+  GROUP "1993 - 2021"
+  TILEINDEX "stadtkarte_2010.shp"
+  TYPE RASTER
+  PROCESSING "RESAMPLE=BILINEAR"
+  METADATA
+   ....
+  END
+  OFFSITE 0 0 0
+ END
