@@ -2,19 +2,20 @@
 
 use MapFile\Model\Layer;
 
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/LayerClass/LayerClassSerializer.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/api/formHandler/Style/StyleSerializer.php";
 
 class LayerSerializer
 {
     /**
      * Converts the layer object into a JSON format that can be understood by the JS for filling the forms.
-     * @param Layer $layer map to convert
+     * @param Layer $class map to convert
      * @return array array for serialization into JSON for the website JS
      */
-    static function layerToJSON(Layer $layer): array
+    static function layerToJSON(Layer $class): array
     {
         $json = [];
-        foreach (get_object_vars($layer) as $key => $value) {
+        foreach (get_object_vars($class) as $key => $value) {
             if (isset($value)) {
                 switch ($key) {
                     default:
@@ -28,8 +29,8 @@ class LayerSerializer
                         }
                         break;
                     case 'class':
-                        foreach ($value as $layer) {
-                            $json['class'][] = StyleSerializer::styleToJSON($layer);
+                        foreach ($value as $class) {
+                            $json['class'][] = LayerClassSerializer::layerClassToJSON($class);
                         }
                         break;
                 }
