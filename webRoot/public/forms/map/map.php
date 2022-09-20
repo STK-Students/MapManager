@@ -190,7 +190,7 @@
             </div>
 
 
-            <div class="col-3 gy-1">
+            <div class="col-4 gy-1">
                 <label for="extent-minx">Räumliche Ausdehnung</label>
                 <div class="input-group has-validation">
                     <input type="number" class="form-control" id="extent-minx" aria-describedby="extentHelpminX"

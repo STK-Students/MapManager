@@ -71,7 +71,7 @@
 
     <form name="Eingabe" id='mapForm' class="needs-validation">
         <div class="row">
-            <div class="col-2">
+            <div class="col-3">
                 <label for="name">Name</label>
                 <input type="text" class="form-control" id="name" aria-describedby="name" required>
             </div>
